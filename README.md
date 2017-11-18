@@ -53,6 +53,9 @@ docker-compose up -d
 ```sh
 $ docker-compose run --rm app bundle install
 
+# DBリセット
+$ docker-compose run --rm app rails db:migrate:reset && rails db:seed
+
 # DB作りたくなったら
 $ docker-compose run --rm app rake db:create
 
