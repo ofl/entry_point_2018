@@ -39,5 +39,5 @@ ENV BUNDLE_GEMFILE=$APP_ROOT/Gemfile \
     BUNDLE_JOBS=4
 
 RUN apk --no-cache --virtual gem-builddeps add alpine-sdk && \
-    bundle install --path vendor/bundle && \
+    bundle install && \
     apk del --purge gem-builddeps
