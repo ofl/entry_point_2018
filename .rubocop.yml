@@ -1,0 +1,74 @@
+# inherit_from: rubocop-todo.yml
+
+AllCops:
+  DisplayCopNames: true
+  TargetRubyVersion: 2.4
+  Exclude:
+    - vendor/**/*
+    - db/schema.rb
+    - public/packs
+    - public/packs-test
+    - node_modules/**/*
+
+Documentation:
+  Enabled: false
+
+Metrics/AbcSize:
+  Exclude:
+    - db/migrate/*
+
+Metrics/BlockLength:
+  Exclude:
+    - spec/**/*
+    - config/environments/development.rb
+
+Metrics/LineLength:
+  Max: 120
+  IgnoredPatterns: ['\A#']
+  Exclude:
+    - db/migrate/*
+
+Metrics/MethodLength:
+  Exclude:
+    - db/migrate/*
+
+Rails:
+  Enabled: true
+
+Rails/FilePath:
+  Exclude:
+    - config/environments/development.rb
+
+Style/AsciiComments:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Style/PercentLiteralDelimiters:
+  Enabled: false
+
+Style/StringLiteralsInInterpolation:
+  Exclude:
+    - bin/yarn
+
+Style/StringLiterals:
+  Exclude:
+    - bin/yarn
+    - config/environments/production.rb
+    - config/puma.rb
+
+Style/StderrPuts:
+  Exclude:
+    - bin/yarn
+
+Layout/SpaceInsideBrackets:
+  Exclude:
+    - config/environments/production.rb
+
+Layout/EmptyLines:
+  Exclude:
+    - bin/setup
