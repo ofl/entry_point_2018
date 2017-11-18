@@ -7,8 +7,6 @@ RUN apk add --no-cache tzdata && \
     cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime && \
     apk del --purge tzdata
 
-EXPOSE 3000
-
 ENV PROJECT_NAME entry_point_2018
 ENV APP_ROOT /usr/src/$PROJECT_NAME
 
@@ -41,3 +39,23 @@ ENV BUNDLE_GEMFILE=$APP_ROOT/Gemfile \
 RUN apk --no-cache --virtual gem-builddeps add alpine-sdk && \
     bundle install && \
     apk del --purge gem-builddeps
+
+# yarn install
+COPY package.json yarn.lock .postcssrc.yml ./
+RUN yarn install
+
+# # assets precompile
+# COPY Rakefile .babelrc ./
+# COPY config config
+# COPY app/assets app/assets
+# COPY app/javascript app/javascript
+# COPY bin bin
+# RUN RAILS_ENV=production bundle exec rails assets:precompile
+
+COPY .rubocop.yml ./
+
+COPY . $APP_ROOT
+
+EXPOSE 3000
+
+CMD ["rails", "server", "-b", "0.0.0.0"]
