@@ -22,3 +22,55 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
+
+### セットアップ
+
+```sh
+export RUBY_IMAGE=ruby:2.4.2-alpine3.6
+export DEVELOPER_NAME=ofl
+export PROJECT_NAME=entry_point_2018
+
+docker pull $RUBY_IMAGE
+
+# Gemfileを生成
+docker run --rm -v "$PWD":/usr/src/"$PROJECT_NAME" -w /usr/src/"$PROJECT_NAME" $RUBY_IMAGE bundle init
+
+# Dockerfileを生成、編集後
+docker build -t "$DEVELOPER_NAME"/"$PROJECT_NAME" .
+
+# rails new
+docker run --rm -it -v "$PWD":/usr/src/"$PROJECT_NAME" "$DEVELOPER_NAME"/"$PROJECT_NAME" rails new . -BT
+
+# docker-compose.ymlを追加
+# config/database.ymlの修正
+docker-compose build
+
+docker-compose up -d
+```
+
+### よく使うコマンド
+
+```sh
+$ docker-compose run --rm app bundle install
+
+# DBリセット
+$ docker-compose run --rm app rails db:migrate:reset && rails db:seed
+
+# DB作りたくなったら
+$ docker-compose run --rm app rake db:create
+
+# マイグレーションしたくなったら
+$ docker-compose run --rm app rake db:migrate
+
+# seed実行したくなったら
+$ docker-compose run --rm app rake db:seed
+
+# コントローラー作成したくなったら(controller_nameを変更してどうぞ)
+$ docker-compose run --rm app rails generate controller controller_name
+
+# Model作成したくなったら(model_nameを変更してどうぞ 引数にname:stringとかでnameカラムを作れます。)
+$ docker-compose run --rm app rails generate model model_name name:string
+
+# ルーティング変更したくなったら(config/routes.rbを編集後実行)
+$ docker-compose run --rm app rake routes
+```
