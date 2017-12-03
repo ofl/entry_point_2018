@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    name: rails
+  name: rails-service
+spec:
+  externalTrafficPolicy: Cluster
+  ports:
+  - port: 3000
+    protocol: TCP
+    targetPort: 3000
+  selector:
+    app: rails
+  sessionAffinity: None
+  type: NodePort
+status:
+  loadBalancer: {}

@@ -1,0 +1,65 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: rails
+  name: rails-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rails
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: rails
+    spec:
+      containers:
+      - command:
+        - bundle
+        - exec
+        - rails
+        - s
+        - -p
+        - "3000"
+        - -b
+        - 0.0.0.0
+        env:
+        - name: SECRET_KEY_BASE
+          valueFrom:
+            secretKeyRef:
+              key: secret_key_base
+              name: app-secrets
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              key: postgres_user
+              name: app-secrets
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: postgres_password
+              name: app-secrets
+        image: ofl/entry_point_2018:0.1
+        imagePullPolicy: IfNotPresent
+        name: rails
+        ports:
+        - containerPort: 3000
+          name: http-server
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+status: {}
