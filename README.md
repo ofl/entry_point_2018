@@ -80,6 +80,12 @@ $ minikube service rails-service --url
 ### よく使うコマンド
 
 ```sh
+# ログの確認
+$ docker-compose logs
+
+# shellの起動
+$ docker-compose run --rm app sh
+
 $ docker-compose run --rm app bundle install
 
 # DBリセット
