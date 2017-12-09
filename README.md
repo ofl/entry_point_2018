@@ -65,7 +65,7 @@ $ eval $(minikube docker-env)
 $ docker build -t "$DEVELOPER_NAME"/"$PROJECT_NAME":"$APP_VERSION" .
 
 # 秘密情報を読み込む
-$ kubectl create -f .kube-secrets.yaml
+$ kubectl create -f .kube-secrets.yml
 
 # ./kube 以下のmanifestを適用する
 $ kubectl create -f ./kube
