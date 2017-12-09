@@ -60,4 +60,4 @@ bower.json
 /public/packs-test
 /node_modules
 
-.kube-secrets.yaml
+.kube-secrets.yml
