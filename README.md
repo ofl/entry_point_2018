@@ -65,7 +65,7 @@ $ eval $(minikube docker-env)
 $ docker build -t "$DEVELOPER_NAME"/"$PROJECT_NAME":"$APP_VERSION" .
 
 # 秘密情報を読み込む
-$ kubectl create -f .kube-secrets.yaml
+$ kubectl create -f .kube-secrets.yml
 
 # ./kube 以下のmanifestを適用する
 $ kubectl create -f ./kube
@@ -80,6 +80,12 @@ $ minikube service rails-service --url
 ### よく使うコマンド
 
 ```sh
+# ログの確認
+$ docker-compose logs
+
+# shellの起動
+$ docker-compose run --rm app sh
+
 $ docker-compose run --rm app bundle install
 
 # DBリセット
