@@ -29,14 +29,12 @@ RUN gem install bundler
 # install dependency package
 RUN apk --no-cache add tzdata libstdc++ postgresql-dev
 
-# bundle install
-#    bundle install --without development test --path vendor/bundle && \
 COPY Gemfile Gemfile.lock $APP_ROOT/
 
 ENV BUNDLE_GEMFILE=$APP_ROOT/Gemfile \
     BUNDLE_JOBS=4
 
-RUN apk --no-cache --virtual gem-builddeps add alpine-sdk && \
+RUN apk --no-cache --virtual gem-builddeps add alpine-sdk build-base && \
     bundle install && \
     apk del --purge gem-builddeps
 
