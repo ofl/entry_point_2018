@@ -1,6 +1,6 @@
 version: '3'
 services:
-  db:
+  postgres:
     image: postgres
     environment:
       POSTGRES_USER: postgres
@@ -9,7 +9,7 @@ services:
       PGDATA: /var/lib/postgresql/data
     volumes:
       - postgresql-data:/var/lib/postgresql/data
-  app:
+  rails:
     build: .
     image: ofl/entry_point_2018:0.1
     ports:
@@ -18,7 +18,7 @@ services:
       - .:/usr/src/entry_point_2018
       - bundle_cache:/usr/local/bundle
     depends_on:
-      - db
+      - postgres
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: mysecurepass
