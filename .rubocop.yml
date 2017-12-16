@@ -9,6 +9,10 @@ AllCops:
     - public/packs
     - public/packs-test
     - node_modules/**/*
+    - bin/update
+    - bin/setup
+    - bin/webpack
+    - bin/webpack-dev-server
 
 Documentation:
   Enabled: false
@@ -77,10 +81,6 @@ Style/BlockComments:
 Style/SymbolArray:
   Exclude:
     - Gemfile
-
-Layout/SpaceInsideBrackets:
-  Exclude:
-    - config/environments/production.rb
 
 Layout/EmptyLines:
   Exclude:

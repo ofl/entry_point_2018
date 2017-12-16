@@ -7,7 +7,7 @@ RUN apk add --no-cache tzdata && \
     cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime && \
     apk del --purge tzdata
 
-ENV PROJECT_NAME entry_point_2018
+ARG PROJECT_NAME
 ENV APP_ROOT /usr/src/$PROJECT_NAME
 
 # user
