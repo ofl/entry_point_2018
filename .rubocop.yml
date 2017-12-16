@@ -27,6 +27,7 @@ Metrics/LineLength:
   IgnoredPatterns: ['\A#']
   Exclude:
     - db/migrate/*
+    - config/initializers/devise.rb
 
 Metrics/MethodLength:
   Exclude:
