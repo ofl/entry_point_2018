@@ -58,8 +58,5 @@ bower.json
 /spec/fixtures/vcr
 /public/packs
 /public/packs-test
-/node_modules
 
 .kube-secrets.yml
-/public/packs
-/node_modules
