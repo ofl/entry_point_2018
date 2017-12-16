@@ -15,13 +15,13 @@ jobs:
           command: sleep 1
       - run:
           name: rubocop
-          command: docker-compose run --rm app bundle exec rubocop
+          command: docker-compose run --rm rails bundle exec rubocop
       - run:
           name: "before_test: setup db"
-          command: docker-compose run --rm app rails db:create db:migrate
+          command: docker-compose run --rm rails rails db:create db:migrate
       - run:
           name: rspec
-          command: docker-compose run --rm app bundle exec rake spec SPEC_OPTS="--color --fail-fast"
+          command: docker-compose run --rm rails bundle exec rake spec SPEC_OPTS="--color --fail-fast"
       - run:
           name: docker-compose down
           command: docker-compose down
