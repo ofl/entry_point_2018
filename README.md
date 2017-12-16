@@ -1,28 +1,5 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
 ### セットアップ
 
 ```sh
@@ -47,6 +24,15 @@ $ docker run --rm -it -v "$PWD":/usr/src/"$PROJECT_NAME" "$DEVELOPER_NAME"/"$PRO
 $ docker-compose build
 
 $ docker-compose up -d
+```
+
+### 再ビルド
+
+```sh
+$ export RUBY_IMAGE=ruby:2.4.2-alpine3.6 DEVELOPER_NAME=ofl PROJECT_NAME=entry_point_2018 APP_VERSION=0.1
+$ docker build -t "$DEVELOPER_NAME"/"$PROJECT_NAME":"$APP_VERSION" --build-arg PROJECT_NAME="$PROJECT_NAME" .
+# Gemfile.lockが書き変わらないため
+$ docker-compose run --rm rails bundle
 ```
 
 ### minikubeで動かす
