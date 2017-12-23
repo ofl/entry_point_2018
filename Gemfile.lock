@@ -58,6 +58,9 @@ GEM
       i18n (~> 0.7)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
+    annotate (2.7.2)
+      activerecord (>= 3.2, < 6.0)
+      rake (>= 10.4, < 13.0)
     arbre (1.1.1)
       activesupport (>= 3.0.0)
     arel (8.0.0)
@@ -175,6 +178,8 @@ GEM
     materialize-sass (0.100.2)
       sass (~> 3.3)
     method_source (0.9.0)
+    migration_comments (0.4.1)
+      activerecord (>= 4.2.0)
     mini_mime (1.0.0)
     mini_portile2 (2.3.0)
     minitest (5.10.3)
@@ -313,6 +318,7 @@ PLATFORMS
 
 DEPENDENCIES
   activeadmin
+  annotate
   bcrypt (~> 3.1.7)
   byebug
   coffee-rails (~> 4.2)
@@ -326,6 +332,7 @@ DEPENDENCIES
   listen (>= 3.0.5, < 3.2)
   material_icons
   materialize-sass
+  migration_comments
   pg
   puma (~> 3.7)
   rails (~> 5.1.4)
