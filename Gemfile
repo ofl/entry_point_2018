@@ -36,6 +36,8 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'activeadmin'
 gem 'devise'
 gem 'foreman'
+gem 'material_icons'
+gem 'materialize-sass'
 gem 'webpacker', '~> 2.0'
 
 group :development, :test do
