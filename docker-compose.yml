@@ -14,6 +14,7 @@ services:
     image: ofl/entry_point_2018:0.1
     ports:
       - '3000:3000'
+      - '8080:8080'
     volumes:
       - .:/usr/src/entry_point_2018
       - bundle_cache:/usr/local/bundle
@@ -23,6 +24,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: mysecurepass
       POSTGRES_DB: app_development
+    command: bundle exec foreman start -f Procfile.dev
 volumes:
   postgresql-data:
     driver: local
