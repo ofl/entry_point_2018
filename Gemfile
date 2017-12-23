@@ -43,6 +43,13 @@ gem 'material_icons'
 gem 'materialize-sass'
 gem 'webpacker', '~> 2.0'
 
+gem 'omniauth'
+gem 'omniauth-facebook'
+gem 'omniauth-twitter'
+
+gem 'koala', '~> 2.2'
+gem 'twitter'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
