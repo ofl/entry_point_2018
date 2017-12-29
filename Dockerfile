@@ -34,9 +34,13 @@ COPY Gemfile Gemfile.lock $APP_ROOT/
 ENV BUNDLE_GEMFILE=$APP_ROOT/Gemfile \
     BUNDLE_JOBS=4
 
+# デプロイ時には不要なライブライを削除する
+# RUN apk --no-cache --virtual gem-builddeps add alpine-sdk build-base && \
+#     bundle install && \
+#     apk del --purge gem-builddeps
+
 RUN apk --no-cache --virtual gem-builddeps add alpine-sdk build-base && \
-    bundle install && \
-    apk del --purge gem-builddeps
+    bundle install
 
 # yarn install
 COPY package.json yarn.lock .postcssrc.yml ./
@@ -56,4 +60,5 @@ COPY . $APP_ROOT
 
 EXPOSE 3000
 
+# docker-composeやkubernetesのcommandがある場合は実行されない
 CMD ["rails", "server", "-b", "0.0.0.0"]
