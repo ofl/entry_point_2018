@@ -17,7 +17,7 @@ services:
       - '8080:8080'
     volumes:
       - .:/usr/src/entry_point_2018
-      - bundle_cache:/usr/local/bundle
+      - bundle_cache:/bundle
     depends_on:
       - postgres
     environment:

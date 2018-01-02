@@ -32,7 +32,8 @@ RUN apk --no-cache add tzdata libstdc++ postgresql-dev
 COPY Gemfile Gemfile.lock $APP_ROOT/
 
 ENV BUNDLE_GEMFILE=$APP_ROOT/Gemfile \
-    BUNDLE_JOBS=4
+    BUNDLE_JOBS=4 \
+    BUNDLE_PATH=/usr/local/bundle
 
 # デプロイ時には不要なライブライを削除する
 # RUN apk --no-cache --virtual gem-builddeps add alpine-sdk build-base && \
