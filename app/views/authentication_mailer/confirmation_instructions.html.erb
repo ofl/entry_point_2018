@@ -1,0 +1,5 @@
+<p><%= t('.welcome', user: @resource.username) %></p>
+
+<p><%= t('.confirm') %></p>
+
+<p><%= link_to t('.confirm_account'), users_user_auth_url(provider: @provider, confirmation_token: @token) %></p>

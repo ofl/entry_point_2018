@@ -96,7 +96,7 @@ RSpec.describe UserAuth, type: :model do
     end
 
     describe 'verified_by_auth_provider?' do
-      include AuthTokenHelper
+      include AuthTokenSpecHelper
 
       let(:user_auth) { build :user_auth, uid: uid }
       let(:uid) { 'foobarbaz' }
