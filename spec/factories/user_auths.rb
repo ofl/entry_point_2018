@@ -18,6 +18,10 @@
 #  index_user_auths_on_provider_and_uid    (provider,uid) UNIQUE
 #  index_user_auths_on_user_id             (user_id)
 #
+# Foreign Keys
+#
+#  fk_rails_...  (user_id => users.id)
+#
 
 FactoryBot.define do
   factory :user_auth do

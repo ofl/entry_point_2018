@@ -4,7 +4,7 @@
 #
 #  id                   :integer          not null, primary key
 #  user_id              :integer          not null
-#  provider             :integer          default(0), not null
+#  provider             :integer          default("email"), not null
 #  uid                  :string           not null
 #  access_token         :string
 #  access_secret        :string
