@@ -35,6 +35,14 @@ $ docker build -t "$DEVELOPER_NAME"/"$PROJECT_NAME":"$APP_VERSION" --build-arg P
 $ docker-compose run --rm rails bundle
 ```
 
+### テスト
+
+```sh
+$ docker-compose exec spring sh
+
+# spring内のシェルで
+$ bundle exec bin/rspec
+```
 ### minikubeで動かす
 
 ```sh
