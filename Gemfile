@@ -60,6 +60,7 @@ group :development, :test do
   # https://github.com/rails/spring/pull/546
   gem 'spring', github: 'mattbrictson/spring', branch: 'honor-bundle-app-config'
   gem 'spring-commands-rspec'
+  gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
 group :development do
@@ -68,7 +69,6 @@ group :development do
   gem 'migration_comments'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'rubocop', require: false
-  gem 'spring-watcher-listen', '~> 2.0.0'
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem 'web-console', '>= 3.3.0'
 end
