@@ -31,6 +31,7 @@ services:
     tty: true
     command: spring server
     ports: []
+    pid: host
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: mysecurepass
@@ -38,6 +39,7 @@ services:
       SPRING_SOCKET: /tmp/spring/spring.sock
     volumes:
       - .:/usr/src/entry_point_2018
+      - bundle_cache:/bundle
       - spring:/tmp/spring
 volumes:
   postgresql-data:
