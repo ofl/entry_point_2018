@@ -1,0 +1,7 @@
+en:
+  layouts:
+    application:
+      withdrawl: 退会する
+      logout: ログアウト
+      sign_up: 登録する
+      sign_in: ログイン

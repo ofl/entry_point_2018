@@ -1,0 +1,18 @@
+ja:
+  activerecord:
+    models:
+      user: ユーザー
+      user_auth: 本人確認
+    attributes:
+      user:
+        name: 名前
+        username: ユーザー名
+        email: メールアドレス
+        password: パスワード
+        password_confirmation: パスワード(確認)
+    errors:
+      models:
+        user:
+          attributes:
+            password:
+              blank: を入力してください

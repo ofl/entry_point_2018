@@ -1,0 +1,11 @@
+ja:
+  controllers:
+    omniauth_callbacks:
+      not_match: "%{provider}アカウントは別ユーザーに登録済みです"
+      failure: "認証できませんでした"
+    user_auths:
+      delete_user_auth: "%{provider}との連携を解除しました"
+      confirmed: メールアドレスの確認が完了しました
+      sent_mail: 確認メールを送信しました
+      mail_not_sent: 確認メールを送信できませんでした
+      confirmation_period_expired: 期限切れです。もう一度手続きをしてください
