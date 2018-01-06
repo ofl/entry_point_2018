@@ -1,0 +1,12 @@
+en:
+  views:
+    mypages:
+      add_password: Add Password
+      edit_password: Edit Password
+      connect_twitter: Connect with Twitter
+      disconnect_twitter: Disconnect with Twitter
+      connect_facebook: Connect with Facebook
+      disconnect_facebook: Disconnect with Facebook
+      confirm_password: Confirm with Password(Sign out)
+      confirm_twitter: Confirm with Twitter
+      confirm_facebook: Confirm with Facebook

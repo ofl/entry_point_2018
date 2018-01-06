@@ -1,0 +1,51 @@
+
+ja:
+  users:
+    default: &default
+      log_in: ログイン
+      sign_up: サインアップ
+      forgot_your_password: パスワードを忘れましたか?
+      send_me_reset_password: パスワードリセットメールを送信
+      confirmation_instructions: 確認メールが届きませんか？
+      unlock_instructions: ロック解除メールが届きませんか？
+      send_user_auth_mail: ユーザー認証メールを再送する
+      update: 更新する
+      characters_minimum: 文字以上
+      back: 戻る
+      sign_in_with: "%{provider}でサインイン"
+      remember_me: ログイン状態を維持する
+    sessions:
+      new:
+        <<: *default
+    shared:
+      links:
+        <<: *default
+    registrations:
+      new:
+        <<: *default
+      edit:
+        <<: *default
+        cancel_my_account: 退会する
+        leave_blank: 変更したくない場合は空欄のままにしておいてください
+        current_password: 現在のパスワード
+        we_need_current_password: 変更するためには現在のパスワードの入力が必要です
+        are_you_sure: 本当に更新しますか？
+    unlocks:
+      new:
+        resend_instructions: ロック解除メールを再送する
+    confirmations:
+      new:
+        <<: *default
+    user_auths:
+      new:
+        <<: *default
+    passwords:
+      new:
+        <<: *default
+        reset_password_via_twitter: Twitterで本人確認してパスワードを変更する
+        reset_password_via_facebook: Facebookで本人確認してパスワードを変更する
+      edit:
+        <<: *default
+        change_your_password: パスワードの変更
+        new_password: 新しいパスワード
+        confirm_new_password: 新しいパスワードの確認

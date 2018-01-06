@@ -1,0 +1,27 @@
+ja:
+  default: &default
+    hello: "こんにちは%{user}さん"
+  authentication_mailer:
+    confirmation_instructions:
+      <<: *default
+      welcome: "ようこそ%{user}さん"
+      confirm: '下のリンクからメールアドレスを認証できます:'
+      confirm_account: メールアドレスを認証する
+    email_changed:
+      <<: *default
+      changing: "あなたのメールアドレスが%{email}に変更されようとしています。"
+      changed: "あなたのメールアドレスが%{email}に変更されました。"
+    password_change:
+      <<: *default
+      changed: あなたのパスワードが変更されました。
+    reset_password_instructions:
+      <<: *default
+      someone_request: パスワード変更のリクエストがありました。以下のリンクから手続きを進めてください。
+      change_password: パスワードを変更する
+      if_you_dont: あなたがもしパスワードの変更をリクエストしていなければ、このメールは無視してください。
+      not_change: あなたが下のリンクから手続きを進めない限りパスワードの変更は行われません。
+    unlock_instructions:
+      <<: *default
+      locked: 認証失敗の上限に達したためあなたのアカウントをロックしました。
+      unlock: '下のリンクからロックを解除できます:'
+      unlock_account: ロックを解除する
