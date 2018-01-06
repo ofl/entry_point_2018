@@ -64,7 +64,7 @@ class UserAuth < ApplicationRecord
   end
 
   def confirm_by_token!(at: Time.current)
-    if confirmation_sent_at + ENV['CONFIRMATION_MAIL_EXPIRED'].to_i.minutes > at
+    if confirmation_sent_at + Settings.confirmation.mail_expired.minutes > at
       confirme!
       return
     end

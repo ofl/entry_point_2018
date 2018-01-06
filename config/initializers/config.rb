@@ -42,4 +42,5 @@ Config.setup do |config|
   #   required(:email).filled(format?: EMAIL_REGEX)
   # end
 
+  config.fail_on_missing = true
 end
