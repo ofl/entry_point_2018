@@ -18,3 +18,5 @@ tmp/*
 
 /public/packs
 /public/packs-test
+
+.env
