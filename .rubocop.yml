@@ -42,12 +42,16 @@ Metrics/MethodLength:
 Rails:
   Enabled: true
 
+Rails/CreateTableWithTimestamps:
+  Enabled: false
+
 Rails/FilePath:
   Exclude:
     - config/environments/development.rb
 
-Rails/CreateTableWithTimestamps:
-  Enabled: false
+Rails/LexicallyScopedActionFilter:
+  Exclude:
+    - app/controllers/users/*
 
 Style/AsciiComments:
   Enabled: false
