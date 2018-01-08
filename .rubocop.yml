@@ -13,6 +13,8 @@ AllCops:
     - bin/setup
     - bin/webpack
     - bin/webpack-dev-server
+    - bin/spring
+    - lib/tasks/*
 
 Documentation:
   Enabled: false
@@ -43,6 +45,9 @@ Rails:
 Rails/FilePath:
   Exclude:
     - config/environments/development.rb
+
+Rails/CreateTableWithTimestamps:
+  Enabled: false
 
 Style/AsciiComments:
   Enabled: false
