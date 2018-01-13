@@ -41,6 +41,8 @@ class User < ApplicationRecord
 
   validates :username, format: { with: /\A[a-zA-Z0-9_\.]*\z/ }
 
+  before_create :ensure_dummy_authentication_token
+
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
     login = conditions.delete(:login)
@@ -53,5 +55,14 @@ class User < ApplicationRecord
 
   def confirmed_by?(provider)
     provider
+  end
+
+  private
+
+  def ensure_dummy_authentication_token
+    self.authentication_token = loop do
+      token = Devise.friendly_token
+      break token unless User.find_by(authentication_token: token)
+    end
   end
 end
