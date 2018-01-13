@@ -41,6 +41,9 @@ class User < ApplicationRecord
 
   validates :username, format: { with: /\A[a-zA-Z0-9_\.]*\z/ }
 
+  has_many :user_auths, dependent: :destroy
+  has_many :confirmed_user_auths, -> { merge(UserAuth.confirmed) }, class_name: :UserAuth
+
   before_create :ensure_dummy_authentication_token
 
   def self.find_for_database_authentication(warden_conditions)
@@ -53,8 +56,26 @@ class User < ApplicationRecord
     end
   end
 
+  def confirmed?
+    confirmed_user_auths.present?
+  end
+
   def confirmed_by?(provider)
-    provider
+    confirmed_user_auths.select { |auth| auth.send("#{provider}?") }.present?
+  end
+
+  def raw_reset_password_token
+    set_reset_password_token
+  end
+
+  def update_authentication_token!
+    self.authentication_token = "#{id}:#{Devise.friendly_token}"
+    save!
+  end
+
+  def reset_authentication_token!
+    ensure_dummy_authentication_token
+    save!
   end
 
   private
