@@ -73,4 +73,48 @@ RSpec.describe 'Users::Passwords', type: :request do
       it { is_expected.to redirect_to authenticated_root_path }
     end
   end
+
+  describe 'PUT /users/password' do
+    subject { put user_password_path, params: params }
+    before do
+      @token = user.send_reset_password_instructions
+    end
+
+    let(:valid_params) do
+      { user: { reset_password_token: @token, password: 'foobarbaz', password_confirmation: 'foobarbaz' } }
+    end
+    let(:invalid_token_params) do
+      { user: { reset_password_token: 'abc', password: 'foobarbaz', password_confirmation: 'foobarbaz' } }
+    end
+    let(:invalid_value_params) do
+      { user: { reset_password_token: @token, password: 'foobarbaz', password_confirmation: 'xxxxxxxxx' } }
+    end
+
+    context 'not logged in' do
+      context 'invalid token params' do
+        let(:params) { invalid_token_params }
+
+        it { is_expected.to eq 200 }
+      end
+
+      context 'invalid value params' do
+        let(:params) { invalid_value_params }
+
+        it { is_expected.to eq 200 }
+      end
+
+      context 'valid params' do
+        let(:params) { valid_params }
+
+        it { is_expected.to redirect_to authenticated_root_path }
+      end
+    end
+
+    context 'logged in' do
+      before { sign_in user }
+      let(:params) { valid_params }
+
+      it { is_expected.to redirect_to authenticated_root_path }
+    end
+  end
 end
