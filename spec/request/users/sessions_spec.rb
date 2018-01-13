@@ -20,11 +20,13 @@ RSpec.describe 'Users::Sessions', type: :request do
   describe 'POST /users/session' do
     subject { post user_session_path, params: params }
     let(:valid_params) { { user: { login: user.username, password: user.password } } }
-    let(:valid_email_params) { { user: { login: user.username, password: user.password } } }
+    let(:valid_email_params) { { user: { login: user.email, password: user.password } } }
     let(:invalid_params) { { user: { login: user.username, password: 'a' } } }
 
     context 'logged in' do
       let(:params) { valid_params }
+      before { sign_in user }
+
       it { is_expected.to redirect_to authenticated_root_path }
     end
 
