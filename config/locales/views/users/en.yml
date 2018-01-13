@@ -34,3 +34,8 @@ ja:
         change_your_password: パスワードの変更
         new_password: 新しいパスワード
         confirm_new_password: 新しいパスワードの確認
+    omniauth_callbacks:
+      twitter:
+        failure: 認証できませんでした
+      facebook:
+        failure: 認証できませんでした
