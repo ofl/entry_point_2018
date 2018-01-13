@@ -65,6 +65,7 @@ end
 
 group :development do
   gem 'annotate'
+  gem 'letter_opener'
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'migration_comments'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
