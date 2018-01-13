@@ -46,4 +46,31 @@ RSpec.describe 'Users::Passwords', type: :request do
       end
     end
   end
+
+  describe 'GET /users/password/edit' do
+    subject { get edit_user_password_path, params: params }
+    let(:valid_params) { { reset_password_token: 'abc' } }
+    let(:invalid_params) { {} }
+
+    context 'not logged in' do
+      context 'invalid params' do
+        let(:params) { invalid_params }
+
+        it { is_expected.to redirect_to new_user_session_path }
+      end
+
+      context 'valid params' do
+        let(:params) { valid_params }
+
+        it { is_expected.to eq 200 }
+      end
+    end
+
+    context 'logged in' do
+      before { sign_in user }
+      let(:params) { valid_params }
+
+      it { is_expected.to redirect_to authenticated_root_path }
+    end
+  end
 end
