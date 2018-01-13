@@ -1,10 +1,10 @@
 require 'rails_helper'
 
-RSpec.describe 'Users::Registrations', type: :request do
-  let!(:user) { create :user }
+RSpec.describe 'Users::Passwords', type: :request do
+  let(:user) { create :user }
 
-  describe 'GET /users/registration/new' do
-    subject { get new_user_registration_path }
+  describe 'GET /users/password/new' do
+    subject { get new_user_password_path }
 
     context 'not logged in' do
       it { is_expected.to eq 200 }
@@ -17,19 +17,16 @@ RSpec.describe 'Users::Registrations', type: :request do
     end
   end
 
-  describe 'POST /users/registration' do
-    subject { post user_registration_path, params: params }
-    let(:valid_params) { { user: { username: 'foo', email: 'foo@example.com', password: 'password' } } }
-    let(:invalid_params) { { user: { username: 'foo', email: user.email, password: 'a' } } }
+  describe 'POST /users/password' do
+    subject { post user_password_path, params: params }
+    let(:valid_params) { { user: { email: user.email } } }
+    let(:invalid_params) { { user: { email: 'foo@example.com' } } }
 
     context 'logged in' do
       let(:params) { valid_params }
       before { sign_in user }
 
       it { is_expected.to redirect_to authenticated_root_path }
-      it do
-        expect { subject }.not_to change(User, :count)
-      end
     end
 
     context 'not logged in' do
@@ -42,9 +39,9 @@ RSpec.describe 'Users::Registrations', type: :request do
       context 'valid params' do
         let(:params) { valid_params }
 
-        it { is_expected.to redirect_to authenticated_root_path }
+        it { is_expected.to redirect_to new_user_session_path }
         it do
-          expect { subject }.to change(User, :count).by(1)
+          expect { subject }.to(change { ActionMailer::Base.deliveries.count })
         end
       end
     end

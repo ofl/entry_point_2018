@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe 'Users::Sessions', type: :request do
-  let(:user) { create :user }
+  let!(:user) { create :user }
 
   describe 'GET /users/session/new' do
     subject { get new_user_session_path }
