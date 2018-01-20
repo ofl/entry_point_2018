@@ -41,6 +41,11 @@ services:
       - .:/usr/src/entry_point_2018
       - bundle_cache:/bundle
       - spring:/tmp/spring
+  mailcatcher:
+    image: schickling/mailcatcher
+    ports:
+      - '1080:1080'
+      - '1025:1025'
 volumes:
   postgresql-data:
     driver: local
