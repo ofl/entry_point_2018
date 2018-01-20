@@ -88,29 +88,29 @@ RSpec.shared_examples 'use social user_auth' do
       end
     end
 
-    # context 'reset_password' do
-    #   let(:callback_params) { { 'reset_password' => true } }
-    #   let!(:user_auth) { create :user_auth, user: user, provider: provider, confirmed_at: confirmed_at }
-    #   let(:uid) { user_auth.uid }
-    #   let(:user) { create :user }
-    #
-    #   before do
-    #     allow_any_instance_of(User).to receive(:raw_reset_password_token).and_return('foobarbaz')
-    #   end
-    #
-    #   context 'confirmed user_auth not exists' do
-    #     let(:confirmed_at) { nil }
-    #     it { is_expected.to eq 403 }
-    #   end
-    #
-    #   context 'confirmed user_auth exists' do
-    #     let(:confirmed_at) { 1.day.ago }
-    #
-    #     it do
-    #       is_expected.to redirect_to edit_user_password_path(reset_password_token: 'foobarbaz')
-    #     end
-    #   end
-    # end
+    context 'reset_password' do
+      let(:callback_params) { { 'reset_password' => true } }
+      let!(:user_auth) { create :user_auth, user: user, provider: provider, confirmed_at: confirmed_at }
+      let(:uid) { user_auth.uid }
+      let(:user) { create :user }
+
+      before do
+        allow_any_instance_of(User).to receive(:raw_reset_password_token).and_return('foobarbaz')
+      end
+
+      context 'confirmed user_auth not exists' do
+        let(:confirmed_at) { nil }
+        it { is_expected.to eq 403 }
+      end
+
+      context 'confirmed user_auth exists' do
+        let(:confirmed_at) { 1.day.ago }
+
+        it do
+          is_expected.to redirect_to edit_user_password_path(reset_password_token: 'foobarbaz')
+        end
+      end
+    end
   end
 end
 
