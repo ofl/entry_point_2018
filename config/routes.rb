@@ -17,5 +17,13 @@ Rails.application.routes.draw do
     resources :user_auths, param: :provider, only: %i[show new create destroy]
   end
 
+  namespace :api do
+    namespace :users do
+      resource :registrations, only: %i[show create update destroy]
+      resource :sessions, only: %i[create destroy]
+      resources :user_auths, param: :provider, only: %i[create destroy]
+    end
+  end
+
   root to: 'home#index'
 end
