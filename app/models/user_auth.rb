@@ -100,6 +100,15 @@ class UserAuth < ApplicationRecord
     facebook? || twitter?
   end
 
+  def send_confirmation_instructions
+    if email? && save
+      AuthenticationMailer.confirmation_instructions(user, self).deliver_now
+      true
+    else
+      false
+    end
+  end
+
   private
 
   def valid_password?

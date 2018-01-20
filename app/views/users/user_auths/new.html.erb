@@ -1,0 +1,24 @@
+<h2>New User Auth</h2>
+
+<%= form_for(@user_auth, url: users_user_auths_path) do |f| %>
+  <div class="field">
+    <% if @user_auth.email? %>
+    <%= f.label :email %><br />
+    <%= f.email_field :uid, autocomplete: "off" %>
+    <% else %>
+    <%= "Auth with #{@user_auth.provider}" %>
+    <% end %>
+    <%= f.hidden_field :provider %>
+  </div>
+
+  <div class="field">
+    <%= f.fields_for :user do |u| %>
+      <%= u.label :current_password %><br />
+      <%= u.password_field :current_password %>
+    <% end %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Create" %>
+  </div>
+<% end %>
