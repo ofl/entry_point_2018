@@ -15,7 +15,7 @@ jobs:
           command: sleep 1
       - run:
           name: rubocop
-          command: docker-compose run --rm rails bundle exec rubocop
+          command: docker-compose run --rm rails bundle exec rubocop --config .rubocop.yml
       - run:
           name: "before_test: setup db"
           command: docker-compose run --rm rails rails db:create db:migrate
