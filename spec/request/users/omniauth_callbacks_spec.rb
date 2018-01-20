@@ -26,7 +26,7 @@ RSpec.shared_examples 'use social user_auth' do
         it do
           is_expected.to redirect_to new_user_session_path
           expect(flash[:alert]).to eq(
-            I18n.t('controllers.omniauth_callbacks.failure', provider: provider.capitalize)
+            I18n.t('users.omniauth_callbacks.failure', provider: provider.capitalize)
           )
         end
       end

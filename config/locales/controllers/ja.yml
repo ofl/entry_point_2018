@@ -1,5 +1,5 @@
 ja:
-  controllers:
+  users:
     omniauth_callbacks:
       not_match: "%{provider}アカウントは別ユーザーに登録済みです"
       failure: "認証できませんでした"
