@@ -5,13 +5,13 @@ module AuthTokenSpecHelper
 
   included do
     let(:test_fb_user) do
-      { uid: Settings.facebook.test_uid, access_token: Settings.facebook.test_access_token }
+      { uid: ENV['FACEBOOK_TEST_UID'], access_token: ENV['FACEBOOK_TEST_ACCESS_TOKEN'] }
     end
     let(:test_tw_user) do
       {
-        uid: Settings.twitter.test_uid,
-        access_token: Settings.twitter.test_access_token,
-        access_secret: Settings.twitter.test_access_secret
+        uid: ENV['TWITTER_TEST_UID'],
+        access_token: ENV['TWITTER_TEST_ACCESS_TOKEN'],
+        access_secret: ENV['TWITTER_TEST_ACCESS_SECRET']
       }
     end
   end
