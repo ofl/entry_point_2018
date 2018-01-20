@@ -47,6 +47,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     end
   end
 
+  # Socila認証を利用したログイン
   def sign_in_with(provider:, auth:)
     user_auth = UserAuth.confirmed.find_by(provider: provider, uid: auth.uid)
 
@@ -60,6 +61,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     end
   end
 
+  # Socila認証を追加
   def connect_with(provider:, auth:, id:) # rubocop:disable Metrics/AbcSize
     # forbidden error if user_auth is already connected with users
     raise Forbidden if UserAuth.confirmed.find_by(provider: provider, uid: auth[:uid]).present?
