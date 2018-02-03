@@ -4,6 +4,7 @@ ja:
     default: &default
       log_in: ログイン
       sign_up: サインアップ
+      preview: プレビュー
       forgot_your_password: パスワードを忘れましたか?
       send_me_reset_password: パスワードリセットメールを送信
       confirmation_instructions: 確認メールが届きませんか？
@@ -30,6 +31,13 @@ ja:
         current_password: 現在のパスワード
         we_need_current_password: 変更するためには現在のパスワードの入力が必要です
         are_you_sure: 本当に更新しますか？
+      form:
+        <<: *default
+      preview:
+        <<: *default
+        auth_with_email: Eメールで本人確認
+        auth_with_twitter: Twitterで本人確認
+        auth_with_facebook: Facebookで本人確認
     unlocks:
       new:
         resend_instructions: ロック解除メールを再送する

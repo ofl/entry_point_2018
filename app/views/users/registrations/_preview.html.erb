@@ -1,0 +1,31 @@
+<h2><%= title %></h2>
+
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+  <%= devise_error_messages! %>
+
+  <div class="field">
+    <%= f.label :username %><br />
+    <%= f.hidden_field :username %>
+    <%= resource.username %>
+  </div>
+
+  <div class="field">
+    <%= f.label :email %><br />
+    <%= f.hidden_field :email %>
+    <%= resource.email %>
+  </div>
+
+  <div class="field">
+    <%= f.label :password %><br />
+    <%= f.hidden_field :password %>
+    <%= resource.password %>
+    ********
+  </div>
+
+  <div class="actions">
+    <%= f.submit t('.auth_with_email'), name: 'auth_with_email' %>
+    <%= f.submit t('.auth_with_twitter'), name: 'auth_with_twitter' %>
+    <%= f.submit t('.auth_with_facebook'), name: 'auth_with_facebook' %>
+  </div>
+  <%= link_to t('.back'), :back %>
+<% end %>
