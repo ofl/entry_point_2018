@@ -18,14 +18,13 @@
   <div class="field">
     <%= f.label :password %><br />
     <%= f.hidden_field :password %>
-    <%= resource.password %>
     ********
   </div>
 
   <div class="actions">
-    <%= f.submit t('.auth_with_email'), name: 'auth_with_email' %>
-    <%= f.submit t('.auth_with_twitter'), name: 'auth_with_twitter' %>
-    <%= f.submit t('.auth_with_facebook'), name: 'auth_with_facebook' %>
+    <%= f.submit t('.back'), name: 'back' %>
+    <%= f.submit t('.auth_with_email'), name: 'email' %>
+    <%= f.submit t('.auth_with_twitter'), name: 'twitter' %>
+    <%= f.submit t('.auth_with_facebook'), name: 'facebook' %>
   </div>
-  <%= link_to t('.back'), :back %>
 <% end %>

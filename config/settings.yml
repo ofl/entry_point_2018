@@ -1,3 +1,4 @@
+domain: example.com
 confirmation:
   expired: 60 # minutes
   mail_expired: 60 # minutes
