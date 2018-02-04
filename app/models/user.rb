@@ -39,7 +39,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :omniauthable,
          :validatable, authentication_keys: [:login]
 
-  validates :username, format: { with: /\A[a-zA-Z0-9_\.]*\z/ }
+  validates :username, format: { with: /\A[a-zA-Z0-9_\.]*\z/ }, uniqueness: true
 
   has_many :user_auths, dependent: :destroy
   has_many :confirmed_user_auths, -> { merge(UserAuth.confirmed) }, class_name: :UserAuth, inverse_of: :user
@@ -84,6 +84,23 @@ class User < ApplicationRecord
     false
   end
 
+  # ダミーのメールアドレスを適用する
+  def ensure_dummy_email_address
+    self.email = loop do
+      address = "#{Devise.friendly_token}@#{Settings.domain}"
+      break address unless User.find_by(email: address)
+    end
+  end
+
+  def auth_with_email?
+    email.present? && !dummy_email?
+  end
+
+  def valid_except_email?
+    return false if errors[:username].any? || errors[:password].any?
+    errors[:email].any?
+  end
+
   private
 
   def ensure_dummy_authentication_token
@@ -91,5 +108,9 @@ class User < ApplicationRecord
       token = Devise.friendly_token
       break token unless User.find_by(authentication_token: token)
     end
+  end
+
+  def dummy_email?
+    Regexp.new(".+@#{Settings.domain}\\z").match(email)
   end
 end

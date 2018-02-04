@@ -1,5 +1,7 @@
-<%- if resource.errors.blank? && params['preview'] %>
+<%- if resource.errors.blank? && @registration_step == :preview %>
   <%= render partial: 'preview', locals: { title: t('.preview') } %>
+<% elsif @registration_step == :email_form %>
+  <%= render partial: 'email_form', locals: { title: t('.email_form') } %>
 <% else %>
   <%= render partial: 'form', locals: { title: t('.sign_up') } %>
 <% end -%>

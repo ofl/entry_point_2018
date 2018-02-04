@@ -5,6 +5,7 @@ ja:
       log_in: ログイン
       sign_up: サインアップ
       preview: プレビュー
+      email_form: メールアドレスの入力
       forgot_your_password: パスワードを忘れましたか?
       send_me_reset_password: パスワードリセットメールを送信
       confirmation_instructions: 確認メールが届きませんか？
@@ -35,9 +36,13 @@ ja:
         <<: *default
       preview:
         <<: *default
-        auth_with_email: Eメールで本人確認
-        auth_with_twitter: Twitterで本人確認
-        auth_with_facebook: Facebookで本人確認
+        auth_via_email: Eメールで本人確認する
+        auth_via_twitter: Twitterで本人確認する
+        auth_via_facebook: Facebookで本人確認する
+        send_confirmation_email: 確認メールを送信する
+      email_form:
+        <<: *default
+        send_confirmation_email: 確認メールを送信する
     unlocks:
       new:
         resend_instructions: ロック解除メールを再送する

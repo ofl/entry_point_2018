@@ -1,0 +1,23 @@
+<h2><%= title %></h2>
+
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+  <%= devise_error_messages! %>
+
+  <div class="field">
+    <%= f.hidden_field :username %>
+  </div>
+
+  <div class="field">
+    <%= f.label :email %><br />
+    <%= f.email_field :email, autofocus: true %>
+  </div>
+
+  <div class="field">
+    <%= f.hidden_field :password %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit t('.back'), name: 'preview' %>
+    <%= f.submit t('.send_confirmation_email'), name: 'auth_via_email' %>
+  </div>
+<% end %>

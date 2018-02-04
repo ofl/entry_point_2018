@@ -10,21 +10,19 @@
   </div>
 
   <div class="field">
-    <%= f.label :email %><br />
-    <%= f.hidden_field :email %>
-    <%= resource.email %>
-  </div>
-
-  <div class="field">
     <%= f.label :password %><br />
     <%= f.hidden_field :password %>
     ********
   </div>
 
   <div class="actions">
-    <%= f.submit t('.back'), name: 'back' %>
-    <%= f.submit t('.auth_with_email'), name: 'email' %>
-    <%= f.submit t('.auth_with_twitter'), name: 'twitter' %>
-    <%= f.submit t('.auth_with_facebook'), name: 'facebook' %>
+    <%= f.submit t('.back'), name: 'form' %>
+    <%- if resource.auth_with_email? %>
+    <%= f.submit t('.send_confirmation_email'), name: 'auth_via_email' %>
+    <% else %>
+    <%= f.submit t('.auth_via_email'), name: 'email_form' %>
+    <% end -%>
+    <%= f.submit t('.auth_via_twitter'), name: 'auth_via_twitter' %>
+    <%= f.submit t('.auth_via_facebook'), name: 'auth_via_facebook' %>
   </div>
 <% end %>
