@@ -19,7 +19,7 @@ RSpec.describe 'Users::Registrations', type: :request do
 
   describe 'POST /users/registration' do
     subject { post user_registration_path, params: params }
-    let(:valid_params) { { user: { username: 'foo', email: 'foo@example.com', password: 'password' } } }
+    let(:valid_params) { { user: { username: 'foo', email: 'foo@sample.com', password: 'password' } } }
     let(:invalid_params) { { user: { username: 'foo', email: user.email, password: 'a' } } }
 
     context 'logged in' do
@@ -27,9 +27,7 @@ RSpec.describe 'Users::Registrations', type: :request do
       before { sign_in user }
 
       it { is_expected.to redirect_to authenticated_root_path }
-      it do
-        expect { subject }.not_to change(User, :count)
-      end
+      it { expect { subject }.not_to change(User, :count) }
     end
 
     context 'not logged in' do
@@ -40,11 +38,18 @@ RSpec.describe 'Users::Registrations', type: :request do
       end
 
       context 'valid params' do
-        let(:params) { valid_params }
+        context 'preview' do
+          let(:params) { valid_params.merge(preview: true) }
 
-        it { is_expected.to redirect_to authenticated_root_path }
-        it do
-          expect { subject }.to change(User, :count).by(1)
+          it { is_expected.to eq 200 }
+          it { expect { subject }.not_to change(User, :count) }
+        end
+
+        context 'auth_via_email' do
+          let(:params) { valid_params.merge(auth_via_email: true) }
+
+          it { is_expected.to redirect_to authenticated_root_path }
+          it { expect { subject }.to change(User, :count).by(1) }
         end
       end
     end

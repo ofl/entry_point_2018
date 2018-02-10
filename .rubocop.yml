@@ -26,7 +26,6 @@ Metrics/AbcSize:
 Metrics/BlockLength:
   Exclude:
     - spec/**/*
-    - config/environments/development.rb
 
 Metrics/LineLength:
   Max: 120
@@ -37,6 +36,7 @@ Metrics/LineLength:
 
 Metrics/MethodLength:
   Exclude:
+    - app/controllers/users/registrations_controller.rb
     - db/migrate/*
 
 Rails:
