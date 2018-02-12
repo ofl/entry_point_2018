@@ -31,7 +31,7 @@
 #
 
 class User < ApplicationRecord
-  attr_accessor :login, :current_password
+  attr_accessor :login
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -76,12 +76,6 @@ class User < ApplicationRecord
   def reset_authentication_token!
     ensure_dummy_authentication_token
     save!
-  end
-
-  def confirm_current_password
-    return true if valid_password?(current_password)
-    errors.add(:current_password, ' is invalid')
-    false
   end
 
   # ダミーのメールアドレスを適用する

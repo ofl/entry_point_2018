@@ -24,6 +24,8 @@
 #
 
 class UserAuth < ApplicationRecord
+  attr_accessor :user_password
+
   belongs_to :user
 
   enum provider: {
@@ -41,6 +43,7 @@ class UserAuth < ApplicationRecord
   validates :uid, format: { with: VALID_EMAIL_REGEX }, if: :email?
   validates :provider, presence: true, inclusion: { in: providers }
   validates_associated :user
+  validate :confirm_user_password, on: :need_password
 
   class ConfirmationExpired < StandardError; end
 
@@ -61,6 +64,11 @@ class UserAuth < ApplicationRecord
       generate_confirmation_token # disable current token
       save!
     end
+  end
+
+  def confirm_user_password
+    return if user.valid_password?(user_password)
+    errors.add(:user_password, ' is invalid')
   end
 
   def confirm_by_token!(at: Time.current)
@@ -98,12 +106,7 @@ class UserAuth < ApplicationRecord
   end
 
   def send_confirmation_instructions
-    if email? && save
-      AuthenticationMailer.confirmation_instructions(user, self).deliver_now
-      true
-    else
-      false
-    end
+    AuthenticationMailer.confirmation_instructions(user, self).deliver_now
   end
 
   def confirmation_time_out?(at: Time.current)
