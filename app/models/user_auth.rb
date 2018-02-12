@@ -54,21 +54,18 @@ class UserAuth < ApplicationRecord
     generate_temporary_uid if external_auth_provider?
   end
 
-  def confirme!(datetime: Time.current)
-    self.class.where(user: user, provider: provider).where.not(id: id).find_each do |old_auth|
-      old_auth.update!(confirmed_at: nil)
+  def confirme!(at: Time.current)
+    transaction do
+      disable_old_auths!
+      self.confirmed_at = at
+      generate_confirmation_token # disable current token
+      save!
     end
-    self.confirmed_at ||= datetime
-    generate_confirmation_token # disable current token
-    save!
   end
 
   def confirm_by_token!(at: Time.current)
-    if confirmation_sent_at + Settings.confirmation.mail_expired.minutes > at
-      confirme!
-      return
-    end
-    raise ConfirmationExpired
+    raise ConfirmationExpired if confirmation_time_out?(at: at)
+    confirme!
   end
 
   def verified_by_auth_provider?(params)
@@ -109,6 +106,10 @@ class UserAuth < ApplicationRecord
     end
   end
 
+  def confirmation_time_out?(at: Time.current)
+    confirmation_sent_at + Settings.confirmation.mail_expired.minutes < at
+  end
+
   private
 
   def valid_password?
@@ -123,6 +124,12 @@ class UserAuth < ApplicationRecord
       AuthProviders::Twitter.new
     when 'facebook'
       AuthProviders::Facebook.new
+    end
+  end
+
+  def disable_old_auths!
+    self.class.where(user: user, provider: provider).where.not(id: id).find_each do |old_auth|
+      old_auth.update!(confirmed_at: nil)
     end
   end
 end
