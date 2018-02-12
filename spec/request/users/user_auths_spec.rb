@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe 'Users::UserAuths', type: :request do
-  let(:user) { create :user }
+  let(:user) { create :user, password: 'password' }
 
   describe 'GET /users/user_auths' do
     subject { get users_user_auth_path(provider: 'facebook'), params: params }
@@ -62,10 +62,10 @@ RSpec.describe 'Users::UserAuths', type: :request do
   describe 'POST /users/user_auths' do
     subject { post users_user_auths_path, params: params }
     let(:valid_params) do
-      { user_auth: { provider: 'email', uid: 'foobarbaz@example.com', user: { password: 'password' } } }
+      { user_auth: { provider: 'email', uid: 'foobarbaz@example.com', user_password: 'password' } }
     end
-    let(:invalid_params) { { user_auth: { provider: 'email', uid: '', user: { password: 'password' } } } }
-    let(:invalid_password_params) { { user_auth: { provider: 'email', uid: '', user: { password: 'hoge' } } } }
+    let(:invalid_params) { { user_auth: { provider: 'email', uid: '', user_password: 'password' } } }
+    let(:invalid_password_params) { { user_auth: { provider: 'email', uid: '', user_password: 'hoge' } } }
 
     context 'not logged in' do
       let(:params) { valid_params }

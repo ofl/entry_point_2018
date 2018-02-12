@@ -12,10 +12,8 @@
   </div>
 
   <div class="field">
-    <%= f.fields_for :user do |u| %>
-      <%= u.label :current_password %><br />
-      <%= u.password_field :current_password %>
-    <% end %>
+    <%= f.label :user_password %><br />
+    <%= f.password_field :user_password %>
   </div>
 
   <div class="actions">
