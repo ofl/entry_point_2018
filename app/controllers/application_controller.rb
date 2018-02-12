@@ -1,11 +1,13 @@
 class ApplicationController < ActionController::Base
   class Forbidden < ActionController::ActionControllerError; end
   class NotAuthorized < ActionController::ActionControllerError; end
+  class BadRequest < ActionController::ActionControllerError; end
 
   protect_from_forgery with: :exception
 
   rescue_from ApplicationController::Forbidden, with: :handle_403
   rescue_from ApplicationController::NotAuthorized, with: :handle_401
+  rescue_from ApplicationController::BadRequest, with: :handle_400
 
   before_action :configure_permitted_parameters, if: :devise_controller?
 
@@ -27,5 +29,10 @@ class ApplicationController < ActionController::Base
   def handle_401(e)
     @exception = e
     redirect_to new_user_session_path, notice: 'login required'
+  end
+
+  def handle_400(e)
+    @exception = e
+    render file: Rails.root.join('public', '400.html'), layout: false, status: 403
   end
 end

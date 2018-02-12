@@ -51,7 +51,7 @@ RSpec.describe UserAuth, type: :model do
       let(:user_auth) { build :user_auth, user: user }
       let(:user) { create :user }
 
-      subject { user_auth.confirme!(datetime: Time.zone.parse('2017-07-07 07:07')) }
+      subject { user_auth.confirme!(at: Time.zone.parse('2017-07-07 07:07')) }
 
       context 'old auth not exists' do
         it do
