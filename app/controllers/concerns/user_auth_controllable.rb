@@ -2,11 +2,14 @@ module UserAuthControllable
   extend ActiveSupport::Concern
 
   def create
-    @user_auth = current_user.user_auths.find_or_initialize_by(user_auth_params)
-    @user_auth.user.current_password = current_password
-
+    @user_auth = find_or_initialize_user_auth
     @user_auth.add_confirmation_token
-    @user_auth.external_auth_provider? ? verify_via_auth_provider : verify_via_email
+
+    if @user_auth.save(context: :need_password)
+      @user_auth.external_auth_provider? ? verify_via_auth_provider : verify_via_email
+    else
+      after_create_failed
+    end
   end
 
   def destroy
@@ -22,28 +25,22 @@ module UserAuthControllable
   private
 
   def user_auth_params
-    params.require(:user_auth).permit(:provider, :uid)
+    params.require(:user_auth).permit(:provider, :uid, :user_password)
   end
 
   def verify_via_auth_provider
-    if @user_auth.save
-      after_create_external_user_auth
-      return
-    end
-
-    after_create_failed
+    after_create_external_user_auth
   end
 
   def verify_via_email
-    if @user_auth.send_confirmation_instructions
-      after_carete_and_send_confirmation_email
-      return
-    end
-
-    after_create_failed
+    @user_auth.send_confirmation_instructions
+    after_carete_and_send_confirmation_email
   end
 
-  def current_password
-    params[:user_auth][:user][:current_password]
+  def find_or_initialize_user_auth
+    user_auth = current_user.user_auths.find_or_initialize_by(provider: user_auth_params[:provider])
+    user_auth.user_password = user_auth_params[:user_password]
+    user_auth.uid = user_auth_params[:uid] if user_auth.email?
+    user_auth
   end
 end

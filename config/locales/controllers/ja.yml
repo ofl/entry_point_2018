@@ -7,6 +7,6 @@ ja:
     user_auths:
       delete_user_auth: "%{provider}との連携を解除しました"
       confirmed: メールアドレスの確認が完了しました
-      sent_mail: 確認メールを送信しました
+      sent_mail: 登録したアドレスに確認メールを送信しました。メール内のリンクからユーザー確認を行ってください
       mail_not_sent: 確認メールを送信できませんでした
       confirmation_period_expired: 期限切れです。もう一度手続きをしてください

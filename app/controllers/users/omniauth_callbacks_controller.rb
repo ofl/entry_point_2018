@@ -62,10 +62,8 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   # Socila認証を追加（ユーザー登録、認証追加時）
-  def connect_with(provider:, auth:, confirmation_token:) # rubocop:disable Metrics/AbcSize
-    user_auth = UserAuth.confirmed.find_by(provider: provider, uid: auth.uid) ||
-                UserAuth.find_by(provider: provider, confirmation_token: confirmation_token)
-    raise BadRequest if user_auth.nil?
+  def connect_with(provider:, auth:, confirmation_token:) # rubocop:disable Metrics/MethodLength
+    user_auth = find_user_auth(provider, auth, confirmation_token)
 
     # forbidden error if user_auth is not user's
     if current_user != user_auth&.user
@@ -111,5 +109,12 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def flash_confirmation_time_out
     flash[:alert] = t('.confirmation_period_expired')
+  end
+
+  def find_user_auth(provider, auth, confirmation_token)
+    user_auth = UserAuth.confirmed.find_by(provider: provider, uid: auth.uid) ||
+                UserAuth.find_by(provider: provider, confirmation_token: confirmation_token)
+    raise BadRequest if user_auth.nil?
+    user_auth
   end
 end

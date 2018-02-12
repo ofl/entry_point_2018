@@ -44,6 +44,7 @@ ja:
       updated: "アカウントが更新されました。"
       user:
         confirmation_mail_sent: "確認メールを登録したメールアドレス宛に送信しました。リンクを開いてアカウントを有効にして下さい。"
+        failed_create_user_auth: "本人確認できませんでした。下のメニューから再度確認をお願いします"
     sessions:
       signed_in: "ログインしました。"
       signed_out: "ログアウトしました。"
