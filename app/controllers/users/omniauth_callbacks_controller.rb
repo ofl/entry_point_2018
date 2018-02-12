@@ -38,11 +38,11 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     provider = provider.to_s
     auth = request.env['omniauth.auth']
 
-    if callback_params['connect']
-      connect_with(provider: provider, auth: auth, id: callback_params['connect'])
+    if callback_params['confirmation_token']
+      connect_with(provider: provider, auth: auth, confirmation_token: callback_params['confirmation_token'])
     elsif callback_params['reset_password']
       reset_password_with(provider: provider, auth: auth)
-    else
+    else # TODO: 制限の追加
       sign_in_with(provider: provider, auth: auth)
     end
   end
@@ -61,22 +61,29 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     end
   end
 
-  # Socila認証を追加
-  def connect_with(provider:, auth:, id:) # rubocop:disable Metrics/AbcSize
-    # forbidden error if user_auth is already connected with users
-    raise Forbidden if UserAuth.confirmed.find_by(provider: provider, uid: auth[:uid]).present?
+  # Socila認証を追加（ユーザー登録、認証追加時）
+  def connect_with(provider:, auth:, confirmation_token:) # rubocop:disable Metrics/AbcSize
+    user_auth = UserAuth.confirmed.find_by(provider: provider, uid: auth.uid) ||
+                UserAuth.find_by(provider: provider, confirmation_token: confirmation_token)
+    raise BadRequest if user_auth.nil?
 
-    user_auth = UserAuth.find_by(id: id)
-    raise Forbidden if user_auth.nil? || current_user != user_auth&.user
+    # forbidden error if user_auth is not user's
+    if current_user != user_auth&.user
+      flash_authenticate_not_match(provider)
+    elsif user_auth.confirmation_time_out?
+      flash_confirmation_time_out
+    else
+      user_auth.uid = auth.uid
+      user_auth.confirme!
+      flash_authenticate_success(provider)
+    end
 
-    user_auth.update(uid: auth[:uid])
-    flash_authenticate_success(provider)
-    redirect_to users_user_auth_path(provider: user_auth.provider, confirmation_token: user_auth.confirmation_token)
+    redirect_to root_path
   end
 
   def reset_password_with(provider:, auth:)
-    user_auth = UserAuth.confirmed.find_by(provider: provider, uid: auth[:uid])
-    raise Forbidden if user_auth.nil?
+    user_auth = UserAuth.confirmed.find_by(provider: provider, uid: auth.uid)
+    raise BadRequest if user_auth.nil?
 
     redirect_to edit_user_password_path(reset_password_token: user_auth.user.raw_reset_password_token)
   end
@@ -87,7 +94,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def need_authenticate?
     return false if callback_params.blank?
-    callback_params['connect'].present?
+    callback_params['confirmation_token'].present?
   end
 
   def flash_authenticate_success(provider)
@@ -100,5 +107,9 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def flash_authenticate_not_match(provider)
     flash[:alert] = t('.not_match', provider: provider.capitalize)
+  end
+
+  def flash_confirmation_time_out
+    flash[:alert] = t('.confirmation_period_expired')
   end
 end

@@ -124,7 +124,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def redirect_to_external_auth_provider(user_auth)
     redirect_to send(
-      "user_#{user_auth.provider}_omniauth_authorize_path", connect: user_auth.id
+      "user_#{user_auth.provider}_omniauth_authorize_path", confirmation_token: user_auth.confirmation_token
     )
   end
 

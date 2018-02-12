@@ -1,8 +1,9 @@
 ja:
   users:
     omniauth_callbacks:
-      not_match: "%{provider}アカウントは別ユーザーに登録済みです"
+      not_match: "%{provider}アカウントは別ユーザー認証済みです"
       failure: "認証できませんでした"
+      confirmation_period_expired: 期限切れです。もう一度手続きをしてください
     user_auths:
       delete_user_auth: "%{provider}との連携を解除しました"
       confirmed: メールアドレスの確認が完了しました

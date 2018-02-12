@@ -107,6 +107,7 @@ class UserAuth < ApplicationRecord
   end
 
   def confirmation_time_out?(at: Time.current)
+    return true if confirmation_sent_at.nil?
     confirmation_sent_at + Settings.confirmation.mail_expired.minutes < at
   end
 

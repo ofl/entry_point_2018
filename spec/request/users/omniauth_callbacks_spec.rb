@@ -55,13 +55,17 @@ RSpec.shared_examples 'use social user_auth' do
     end
 
     context 'connect' do
-      let(:callback_params) { { 'connect' => user_auth_id } }
-      let!(:user_auth) { create :user_auth, user: user, provider: provider, confirmation_token: 'abc' }
+      let(:callback_params) { { 'confirmation_token' => confirmation_token } }
+      let!(:user_auth) do
+        create :user_auth, user: user, provider: provider, confirmation_token: 'abc',
+                           confirmation_sent_at: confirmation_sent_at
+      end
       let(:uid) { user_auth.uid }
-      let(:user_auth_id) { user_auth.id }
+      let(:confirmation_token) { user_auth.confirmation_token }
+      let(:confirmation_sent_at) { 1.minute.ago }
 
       context 'not logged in' do
-        it { is_expected.to eq 403 }
+        it { is_expected.to eq 302 }
       end
 
       context 'logged in' do
@@ -71,18 +75,33 @@ RSpec.shared_examples 'use social user_auth' do
 
         context 'user_auth user not match' do
           let!(:another_user) { create :user }
-          let!(:another_user_auth) { create :user_auth, user: another_user, provider: provider }
-          let(:user_auth_id) { another_user_auth.id }
+          let!(:another_user_auth) do
+            create :user_auth, user: another_user, provider: provider, confirmation_token: 'xyz'
+          end
+          let(:confirmation_token) { another_user_auth.confirmation_token }
 
-          it { is_expected.to eq 403 }
+          it { is_expected.to eq 302 }
         end
 
         context 'user_auth user confirmation_token match' do
-          it do
-            is_expected.to redirect_to users_user_auth_path(provider: provider, confirmation_token: 'abc')
-            expect(flash[:notice]).to eq(
-              I18n.t('devise.omniauth_callbacks.success', provider: provider.capitalize)
-            )
+          context 'confirmation_token time out' do
+            let(:confirmation_sent_at) { 3.days.ago }
+
+            it do
+              is_expected.to redirect_to root_path
+              expect(flash[:alert]).to eq(
+                I18n.t('users.omniauth_callbacks.confirmation_period_expired')
+              )
+            end
+          end
+
+          context 'confirmation_token not time out' do
+            it do
+              is_expected.to redirect_to root_path
+              expect(flash[:notice]).to eq(
+                I18n.t('devise.omniauth_callbacks.success', provider: provider.capitalize)
+              )
+            end
           end
         end
       end
