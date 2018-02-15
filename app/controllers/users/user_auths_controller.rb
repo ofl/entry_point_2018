@@ -37,7 +37,7 @@ class Users::UserAuthsController < ApplicationController
     redirect_to authenticated_root_path, notice: t('.sent_mail')
   end
 
-  def after_create_failed
+  def after_create_failure
     flash.now[:alert] = @user_auth.errors.full_messages.join(',')
     render :new
   end
@@ -47,7 +47,7 @@ class Users::UserAuthsController < ApplicationController
     redirect_to authenticated_root_path
   end
 
-  def after_destroy_failed
+  def after_destroy_failure
     render :edit
   end
 end

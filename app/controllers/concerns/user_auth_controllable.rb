@@ -8,19 +8,19 @@ module UserAuthControllable
     if @user_auth.save(context: :need_password)
       @user_auth.external_auth_provider? ? verify_via_auth_provider : verify_via_email
     else
-      after_create_failed
+      after_create_failure
     end
   end
 
   def destroy
-    @user_auth = current_user.user_auths.find_by!(provider: params[:provider], user: current_user)
+    @user_auth = current_user.user_auths.find_by!(provider: params[:provider])
     @user_auth.user_password = user_auth_params[:user_password]
 
     if @user_auth.valid?(:need_password)
       @user_auth.destroy
       after_destroy_success
     else
-      after_destroy_failed
+      after_destroy_failure
     end
   end
 
