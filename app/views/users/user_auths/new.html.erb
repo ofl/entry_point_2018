@@ -15,6 +15,6 @@
 
   <div class="actions">
     <%= f.hidden_field :provider %>
-    <%= f.submit t(".auth_via_#{@user_auth.provider}") %>
+    <%= f.submit t(".auth_via_#{@user_auth.provider}"), data: { confirm: t('.are_you_sure') } %>
   </div>
 <% end %>
