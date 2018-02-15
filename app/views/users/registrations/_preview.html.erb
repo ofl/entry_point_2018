@@ -26,3 +26,11 @@
     <%= f.submit t('.auth_via_facebook'), name: 'auth_via_facebook' %>
   </div>
 <% end %>
+<script>
+document.onkeypress = function(e){
+    var ref=e.target;
+    if(e.key === 'Enter' && (ref.type == 'text' || ref.type == 'radio' || ref.type == 'checkbox' || ref.type == 'password')){
+        return false;
+    }
+}
+</script>
