@@ -1,14 +1,11 @@
-<h2>New User Auth</h2>
+<h2><%= t '.new_user_auth' %></h2>
 
 <%= form_for(@user_auth, url: users_user_auths_path) do |f| %>
   <div class="field">
     <% if @user_auth.email? %>
     <%= f.label :email %><br />
     <%= f.email_field :uid, autocomplete: "off" %>
-    <% else %>
-    <%= "Auth with #{@user_auth.provider}" %>
     <% end %>
-    <%= f.hidden_field :provider %>
   </div>
 
   <div class="field">
@@ -17,6 +14,7 @@
   </div>
 
   <div class="actions">
-    <%= f.submit "Create" %>
+    <%= f.hidden_field :provider %>
+    <%= f.submit t(".auth_via_#{@user_auth.provider}") %>
   </div>
 <% end %>

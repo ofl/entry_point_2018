@@ -16,6 +16,10 @@ ja:
       back: 戻る
       sign_in_with: "%{provider}でサインイン"
       remember_me: ログイン状態を維持する
+      auth_via_email: Eメールで本人確認する
+      auth_via_twitter: Twitterで本人確認する
+      auth_via_facebook: Facebookで本人確認する
+      send_confirmation_email: 確認メールを送信する
     sessions:
       new:
         <<: *default
@@ -36,10 +40,6 @@ ja:
         <<: *default
       preview:
         <<: *default
-        auth_via_email: Eメールで本人確認する
-        auth_via_twitter: Twitterで本人確認する
-        auth_via_facebook: Facebookで本人確認する
-        send_confirmation_email: 確認メールを送信する
       email_form:
         <<: *default
         send_confirmation_email: 確認メールを送信する
@@ -52,6 +52,13 @@ ja:
     user_auths:
       new:
         <<: *default
+        new_user_auth: 本人確認の追加
+      edit:
+        <<: *default
+        delete_user_auth: 本人確認の解除
+        disconnect_twitter: Twitterとの連携を解除する
+        disconnect_facebook: Facebookとの連携をする
+        disconnect_email: メールアドレスの解除する
     passwords:
       new:
         <<: *default
