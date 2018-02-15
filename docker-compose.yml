@@ -18,6 +18,7 @@ services:
     volumes:
       - .:/usr/src/entry_point_2018
       - bundle_cache:/bundle
+      - ~/.ash_history:/root/.ash_history
     depends_on:
       - postgres
     environment:
