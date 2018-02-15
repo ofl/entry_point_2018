@@ -27,6 +27,7 @@ class Api::Users::UserAuthsController < Api::ApiController
   end
 
   def after_destroy_failed
-    render json: { message: 'Failed to destroy user auth' }, status: 200
+    description = @user_auth.errors.full_messages.join(',')
+    render json: { message: 'Failed to destroy user auth', description: description }, status: 400
   end
 end

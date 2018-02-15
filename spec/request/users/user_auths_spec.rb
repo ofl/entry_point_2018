@@ -41,9 +41,7 @@ RSpec.describe 'Users::UserAuths', type: :request do
   describe 'GET /users/user_auths/new' do
     subject { get new_users_user_auth_path }
 
-    context 'not logged in' do
-      it { is_expected.to redirect_to new_user_session_path }
-    end
+    it_behaves_like 'not logged in user should redirect to sign in page'
 
     context 'logged in' do
       before { sign_in user }
@@ -61,9 +59,7 @@ RSpec.describe 'Users::UserAuths', type: :request do
     let(:params) { valid_params }
     let(:invalid_password_params) { { user_auth: { provider: 'email', uid: '', user_password: 'hoge' } } }
 
-    context 'not logged in' do
-      it { is_expected.to redirect_to new_user_session_path }
-    end
+    it_behaves_like 'not logged in user should redirect to sign in page'
 
     context 'logged in' do
       before { sign_in user }
@@ -97,9 +93,7 @@ RSpec.describe 'Users::UserAuths', type: :request do
     subject { get edit_users_user_auth_path(provider: provider) }
     let(:provider) { 'facebook' }
 
-    context 'not logged in' do
-      it { is_expected.to redirect_to(new_user_session_path) }
-    end
+    it_behaves_like 'not logged in user should redirect to sign in page'
 
     context 'logged in' do
       before { sign_in user }
@@ -121,9 +115,7 @@ RSpec.describe 'Users::UserAuths', type: :request do
     let(:provider) { 'facebook' }
     let(:password) { 'password' }
 
-    context 'not logged in' do
-      it { is_expected.to redirect_to(new_user_session_path) }
-    end
+    it_behaves_like 'not logged in user should redirect to sign in page'
 
     context 'logged in' do
       before { sign_in user }

@@ -49,23 +49,20 @@ RSpec.describe 'user_auths', type: :request do
         let(:params) { valid_params }
 
         it do
-          subject
           is_expected.to eq 200
           expect(json['message']).to eq 'Sent confirmation mail'
         end
 
-        it do
-          expect do
-            subject
-          end.to change(UserAuth, :count).by(1)
-        end
+        it { expect { subject }.to change(UserAuth, :count).by(1) }
       end
     end
   end
 
-  describe 'DELETE /api/users/user_auths' do
-    subject { delete api_users_user_auth_path(provider: provider), headers: headers }
+  describe 'DELETE /api/users/user_auths/:provider' do
+    subject { delete api_users_user_auth_path(provider: provider), params: params, headers: headers }
     let(:provider) { 'facebook' }
+    let(:params) { { user_auth: { user_password: password } } }
+    let(:password) { user.password }
 
     context 'not logged in' do
       it { is_expected.to eq 401 }
@@ -76,16 +73,23 @@ RSpec.describe 'user_auths', type: :request do
       let(:user) { login_user }
 
       context 'user_auth not exists' do
-        it do
-          is_expected.to eq 200
-          expect(json['message']).to eq 'Failed to destroy user auth'
-        end
+        it { is_expected.to eq 404 }
       end
 
       context 'user_auth exists' do
         before { create :user_auth, user: user, provider: :facebook }
 
-        it { is_expected.to eq 200 }
+        context 'invalid params' do
+          let(:password) { 'foobaabaz' }
+
+          it { is_expected.to eq 400 }
+          it { expect { subject }.not_to change(UserAuth, :count) }
+        end
+
+        context 'valid params' do
+          it { is_expected.to eq 200 }
+          it { expect { subject }.to change(UserAuth, :count).by(-1) }
+        end
       end
     end
   end
