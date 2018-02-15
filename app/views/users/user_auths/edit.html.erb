@@ -1,0 +1,22 @@
+<h2>Delete User Auth</h2>
+
+<%= form_for(@user_auth, url: "/users/user_auths/#{@user_auth.provider}", method: :delete) do |f| %>
+  <div class="field">
+    <% if @user_auth.email? %>
+    <%= f.label :email %><br />
+    <%= f.email_field :uid, autocomplete: "off" %>
+    <% else %>
+    <%= "Delete #{@user_auth.provider}" %>
+    <% end %>
+    <%= f.hidden_field :provider %>
+  </div>
+
+  <div class="field">
+    <%= f.label :user_password %><br />
+    <%= f.password_field :user_password %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Delete" %>
+  </div>
+<% end %>

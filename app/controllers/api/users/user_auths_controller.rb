@@ -22,7 +22,7 @@ class Api::Users::UserAuthsController < Api::ApiController
     render json: { message: 'Failed to create user auth', description: description }, status: 400
   end
 
-  def after_destroy
+  def after_destroy_success
     render json: { head: 200 }
   end
 

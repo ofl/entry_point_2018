@@ -15,6 +15,10 @@ class Users::UserAuthsController < ApplicationController
     @user_auth ||= current_user.user_auths.build(provider: params[:provider] || :email)
   end
 
+  def edit
+    @user_auth ||= current_user.user_auths.find_by!(provider: params[:provider])
+  end
+
   # def create
   # end
 
@@ -38,12 +42,12 @@ class Users::UserAuthsController < ApplicationController
     render :new
   end
 
-  def after_destroy
+  def after_destroy_success
     flash[:notice] = t('.delete_user_auth', provider: params[:provider].capitalize)
     redirect_to authenticated_root_path
   end
 
   def after_destroy_failed
-    redirect_to authenticated_root_path
+    render :edit
   end
 end
