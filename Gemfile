@@ -35,7 +35,6 @@ gem 'bcrypt', '~> 3.1.7'
 
 gem 'active_model_serializers'
 
-gem 'activeadmin'
 gem 'config'
 gem 'devise'
 gem 'foreman'
