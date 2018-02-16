@@ -11,7 +11,7 @@ Rails.application.routes.draw do
     unlocks: 'users/unlocks'
   }
   namespace :users do
-    resources :user_auths, param: :provider, only: %i[show new create destroy]
+    resources :user_auths, param: :provider, except: [:update]
   end
 
   namespace :api do

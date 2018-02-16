@@ -15,6 +15,10 @@ module RequestSpecHelper
     logout(warden_scope(resource))
   end
 
+  shared_examples 'not logged in user should redirect to sign in page' do
+    it { is_expected.to redirect_to(new_user_session_path) }
+  end
+
   private
 
   def warden_scope(resource)

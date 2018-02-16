@@ -116,12 +116,6 @@ class UserAuth < ApplicationRecord
 
   private
 
-  def valid_password?
-    return true if user.valid_password?(password)
-    errors.add(:password, 'invalid')
-    false
-  end
-
   def auth_provider(name:)
     case name
     when 'twitter'

@@ -21,3 +21,11 @@
     <%= f.submit t('.send_confirmation_email'), name: 'auth_via_email' %>
   </div>
 <% end %>
+<script>
+document.onkeypress = function(e){
+    var ref=e.target;
+    if(e.key === 'Enter' && (ref.type == 'text' || ref.type == 'email' || ref.type == 'radio' || ref.type == 'checkbox' || ref.type == 'password')){
+        return false;
+    }
+}
+</script>

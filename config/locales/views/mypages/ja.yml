@@ -1,13 +1,13 @@
 ja:
-  mypages:
+  mypage:
     show:
       edit_password: パスワードの変更
       connect_email: メールアドレスを登録する
       edit_email: メールアドレスの変更
-      connect_twitter: Twitterを登録する
-      disconnect_twitter: Twitterを解除する
-      connect_facebook: Facebookを登録する
-      disconnect_facebook: Facebookを解除する
+      connect_twitter: Twitterと連携する
+      disconnect_twitter: Twitterとの連携を解除する
+      connect_facebook: Facebookと連携する
+      disconnect_facebook: Facebookとの連携を解除する
       confirm_password: パスワードでの本人確認(ログアウトします)
       confirm_twitter: Twitterでの本人確認
       confirm_facebook: Facebookでの本人確認

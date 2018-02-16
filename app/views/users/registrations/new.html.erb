@@ -5,3 +5,9 @@
 <% else %>
   <%= render partial: 'form', locals: { title: t('.sign_up') } %>
 <% end -%>
+<script>
+window.location.hash="#noback";
+window.onhashchange=function(){
+    window.location.hash="#noback";
+}
+</script>

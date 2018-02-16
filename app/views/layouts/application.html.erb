@@ -12,16 +12,16 @@
     <div id="app">
       <nav>
         <div class="nav-wrapper">
-          <a href="#" class="brand-logo">Logo</a>
+          <a href="/" class="brand-logo">Logo</a>
           <ul id="nav-mobile" class="right hide-on-med-and-down">
             <% if user_signed_in? %>
             <li>
-              <%= link_to(t('.log_out'), destroy_user_session_path, method: :delete) %>
+              <%= link_to(t('.sign_out'), destroy_user_session_path, method: :delete) %>
             </li>
             <% else %>
             <li>
               <%- if controller_name != 'sessions' %>
-                <%= link_to t('.log_in'), new_session_path(resource_name) %>
+                <%= link_to t('.sign_in'), new_session_path(resource_name) %>
               <% end -%>
             </li>
             <li>
