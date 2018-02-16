@@ -36,11 +36,13 @@
       </nav>
     </header>
     <main>
-      <p class="notice"><%= notice %></p>
-      <p class="alert"><%= alert %></p>
+      <div class="container">
+        <p class="notice"><%= notice %></p>
+        <p class="alert"><%= alert %></p>
 
-      <%= yield %>
+        <%= yield %>
+        <%= javascript_pack_tag 'hello_vue' %>
+      </div>
     </main>
-    <%= javascript_pack_tag 'hello_vue' %>
   </body>
 </html>

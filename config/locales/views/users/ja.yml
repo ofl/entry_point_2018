@@ -26,6 +26,7 @@ ja:
     shared:
       links:
         <<: *default
+        home: ホーム
     registrations:
       new:
         <<: *default

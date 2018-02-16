@@ -1,10 +1,21 @@
-<%- if resource.errors.blank? && @registration_step == :preview %>
-  <%= render partial: 'preview', locals: { title: t('.preview') } %>
-<% elsif @registration_step == :email_form %>
-  <%= render partial: 'email_form', locals: { title: t('.email_form') } %>
-<% else %>
-  <%= render partial: 'form', locals: { title: t('.sign_up') } %>
-<% end -%>
+<section id="login">
+  <div class="container-fluid pt-3">
+    <div class="row">
+      <div class="col s4 offset-s4">
+        <div class="brand-logo mx-auto">
+          <!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+        </div>
+        <%- if resource.errors.blank? && @registration_step == :preview %>
+          <%= render partial: 'preview', locals: { title: t('.preview') } %>
+        <% elsif @registration_step == :email_form %>
+          <%= render partial: 'email_form', locals: { title: t('.email_form') } %>
+        <% else %>
+          <%= render partial: 'form', locals: { title: t('.sign_up') } %>
+        <% end -%>
+      </div>
+    </div>
+  </div>
+</section>
 <script>
 window.location.hash="#noback";
 window.onhashchange=function(){
