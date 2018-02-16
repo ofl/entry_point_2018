@@ -9,7 +9,7 @@
   </head>
 
   <body>
-    <div id="app">
+    <header id="app" class="navbar-fixed">
       <nav>
         <div class="nav-wrapper">
           <a href="/" class="brand-logo">Logo</a>
@@ -34,12 +34,15 @@
           </ul>
         </div>
       </nav>
-    </div>
+    </header>
+    <main>
+      <div class="container">
+        <p class="notice"><%= notice %></p>
+        <p class="alert"><%= alert %></p>
 
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
-
-    <%= yield %>
-    <%= javascript_pack_tag 'hello_vue' %>
+        <%= yield %>
+        <%= javascript_pack_tag 'hello_vue' %>
+      </div>
+    </main>
   </body>
 </html>
