@@ -42,6 +42,7 @@ gem 'jquery-rails'
 gem 'jquery-turbolinks'
 gem 'material_icons'
 gem 'materialize-sass'
+gem 'slim'
 gem 'webpacker', '~> 2.0'
 
 gem 'omniauth'
