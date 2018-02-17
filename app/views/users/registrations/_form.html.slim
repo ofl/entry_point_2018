@@ -3,22 +3,16 @@
     .card-content
       span.card-title.center= title
       .divider
-      = form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
-        = devise_error_messages!
+      = simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
+        - if devise_error_messages? || alert
+          .form-errors.red.lighten-1
+            = devise_error_messages!
+            = alert
         .form-inputs.row
-          .input-field.col.s12.username.required.user_username
-            i.material-icons.prefix person
-            = f.label :username
-            br/
-            = f.text_field :username, autofocus: true
-          .input-field.col.s12.password.required.user_password
-            i.material-icons.prefix lock
-            = f.label :password
-            br/
-            = f.password_field :password
+          = f.input :username, autofocus: true, required: true, icon: "person"
+          = f.input :password, autocomplete: "off", required: true, icon: "lock", label_html: { data: { hint: "#{@minimum_password_length} Characters Minimum" } }
         .form-actions.center
-          i.btn.waves-effect.waves-input-wrapper style=""
-            = f.submit t('.preview'), name: 'preview', class: 'waves-button-input'
+          = f.button :submit, t('.preview'), name: 'preview', class: 'waves-button-input'
       .card-action
         .devise-links
           = render "users/shared/links"

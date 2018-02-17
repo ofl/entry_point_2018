@@ -13,4 +13,8 @@ html
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
   body.pink
     main[style="padding-top: 4rem"]
-      = yield
+      section#login
+        .container-fluid.pt-3
+          .row
+            .col.s4.offset-s4
+              == yield
