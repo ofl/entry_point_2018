@@ -42,6 +42,7 @@ gem 'jquery-rails'
 gem 'jquery-turbolinks'
 gem 'material_icons'
 gem 'materialize-sass'
+gem 'simple_form'
 gem 'slim'
 gem 'webpacker', '~> 2.0'
 
