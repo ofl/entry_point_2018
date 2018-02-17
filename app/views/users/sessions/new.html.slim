@@ -3,7 +3,7 @@ h2= t('.log_in')
   .field
     = f.label :login
     br/
-    = f.text_field :login, autofocus: true
+    = f.text_field :login, autofocus: true, autocomplete: "off"
   .field
     = f.label :password
     br/

@@ -2,3 +2,8 @@ domain: example.com
 confirmation:
   expired: 60 # minutes
   mail_expired: 60 # minutes
+models:
+  user:
+    username:
+      minlength: 3
+      maxlength: 15

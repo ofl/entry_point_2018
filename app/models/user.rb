@@ -33,13 +33,18 @@
 class User < ApplicationRecord
   attr_accessor :login
 
+  MIN_USERNAME_LENGTH = Settings.models.user.username.minlength
+  MAX_USERNAME_LENGTH = Settings.models.user.username.maxlength
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, :lockable, :omniauthable,
          :recoverable, :rememberable, :trackable, :omniauthable,
          :validatable, authentication_keys: [:login]
 
-  validates :username, format: { with: /\A[a-zA-Z0-9_\.]*\z/ }, uniqueness: true
+  validates :username, format: { with: /\A[a-zA-Z0-9_\.]*\z/ },
+                       length: { minimum: MIN_USERNAME_LENGTH, maximum: MAX_USERNAME_LENGTH },
+                       uniqueness: true
 
   has_many :user_auths, dependent: :destroy
   has_many :confirmed_user_auths, -> { merge(UserAuth.confirmed) }, class_name: :UserAuth, inverse_of: :user
