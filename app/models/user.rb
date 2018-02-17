@@ -3,9 +3,9 @@
 # Table name: users
 #
 #  id                     :integer          not null, primary key
-#  email                  :string           not null
-#  encrypted_password     :string           not null
-#  username               :string           not null
+#  email                  :string(255)      not null
+#  encrypted_password     :string(255)      not null
+#  username               :string(15)       not null
 #  reset_password_token   :string
 #  reset_password_sent_at :datetime
 #  remember_created_at    :datetime
