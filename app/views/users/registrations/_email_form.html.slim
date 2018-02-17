@@ -1,17 +1,23 @@
-h2= title
-= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
-  = devise_error_messages!
-  .field
-    = f.hidden_field :username
-  .field
-    = f.label :email
-    br/
-    = f.email_field :email, autofocus: true
-  .field
-    = f.hidden_field :password
-  .actions
-    = f.submit t('.back'), name: 'preview'
-    = f.submit t('.send_confirmation_email'), name: 'auth_via_email'
+.login-form
+  .card.hoverable
+    .card-content
+      span.card-title.center= title
+      .divider
+      = simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
+        .form-inputs.row
+          .input-field.col.s12.email.required.user_email
+            i.material-icons.prefix email
+            = f.label :email
+            br/
+            = f.email_field :email, autofocus: true
+        .form-actions.center
+          = f.hidden_field :username
+          = f.hidden_field :password
+          i.btn.waves-effect.waves-input-wrapper style=""
+            = f.submit t('.send_confirmation_email'), name: 'auth_via_email', class: 'waves-button-input'
+          br/
+          i.btn.waves-effect.waves-input-wrapper style=""
+            = f.submit t('.back'), name: 'preview', class: 'waves-button-input'
 javascript:
   document.onkeypress = function(e){
       var ref=e.target;

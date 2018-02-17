@@ -3,8 +3,8 @@
     .card-content
       span.card-title.center= title
       .divider
-      = form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
-        = devise_error_messages!
+      = simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
+        = f.error_notification
         .form-inputs.row
           .input-field.col.s12.username.required.user_username
             i.material-icons.prefix person
