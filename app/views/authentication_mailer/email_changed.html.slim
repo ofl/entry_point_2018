@@ -1,0 +1,5 @@
+p= t('.hello', user: @resource.username)
+- if @resource.try(:unconfirmed_username?)
+  p= t('.changing', username: @resource.unconfirmed_username)
+- else
+  p= t('.changed', username: @resource.username)

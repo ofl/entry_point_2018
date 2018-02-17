@@ -1,7 +1,0 @@
-<p><%= t('.hello', user: @resource.username) %></p>
-
-<% if @resource.try(:unconfirmed_username?) %>
-  <p><%= t('.changing', username: @resource.unconfirmed_username) %></p>
-<% else %>
-  <p><%= t('.changed', username: @resource.username) %></p>
-<% end %>

@@ -1,0 +1,36 @@
+doctype html
+html
+  head
+    title
+      | EntryPoint2018
+    = csrf_meta_tags
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
+    = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+  body
+    header#app.navbar-fixed
+      nav
+        .nav-wrapper
+          a.brand-logo[href="/"]
+            | Logos
+          ul#nav-mobile.right.hide-on-med-and-down
+            - if user_signed_in?
+              li
+                = link_to(t('.sign_out'), destroy_user_session_path, method: :delete)
+            - else
+              li
+                - if controller_name != 'sessions'
+                  = link_to t('.sign_in'), new_session_path(resource_name)
+              li
+                - if controller_name != 'registrations'
+                  = link_to t('.sign_up'), new_user_registration_path
+            li
+              a[href="collapsible.html"]
+                | JavaScript
+    main
+      .container
+        p.notice
+          = notice
+        p.alert
+          = alert
+        = yield
+        = javascript_pack_tag 'hello_vue'

@@ -1,0 +1,14 @@
+h2= t '.delete_user_auth'
+= form_for(@user_auth, url: "/users/user_auths/#{@user_auth.provider}", method: :delete) do |f|
+  .field
+    - if @user_auth.email?
+      = f.label :email
+      br/
+      = @user_auth.uid
+  .field
+    = f.label :user_password
+    br/
+    = f.password_field :user_password
+  .actions
+    = f.hidden_field :provider
+    = f.submit t(".disconnect_#{@user_auth.provider}"), data: { confirm: t('.are_you_sure') }
