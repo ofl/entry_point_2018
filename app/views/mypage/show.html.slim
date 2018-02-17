@@ -1,0 +1,16 @@
+h2
+  = current_user.username
+  | 's Page
+ul
+  - unless current_user.confirmed_by?(:email)
+    li= link_to t('.connect_email'), new_users_user_auth_path(provider: :email)
+  - else
+    li= link_to t('.edit_email'), edit_users_user_auth_path(provider: :email)
+  - unless current_user.confirmed_by?(:twitter)
+    li= link_to t('.connect_twitter'), new_users_user_auth_path(provider: :twitter)
+  - else
+    li= link_to t('.disconnect_twitter'), edit_users_user_auth_path(provider: :twitter)
+  - unless current_user.confirmed_by?(:facebook)
+    li= link_to t('.connect_facebook'), new_users_user_auth_path(provider: :facebook)
+  - else
+    li= link_to t('.disconnect_facebook'), edit_users_user_auth_path(provider: :facebook)

@@ -1,0 +1,14 @@
+h2= t '.new_user_auth'
+= form_for(@user_auth, url: users_user_auths_path) do |f|
+  .field
+    - if @user_auth.email?
+      = f.label :email
+      br/
+      = f.email_field :uid, autocomplete: "off"
+  .field
+    = f.label :user_password
+    br/
+    = f.password_field :user_password
+  .actions
+    = f.hidden_field :provider
+    = f.submit t(".auth_via_#{@user_auth.provider}"), data: { confirm: t('.are_you_sure') }
