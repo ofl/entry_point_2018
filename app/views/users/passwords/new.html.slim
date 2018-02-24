@@ -1,10 +1,17 @@
-h2= t('.forgot_your_password')
-= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f|
-  = devise_error_messages!
-  .field
-    = f.label :email
-    br/
-    = f.text_field :email, autofocus: true
-  .actions
-    = f.submit t('.send_me_reset_password')
-= render "users/shared/links"
+.login-form
+  .card.hoverable
+    .card-content
+      span.card-title.center= t('.forgot_your_password')
+      .divider
+      = simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f|
+        - if devise_error_messages? || alert
+          .form-errors.red.lighten-1
+            = devise_error_messages!
+            = alert
+        .form-inputs.row
+          = f.input :email, autofocus: true, required: true, icon: "email"
+        .form-actions.center
+          = f.button :submit, t('.send_me_reset_password'), name: 'auth_via_email', class: 'waves-button-input'
+      .card-action
+        .devise-links
+          = render "users/shared/links"

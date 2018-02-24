@@ -1,17 +1,19 @@
-h2= t('.log_in')
-= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
-  .field
-    = f.label :login
-    br/
-    = f.text_field :login, autofocus: true, autocomplete: "off"
-  .field
-    = f.label :password
-    br/
-    = f.password_field :password, autocomplete: "off"
-  - if devise_mapping.rememberable?
-    .field
-      = f.check_box :remember_me
-      = f.label :remember_me, t('.remember_me')
-  .actions
-    = f.submit t('.log_in')
-= render "users/shared/links"
+.login-form
+  .card.hoverable
+    .card-content
+      span.card-title.center= t('.log_in')
+      .divider
+      = simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+        - if devise_error_messages? || alert
+          .form-errors.red.lighten-1
+            = devise_error_messages!
+            = alert
+        .form-inputs.row
+          = f.input :username, autofocus: true, autocomplete: "off", required: true, icon: "person"
+          = f.input :password, autocomplete: "off", required: true, icon: "lock"
+          = f.input_field :remember_me, as: :boolean
+        .form-actions.center
+          = f.button :submit, t('.log_in'), class: 'waves-button-input'
+      .card-action
+        .devise-links
+          = render "users/shared/links"
