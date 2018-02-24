@@ -9,8 +9,10 @@
             = devise_error_messages!
             = alert
         .form-inputs.row
-          = f.input :username, autofocus: true, required: true, icon: "person"
-          = f.input :password, autocomplete: "off", required: true, icon: "lock", label_html: { data: { hint: "#{@minimum_password_length} Characters Minimum" } }
+          = f.input :username, autofocus: true, autocomplete: "off", required: true, icon: "person",
+                               input_html: { minlength: User::MIN_USERNAME_LENGTH, maxlength: User::MAX_USERNAME_LENGTH }
+          = f.input :password, autocomplete: "off", required: true, icon: "lock",
+                               input_html: { minlength: User.password_length.min, maxlength: User.password_length.max }
         .form-actions.center
           = f.button :submit, t('.preview'), name: 'preview', class: 'waves-button-input'
       .card-action

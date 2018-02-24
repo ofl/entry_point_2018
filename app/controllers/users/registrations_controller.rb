@@ -65,7 +65,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def validate_resource
     return if resource.valid?
     clean_up_passwords resource
-    set_minimum_password_length
   end
 
   def registration_step
@@ -109,7 +108,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
       @registration_step = :email_form
     else
       clean_up_passwords resource
-      set_minimum_password_length
     end
     respond_with resource
   end
