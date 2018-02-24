@@ -1,4 +1,6 @@
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
+  layout 'users'
+
   before_action :authenticate_user!, if: :need_authenticate?
   # You should configure your model like this:
   # devise :omniauthable, omniauth_providers: [:twitter]

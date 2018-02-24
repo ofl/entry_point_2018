@@ -1,4 +1,6 @@
 class Users::UserAuthsController < ApplicationController
+  layout 'users'
+
   before_action :authenticate_user!, except: [:show]
 
   include UserAuthControllable
