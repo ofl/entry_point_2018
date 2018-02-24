@@ -12,8 +12,9 @@ ja:
         password: パスワード
         password_confirmation: パスワード(確認)
       user_auth:
+        uid: メールアドレス
         email: メールアドレス
-        user_password: 確認用パスワード
+        user_password: パスワード
     errors:
       models:
         user:
