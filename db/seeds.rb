@@ -7,3 +7,20 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 # if Rails.env.development?
 # end
+
+def create(*args)
+  FactoryBot.create(*args)
+end
+
+unless User.exists?
+  user = create :user, username: 'testuser', email: 'test@example.com', password: 'password'
+  create :user_auth, user: user, provider: :email, uid: 'test@example.com'
+end
+
+unless Point.exists?
+  User.all.each do |u|
+    10.times do
+      create :point, user: u, amount: rand(1..20), created_at: rand(2..20).days.ago
+    end
+  end
+end
