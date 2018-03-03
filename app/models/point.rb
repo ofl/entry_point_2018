@@ -26,4 +26,20 @@ class Point < ApplicationRecord
     used: 11, # 使用(-)
     expired: 99 # 失効(-)
   }
+
+  validates :status, presence: true, inclusion: { in: statuses }
+  validates :amount, presence: true, numericality: { only_integer: true, greater_than: 0, less_than: 9999 },
+                     if: :positive_points?
+  validates :amount, presence: true, numericality: { only_integer: true, greater_than: -9999, less_than: 0 },
+                     if: :negative_points?
+
+  private
+
+  def positive_points?
+    got?
+  end
+
+  def negative_points?
+    used? || expired?
+  end
 end

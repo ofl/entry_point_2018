@@ -22,6 +22,15 @@ FactoryBot.define do
   factory :point do
     user
     status { Point.statuses.keys.sample }
-    amount 1
+
+    trait :got do
+      status :got
+      amount { rand(1..20) }
+    end
+
+    trait :used do
+      status :used
+      amount { -rand(1..10) }
+    end
   end
 end

@@ -20,7 +20,8 @@ end
 unless Point.exists?
   User.all.each do |u|
     10.times do
-      create :point, user: u, amount: rand(1..20), created_at: rand(2..20).days.ago
+      create :point, :got, user: u, created_at: rand(2..120).days.ago
+      create :point, :used, user: u, created_at: rand(2..60).days.ago
     end
   end
 end
