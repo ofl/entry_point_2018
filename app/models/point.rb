@@ -6,6 +6,7 @@
 #  user_id    :integer
 #  status     :integer          not null              # 状態(獲得/使用/失効)
 #  amount     :integer          default(0), not null  # ポイント数
+#  expired_at :datetime                               # 獲得ポイントの失効処理日時
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
@@ -27,19 +28,36 @@ class Point < ApplicationRecord
     expired: 99 # 失効(-)
   }
 
+  POSITIVE_STATUSES = %i[got].freeze
+  NEGATIVE_STATUSES = %i[used expired].freeze
+  EXPIRATION_INTERVAL = Settings.models.point.expiration_interval
+
   validates :status, presence: true, inclusion: { in: statuses }
   validates :amount, presence: true, numericality: { only_integer: true, greater_than: 0, less_than: 9999 },
-                     if: :positive_points?
+                     if: :positive?
   validates :amount, presence: true, numericality: { only_integer: true, greater_than: -9999, less_than: 0 },
-                     if: :negative_points?
+                     if: :negative?
+
+  scope :positive, -> { where(status: POSITIVE_STATUSES) }
+  scope :negative, -> { where(status: NEGATIVE_STATUSES) }
+
+  scope :created_before, ->(at = Time.zone.now) { where('created_at < ?', at) }
+  # statusのexpiredとかぶるためexpired -> is_expired
+  scope :is_expired, ->(at = Time.zone.now) { created_before(at - EXPIRATION_INTERVAL.days) }
+
+  scope :expired_at_is_nil, -> { where(expired_at: nil) }
+
+  def expire_at
+    expired_at || created_at + EXPIRATION_INTERVAL.days
+  end
 
   private
 
-  def positive_points?
-    got?
+  def positive?
+    POSITIVE_STATUSES.include?(status)
   end
 
-  def negative_points?
-    used? || expired?
+  def negative?
+    NEGATIVE_STATUSES.include?(status)
   end
 end

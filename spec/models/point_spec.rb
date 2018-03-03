@@ -22,5 +22,40 @@
 require 'rails_helper'
 
 RSpec.describe Point, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe 'scope' do
+    let!(:got_point) { create :point, :got }
+    let!(:used_point) { create :point, :used }
+    let!(:expired_point) { create :point, :expired }
+
+    describe '.positive' do
+      subject { Point.positive }
+
+      it { is_expected.to contain_exactly(got_point) }
+    end
+
+    describe '.negative' do
+      subject { Point.negative }
+
+      it { is_expected.to contain_exactly(used_point, expired_point) }
+    end
+  end
+
+  describe '#expire_at' do
+    let(:point) { create :point, expired_at: expired_at, created_at: created_at }
+    let(:created_at) { Time.zone.parse('2018/1/1 12:10:10') }
+
+    subject { point.expire_at }
+
+    context 'expired_at is nil' do
+      let(:expired_at) { :nil }
+
+      it { is_expected.to eq created_at + Point::EXPIRATION_INTERVAL.days }
+    end
+
+    context 'expired_at exists' do
+      let(:expired_at) { Time.zone.parse('2018/2/2 12:10:10') }
+
+      it { is_expected.to eq expired_at }
+    end
+  end
 end

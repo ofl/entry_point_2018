@@ -7,3 +7,5 @@ models:
     username:
       minlength: 3
       maxlength: 15
+  point:
+    expiration_interval: 90 # days

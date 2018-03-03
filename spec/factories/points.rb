@@ -23,6 +23,7 @@ FactoryBot.define do
   factory :point do
     user
     status { Point.statuses.keys.sample }
+    expired_at nil
 
     trait :got do
       status :got
@@ -32,6 +33,12 @@ FactoryBot.define do
     trait :used do
       status :used
       amount { -rand(1..10) }
+    end
+
+    trait :expired do
+      status :expired
+      amount { -rand(1..10) }
+      expired_at Time.zone.now
     end
   end
 end
