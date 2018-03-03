@@ -54,10 +54,10 @@ class Point < ApplicationRecord
   private
 
   def positive?
-    POSITIVE_STATUSES.include?(status)
+    POSITIVE_STATUSES.include?(status.to_sym)
   end
 
   def negative?
-    NEGATIVE_STATUSES.include?(status)
+    NEGATIVE_STATUSES.include?(status.to_sym)
   end
 end

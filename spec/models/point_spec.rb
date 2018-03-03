@@ -40,8 +40,36 @@ RSpec.describe Point, type: :model do
     end
   end
 
+  describe 'validation' do
+    subject { point.valid? }
+
+    context 'got amount(+)' do
+      let(:point) { build :point, :got, amount: 100 }
+
+      it { is_expected.to be_truthy }
+    end
+
+    context 'got amount(-)' do
+      let(:point) { build :point, :got, amount: -100 }
+
+      it { is_expected.to be_falsey }
+    end
+
+    context 'used amount(+)' do
+      let(:point) { build :point, :used, amount: 100 }
+
+      it { is_expected.to be_falsey }
+    end
+
+    context 'used amount(-)' do
+      let(:point) { build :point, :used, amount: -100 }
+
+      it { is_expected.to be_truthy }
+    end
+  end
+
   describe '#expire_at' do
-    let(:point) { create :point, expired_at: expired_at, created_at: created_at }
+    let(:point) { create :point, :got, expired_at: expired_at, created_at: created_at }
     let(:created_at) { Time.zone.parse('2018/1/1 12:10:10') }
 
     subject { point.expire_at }
