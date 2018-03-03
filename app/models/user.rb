@@ -48,6 +48,7 @@ class User < ApplicationRecord
 
   has_many :user_auths, dependent: :destroy
   has_many :confirmed_user_auths, -> { merge(UserAuth.confirmed) }, class_name: :UserAuth, inverse_of: :user
+  has_many :points, dependent: :destroy
 
   before_create :ensure_dummy_authentication_token
 
@@ -100,6 +101,23 @@ class User < ApplicationRecord
     errors[:email].any?
   end
 
+  def point_amount
+    points.sum(:amount)
+  end
+
+  # 期限切れのポイントの失効処理
+  def expire_points!(at = Time.zone.now)
+    expire_points = points.positive.is_expired(at).expired_at_is_nil
+    return if expire_points.blank?
+
+    transaction do
+      amount = expired_point_amount(at) # 失効するポイント数
+
+      points.create!(status: :expired, amount: -amount) unless amount.zero? # 失効履歴の作成
+      expire_points.update_all(expired_at: at) # rubocop:disable Rails/SkipsModelValidations
+    end
+  end
+
   private
 
   def ensure_dummy_authentication_token
@@ -111,5 +129,13 @@ class User < ApplicationRecord
 
   def dummy_email?
     Regexp.new(".+@#{Settings.domain}\\z").match(email)
+  end
+
+  #  失効するポイント数
+  def expired_point_amount(at = Time.zone.now)
+    expired_amount = points.positive.is_expired(at).sum(:amount) # 失効以前に獲得ポイント
+    used_amount = points.negative.sum(:amount) # 現在までに使用（失効）したポイント(マイナス値)
+
+    [expired_amount - used_amount.abs, 0].max # 獲得よりも使用したポイントが多ければ0を返す
   end
 end
