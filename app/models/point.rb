@@ -41,7 +41,7 @@ class Point < ApplicationRecord
   scope :positive, -> { where(status: POSITIVE_STATUSES) }
   scope :negative, -> { where(status: NEGATIVE_STATUSES) }
 
-  scope :created_before, ->(at = Time.zone.now) { where('created_at < ?', at) }
+  scope :created_before, ->(at = Time.zone.now) { where('points.created_at < ?', at) }
   # statusのexpiredとかぶるためexpired -> is_expired
   scope :is_expired, ->(at = Time.zone.now) { created_before(at - EXPIRATION_INTERVAL.days) }
 

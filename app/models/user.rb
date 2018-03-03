@@ -50,6 +50,12 @@ class User < ApplicationRecord
   has_many :confirmed_user_auths, -> { merge(UserAuth.confirmed) }, class_name: :UserAuth, inverse_of: :user
   has_many :points, dependent: :destroy
 
+  scope :has_expired_points, lambda { |at = Time.zone.now|
+    # inner joinとexistsを使った方法。どちらが速い？
+    # where(Point.where('points.user_id = users.id').positive.is_expired(at).expired_at_is_nil.exists)
+    joins(:points).merge(Point.positive.is_expired(at).expired_at_is_nil)
+  }
+
   before_create :ensure_dummy_authentication_token
 
   def self.find_for_database_authentication(warden_conditions)
