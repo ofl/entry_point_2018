@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180108072719) do
+ActiveRecord::Schema.define(version: 20180302232343) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "points", force: :cascade do |t|
+    t.bigint "user_id"
+    t.integer "status", null: false, comment: "状態(獲得/使用/失効)"
+    t.integer "amount", default: 0, null: false, comment: "ポイント数"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_points_on_user_id"
+  end
 
   create_table "user_auths", force: :cascade do |t|
     t.bigint "user_id"
@@ -54,5 +63,6 @@ ActiveRecord::Schema.define(version: 20180108072719) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  add_foreign_key "points", "users"
   add_foreign_key "user_auths", "users"
 end
