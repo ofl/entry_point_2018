@@ -131,11 +131,12 @@ class User < ApplicationRecord
     Regexp.new(".+@#{Settings.domain}\\z").match(email)
   end
 
-  #  失効するポイント数
+  # 失効するポイント数
+  # 失効以前に獲得したポイントから現在までに使用したポイントを引いたものを0と比較し、多い方を返す
   def expired_point_amount(at = Time.zone.now)
     expired_amount = points.positive.is_expired(at).sum(:amount) # 失効以前に獲得ポイント
-    used_amount = points.negative.sum(:amount) # 現在までに使用（失効）したポイント(マイナス値)
+    used_amount = points.negative.created_before(at).sum(:amount) # 現在までに使用（失効）したポイント(マイナス値)
 
-    [expired_amount - used_amount.abs, 0].max # 獲得よりも使用したポイントが多ければ0を返す
+    [expired_amount - used_amount.abs, 0].max
   end
 end
