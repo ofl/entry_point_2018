@@ -163,11 +163,19 @@ RSpec.describe User, type: :model do
       let(:amount) { 150 }
       subject { user.get_point!(amount) }
 
-      it do
-        expect { subject }.to change(Point.got, :count).by(1) # 250 - 200
-        expect(Point.last.amount).to eq(150)
+      context 'save successfully' do
+        it do
+          expect { subject }.to change(Point.got, :count).by(1) # 250 - 200
+          expect(Point.last.amount).to eq(150)
+        end
+        it { expect { subject }.to change(BatchSchedule::PointExpiration, :count).by(1) }
       end
-      it { expect { subject }.to change(BatchSchedule::PointExpiration, :count).by(1) }
+
+      context 'save failure' do
+        let(:amount) { -150 }
+
+        it { expect { subject }.to raise_error(ActiveRecord::RecordInvalid) }
+      end
     end
 
     describe '#expire_points!' do
@@ -218,6 +226,13 @@ RSpec.describe User, type: :model do
           expect(Point.last.amount).to eq(-220) # 420 - 200
         end
         it_behaves_like 'delete batch schedule'
+      end
+
+      context 'save failure' do
+        let(:at) { '2018/7/4 12:10:10'.in_time_zone }
+        before { allow_any_instance_of(User).to receive(:expired_point_amount).and_return(-150) }
+
+        it { expect { subject }.to raise_error(ActiveRecord::RecordInvalid) }
       end
     end
 
