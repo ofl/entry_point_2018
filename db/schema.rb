@@ -19,7 +19,6 @@ ActiveRecord::Schema.define(version: 20180302232343) do
     t.bigint "user_id"
     t.integer "status", null: false, comment: "状態(獲得/使用/失効)"
     t.integer "amount", default: 0, null: false, comment: "ポイント数"
-    t.datetime "expired_at", comment: "獲得ポイントの失効処理日時"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_points_on_user_id"

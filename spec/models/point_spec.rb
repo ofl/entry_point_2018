@@ -6,7 +6,6 @@
 #  user_id    :integer
 #  status     :integer          not null              # 状態(獲得/使用/失効)
 #  amount     :integer          default(0), not null  # ポイント数
-#  expired_at :datetime                               # 獲得ポイントの失効処理日時
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
