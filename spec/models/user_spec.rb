@@ -153,13 +153,28 @@ RSpec.describe User, type: :model do
       let!(:used_point) { create :point, :used, user: user, amount: -200, created_at: '2018/3/1 12:10:10'.in_time_zone }
       let!(:got_point_3) { create :point, :got, user: user, amount: 170, created_at: '2018/4/1 12:10:10'.in_time_zone }
       let!(:expired_point) do
-        create :point, user: user, amount: -50, created_at: '2018/5/1 12:10:10'.in_time_zone
+        create :point, :expired, user: user, amount: -50, created_at: '2018/5/1 12:10:10'.in_time_zone
       end
 
       it { is_expected.to eq 170 }
     end
 
+    describe '#get_point!' do
+      let(:amount) { 150 }
+      subject { user.get_point!(amount) }
+
+      it do
+        expect { subject }.to change(Point.got, :count).by(1) # 250 - 200
+        expect(Point.last.amount).to eq(150)
+      end
+      it { expect { subject }.to change(BatchSchedule::PointExpiration, :count).by(1) }
+    end
+
     describe '#expire_points!' do
+      shared_examples 'delete batch schedule' do
+        it { expect { subject }.to change(BatchSchedule::PointExpiration, :count).by(-1) }
+      end
+
       subject { user.expire_points!(at) }
 
       let!(:got_point_1) { create :point, :got, user: user, amount: 100, created_at: '2018/1/1 12:10:10'.in_time_zone }
@@ -167,11 +182,16 @@ RSpec.describe User, type: :model do
       let!(:used_point) { create :point, :used, user: user, amount: -200, created_at: '2018/3/1 12:10:10'.in_time_zone }
       let!(:got_point_3) { create :point, :got, user: user, amount: 170, created_at: '2018/4/1 12:10:10'.in_time_zone }
 
+      let!(:batch_schedule) { create :batch_schedule_point_expiration, user: user, batch_at: at - 1.second }
+
       context 'at 2018/3/2 12:10:10' do
         let(:at) { '2018/3/2 12:10:10'.in_time_zone }
 
         it do
-          expect { subject }.not_to change(Point, :count)
+          expect { subject }.not_to change(Point.expired, :count)
+        end
+        it do
+          expect { subject }.not_to change(BatchSchedule::PointExpiration, :count)
         end
       end
 
@@ -179,26 +199,29 @@ RSpec.describe User, type: :model do
         let(:at) { '2018/4/2 12:10:10'.in_time_zone }
 
         it do
-          expect { subject }.not_to change(Point, :count) # 獲得ポイント < 使用ポイントのため
+          expect { subject }.not_to change(Point.expired, :count) # 獲得ポイント < 使用ポイントのため
         end
+        it_behaves_like 'delete batch schedule'
       end
 
       context 'at 2018/5/3 12:10:10' do
         let(:at) { '2018/5/3 12:10:10'.in_time_zone }
 
         it do
-          expect { subject }.to change(Point, :count).by(1) # 250 - 200
+          expect { subject }.to change(Point.expired, :count).by(1) # 250 - 200
           expect(Point.last.amount).to eq(-50)
         end
+        it_behaves_like 'delete batch schedule'
       end
 
       context 'at 2018/7/4 12:10:10' do
         let(:at) { '2018/7/4 12:10:10'.in_time_zone }
 
         it do
-          expect { subject }.to change(Point, :count).by(1) # 獲得ポイント < 使用ポイントのため
+          expect { subject }.to change(Point.expired, :count).by(1) # 獲得ポイント < 使用ポイントのため
           expect(Point.last.amount).to eq(-220) # 420 - 200
         end
+        it_behaves_like 'delete batch schedule'
       end
     end
 
