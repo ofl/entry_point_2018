@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180302232343) do
+ActiveRecord::Schema.define(version: 20180310011752) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "batch_schedule_point_expirations", force: :cascade do |t|
+    t.bigint "user_id"
+    t.datetime "batch_at", null: false, comment: "バッチ実施日時(ポイント失効日時)"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["batch_at"], name: "index_batch_schedule_point_expirations_on_batch_at"
+    t.index ["user_id"], name: "index_batch_schedule_point_expirations_on_user_id"
+  end
 
   create_table "points", force: :cascade do |t|
     t.bigint "user_id"
@@ -63,6 +72,7 @@ ActiveRecord::Schema.define(version: 20180302232343) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  add_foreign_key "batch_schedule_point_expirations", "users"
   add_foreign_key "points", "users"
   add_foreign_key "user_auths", "users"
 end
