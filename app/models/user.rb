@@ -31,6 +31,8 @@
 #
 
 class User < ApplicationRecord
+  include PointAvailable
+
   attr_accessor :login, :dummy_password
 
   MIN_USERNAME_LENGTH = Settings.models.user.username.minlength
@@ -49,6 +51,8 @@ class User < ApplicationRecord
   has_many :user_auths, dependent: :destroy
   has_many :confirmed_user_auths, -> { merge(UserAuth.confirmed) }, class_name: :UserAuth, inverse_of: :user
   has_many :points, dependent: :destroy
+  has_many :point_expiration_schedules, class_name: BatchSchedule::PointExpiration,
+                                        dependent: :destroy, inverse_of: :user
 
   before_create :ensure_dummy_authentication_token
 
@@ -101,22 +105,6 @@ class User < ApplicationRecord
     errors[:email].any?
   end
 
-  def point_amount
-    points.sum(:amount)
-  end
-
-  # 期限切れのポイントの失効処理
-  def expire_points!(now = Time.zone.now)
-    expire_points = points.positive.is_expired(now)
-    return if expire_points.blank?
-
-    transaction do
-      amount = expired_point_amount(now) # 失効するポイント数
-
-      points.create!(status: :expired, amount: -amount) unless amount.zero? # 失効履歴の作成
-    end
-  end
-
   private
 
   def ensure_dummy_authentication_token
@@ -128,14 +116,5 @@ class User < ApplicationRecord
 
   def dummy_email?
     Regexp.new(".+@#{Settings.domain}\\z").match(email)
-  end
-
-  # 失効するポイント数
-  # 失効以前に獲得したポイントから現在までに使用したポイントを引いたものを0と比較し、多い方を返す
-  def expired_point_amount(now = Time.zone.now)
-    expired_amount = points.positive.is_expired(now).sum(:amount) # 失効以前に獲得ポイント
-    used_amount = points.negative.created_before(now).sum(:amount) # 現在までに使用（失効）したポイント(マイナス値)
-
-    [expired_amount - used_amount.abs, 0].max
   end
 end

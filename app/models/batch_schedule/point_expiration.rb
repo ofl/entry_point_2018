@@ -18,6 +18,9 @@
 #  fk_rails_...  (user_id => users.id)
 #
 
+# ポイント失効バッチのスケジュール用モデル
 class BatchSchedule::PointExpiration < ApplicationRecord
   belongs_to :user
+
+  scope :batch_at_before, ->(now = Time.zone.now) { where('batch_at < ?', now) }
 end
