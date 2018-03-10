@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   authenticated :user do
     root to: 'mypage#show', as: :authenticated_root
+
+    resources :points, only: %i[index show create]
   end
 
   devise_for :users, controllers: {
