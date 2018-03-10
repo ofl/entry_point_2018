@@ -15,13 +15,13 @@ module PointAvailable
   # 期限切れのポイントの失効処理
   def expire_points!(now = Time.zone.now)
     expire_points = points.positive.is_expired(now)
-    return if expire_points.blank?
 
     transaction do
-      amount = expired_point_amount(now) # 失効するポイント数
-
-      points.create!(status: :expired, amount: -amount) unless amount.zero? # 失効履歴の作成
       point_expiration_schedules.batch_at_before(now).delete_all # now以前の失効バッチスケジュールを削除
+      return if expire_points.blank?
+
+      amount = expired_point_amount(now) # 失効するポイント数
+      points.create!(status: :expired, amount: -amount) unless amount.zero? # 失効履歴の作成
     end
   end
 

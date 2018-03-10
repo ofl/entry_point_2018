@@ -18,7 +18,7 @@
 #  fk_rails_...  (user_id => users.id)
 #
 
-# ポイント失効バッチのスケジュール用モデル
+# ポイント失効バッチのスケジュール用モデル。バッチ実行後は削除される。
 class BatchSchedule::PointExpiration < ApplicationRecord
   belongs_to :user
 

@@ -187,12 +187,8 @@ RSpec.describe User, type: :model do
       context 'at 2018/3/2 12:10:10' do
         let(:at) { '2018/3/2 12:10:10'.in_time_zone }
 
-        it do
-          expect { subject }.not_to change(Point.expired, :count)
-        end
-        it do
-          expect { subject }.not_to change(BatchSchedule::PointExpiration, :count)
-        end
+        it { expect { subject }.not_to change(Point.expired, :count) }
+        it { expect { subject }.to change(BatchSchedule::PointExpiration, :count).by(-1) }
       end
 
       context 'at 2018/4/2 12:10:10' do
