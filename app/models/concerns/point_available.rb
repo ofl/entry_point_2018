@@ -25,6 +25,13 @@ module PointAvailable
     end
   end
 
+  # 手持ちのポイント全てを失効させる(退会時など)
+  def expire_all_points!(status = :withdrawaled)
+    expire_points = point_amount
+
+    points.create!(status: status, amount: -expire_points) unless expire_points.zero? # 失効履歴の作成
+  end
+
   private
 
   # 失効するポイント数

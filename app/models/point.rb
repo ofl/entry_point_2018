@@ -23,12 +23,14 @@ class Point < ApplicationRecord
 
   enum status: {
     got: 1, # 獲得(+)
-    used: 11, # 使用(-)
-    expired: 99 # 失効(-)
+    login_bonus: 2, # ログインボーナスで獲得(+)
+    used: 21, # 使用(-)
+    expired: 98, # 期限切れによる失効(-)
+    withdrawaled: 99 # 退会による失効(-)
   }
 
-  POSITIVE_STATUSES = %i[got].freeze
-  NEGATIVE_STATUSES = %i[used expired].freeze
+  POSITIVE_STATUSES = %i[got login_bonus].freeze
+  NEGATIVE_STATUSES = %i[used expired withdrawaled].freeze
   EXPIRATION_INTERVAL = Settings.models.point.expiration_interval
 
   validates :status, presence: true, inclusion: { in: statuses }

@@ -236,6 +236,28 @@ RSpec.describe User, type: :model do
       end
     end
 
+    describe '#expire_all_points!' do
+      subject { user.expire_all_points! }
+
+      let!(:got_point_1) { create :point, :got, user: user, amount: 100, created_at: '2018/1/1 12:10:10'.in_time_zone }
+      let!(:got_point_2) { create :point, :got, user: user, amount: 150, created_at: '2018/2/1 12:10:10'.in_time_zone }
+      let!(:used_point) { create :point, :used, user: user, amount: -200, created_at: '2018/3/1 12:10:10'.in_time_zone }
+      let!(:got_point_3) { create :point, :got, user: user, amount: 170, created_at: '2018/4/1 12:10:10'.in_time_zone }
+
+      context 'save successfully' do
+        it do
+          expect { subject }.to change(Point.withdrawaled, :count).by(1)
+          expect(Point.last.amount).to eq(-220) # 420 - 200
+        end
+      end
+
+      context 'save failure' do
+        before { allow_any_instance_of(User).to receive(:point_amount).and_return(-150) }
+
+        it { expect { subject }.to raise_error(ActiveRecord::RecordInvalid) }
+      end
+    end
+
     describe '#expired_point_amount' do
       subject { user.send :expired_point_amount, at }
 
