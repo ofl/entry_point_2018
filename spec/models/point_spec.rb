@@ -66,23 +66,4 @@ RSpec.describe Point, type: :model do
       it { is_expected.to be_truthy }
     end
   end
-
-  describe '#expire_at' do
-    let(:point) { create :point, :got, expired_at: expired_at, created_at: created_at }
-    let(:created_at) { Time.zone.parse('2018/1/1 12:10:10') }
-
-    subject { point.expire_at }
-
-    context 'expired_at is nil' do
-      let(:expired_at) { :nil }
-
-      it { is_expected.to eq created_at + Point::EXPIRATION_INTERVAL.days }
-    end
-
-    context 'expired_at exists' do
-      let(:expired_at) { Time.zone.parse('2018/2/2 12:10:10') }
-
-      it { is_expected.to eq expired_at }
-    end
-  end
 end

@@ -32,5 +32,11 @@ FactoryBot.define do
       status :used
       amount { -rand(1..10) }
     end
+
+    trait :expired do
+      status :expired
+      amount { -rand(1..10) }
+      created_at { (Point::EXPIRATION_INTERVAL + 1).days.ago }
+    end
   end
 end

@@ -153,13 +153,13 @@ RSpec.describe User, type: :model do
       let!(:used_point) { create :point, :used, user: user, amount: -200, created_at: '2018/3/1 12:10:10'.in_time_zone }
       let!(:got_point_3) { create :point, :got, user: user, amount: 170, created_at: '2018/4/1 12:10:10'.in_time_zone }
       let!(:expired_point) do
-        create :point, :expired, user: user, amount: -50, created_at: '2018/5/1 12:10:10'.in_time_zone
+        create :point, user: user, amount: -50, created_at: '2018/5/1 12:10:10'.in_time_zone
       end
 
       it { is_expected.to eq 170 }
     end
 
-    describe '#expired_points!' do
+    describe '#expire_points!' do
       subject { user.expire_points!(at) }
 
       let!(:got_point_1) { create :point, :got, user: user, amount: 100, created_at: '2018/1/1 12:10:10'.in_time_zone }
@@ -172,7 +172,6 @@ RSpec.describe User, type: :model do
 
         it do
           expect { subject }.not_to change(Point, :count)
-          expect(got_point_1.reload.expired_at).to be_nil
         end
       end
 
@@ -181,7 +180,6 @@ RSpec.describe User, type: :model do
 
         it do
           expect { subject }.not_to change(Point, :count) # 獲得ポイント < 使用ポイントのため
-          expect(got_point_1.reload.expired_at).to eq at
         end
       end
 
@@ -191,7 +189,6 @@ RSpec.describe User, type: :model do
         it do
           expect { subject }.to change(Point, :count).by(1) # 250 - 200
           expect(Point.last.amount).to eq(-50)
-          expect(got_point_2.reload.expired_at).to eq at
         end
       end
 
@@ -201,7 +198,6 @@ RSpec.describe User, type: :model do
         it do
           expect { subject }.to change(Point, :count).by(1) # 獲得ポイント < 使用ポイントのため
           expect(Point.last.amount).to eq(-220) # 420 - 200
-          expect(got_point_2.reload.expired_at).to eq at
         end
       end
     end

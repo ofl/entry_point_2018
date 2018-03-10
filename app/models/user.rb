@@ -50,12 +50,6 @@ class User < ApplicationRecord
   has_many :confirmed_user_auths, -> { merge(UserAuth.confirmed) }, class_name: :UserAuth, inverse_of: :user
   has_many :points, dependent: :destroy
 
-  scope :has_expired_points, lambda { |at = Time.zone.now|
-    # inner joinとexistsを使った方法。どちらが速い？
-    # where(Point.where('points.user_id = users.id').positive.is_expired(at).expired_at_is_nil.exists)
-    joins(:points).merge(Point.positive.is_expired(at).expired_at_is_nil)
-  }
-
   before_create :ensure_dummy_authentication_token
 
   def self.find_for_database_authentication(warden_conditions)
@@ -112,15 +106,14 @@ class User < ApplicationRecord
   end
 
   # 期限切れのポイントの失効処理
-  def expire_points!(at = Time.zone.now)
-    expire_points = points.positive.is_expired(at).expired_at_is_nil
+  def expire_points!(now = Time.zone.now)
+    expire_points = points.positive.is_expired(now)
     return if expire_points.blank?
 
     transaction do
-      amount = expired_point_amount(at) # 失効するポイント数
+      amount = expired_point_amount(now) # 失効するポイント数
 
       points.create!(status: :expired, amount: -amount) unless amount.zero? # 失効履歴の作成
-      expire_points.update_all(expired_at: at) # rubocop:disable Rails/SkipsModelValidations
     end
   end
 
@@ -139,9 +132,9 @@ class User < ApplicationRecord
 
   # 失効するポイント数
   # 失効以前に獲得したポイントから現在までに使用したポイントを引いたものを0と比較し、多い方を返す
-  def expired_point_amount(at = Time.zone.now)
-    expired_amount = points.positive.is_expired(at).sum(:amount) # 失効以前に獲得ポイント
-    used_amount = points.negative.created_before(at).sum(:amount) # 現在までに使用（失効）したポイント(マイナス値)
+  def expired_point_amount(now = Time.zone.now)
+    expired_amount = points.positive.is_expired(now).sum(:amount) # 失効以前に獲得ポイント
+    used_amount = points.negative.created_before(now).sum(:amount) # 現在までに使用（失効）したポイント(マイナス値)
 
     [expired_amount - used_amount.abs, 0].max
   end

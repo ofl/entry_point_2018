@@ -44,10 +44,8 @@ class Point < ApplicationRecord
   # statusのexpiredとかぶるためexpired -> is_expired
   scope :is_expired, ->(at = Time.zone.now) { created_before(at - EXPIRATION_INTERVAL.days) }
 
-  scope :expired_at_is_nil, -> { where(expired_at: nil) }
-
   def expire_at
-    expired_at || created_at + EXPIRATION_INTERVAL.days
+    created_at + EXPIRATION_INTERVAL.days
   end
 
   private
