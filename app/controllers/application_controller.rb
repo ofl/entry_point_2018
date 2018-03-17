@@ -21,18 +21,18 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def handle_403(e)
-    @exception = e
+  def handle_403(error)
+    @exception = error
     render file: Rails.root.join('public', '403.html'), layout: false, status: 403
   end
 
-  def handle_401(e)
-    @exception = e
+  def handle_401(error)
+    @exception = error
     redirect_to new_user_session_path, notice: 'login required'
   end
 
-  def handle_400(e)
-    @exception = e
+  def handle_400(error)
+    @exception = error
     render file: Rails.root.join('public', '400.html'), layout: false, status: 403
   end
 end

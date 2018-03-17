@@ -6,8 +6,9 @@
       = simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
         .form-inputs.row
           = f.input :username, readonly: true, icon: "person"
-          = f.input :password, readonly: true, icon: "lock",
+          = f.input :dummy_password, readonly: true, icon: "lock",
             input_html: { value: '************' }, label_html: { data: { hint: "#{@minimum_password_length} Characters Minimum" } }
+          = f.hidden_field :password
         .form-actions.center
           - if resource.auth_with_email?
             = f.button :submit, t('.send_confirmation_email'), name: 'auth_via_email', class: 'waves-button-input'

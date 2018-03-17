@@ -29,8 +29,8 @@ class AuthProviders::Facebook
 
   def birthday(str)
     return nil if str.blank?
-    return Date.strptime(str, '%m/%d/%Y')
+    Date.strptime(str, '%m/%d/%Y')
   rescue ArgumentError
-    return nil
+    nil
   end
 end

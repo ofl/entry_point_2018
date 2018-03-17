@@ -10,7 +10,7 @@ module DeviseHelper
     <ul>#{err}</ul>
     HTML
 
-    html.html_safe
+    html.html_safe # rubocop:disable Rails/OutputSafety
   end
 
   def devise_error_messages?

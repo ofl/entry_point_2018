@@ -14,11 +14,11 @@ class Users::UserAuthsController < ApplicationController
   end
 
   def new
-    @user_auth ||= current_user.user_auths.build(provider: params[:provider] || :email)
+    @user_auth = current_user.user_auths.build(provider: params[:provider] || :email)
   end
 
   def edit
-    @user_auth ||= current_user.user_auths.find_by!(provider: params[:provider])
+    @user_auth = current_user.user_auths.find_by!(provider: params[:provider])
   end
 
   # def create
