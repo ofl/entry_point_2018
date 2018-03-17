@@ -1,36 +1,9 @@
-h1
-  | Points
-table
-  tr
-    th
-      | Status
-    th
-      | Amount
-    th
-      | Created At
-    th
-      |
-  - @points.each do |point|
-    tr
-      td
-        = point.status
-      td
-        = point.amount
-      td
-        = point.created_at
-      td
-        = link_to 'Show', point
-
-br
-= link_to 'Get Point', points_path, method: 'post'
-
-
 .row
-  #admin.col.s12
+  .col.s12
     .card.material-table
       .table-header
         h5
-          | Posts
+          | Points
         .actions[data-turbolinks="false"]
           a.search-toggle.waves-effect.btn-flat.nopadding[href="#"]
             i.material-icons
@@ -44,161 +17,23 @@ br
           thead
             tr[role="row"]
               th.sorting_asc[width="30%" tabindex="0" aria-controls="dttb" rowspan="1" colspan="1" aria-label="Title: activate to sort column descending" aria-sort="ascending"]
-                | Title
+                | Status
               th.sorting[tabindex="0" aria-controls="dttb" rowspan="1" colspan="1" aria-label="Body: activate to sort column ascending"]
-                | Body
-              th.sorting[width="100px" tabindex="0" aria-controls="dttb" rowspan="1" colspan="1" aria-label="Published: activate to sort column ascending"]
-                | Published
+                | Amount
               th.sorting[tabindex="0" aria-controls="dttb" rowspan="1" colspan="1" aria-label="Created at: activate to sort column ascending"]
                 | Created at
-              th.sorting[tabindex="0" aria-controls="dttb" rowspan="1" colspan="1" aria-label="Updated at: activate to sort column ascending"]
-                | Updated at
               th.sorting[tabindex="0" aria-controls="dttb" rowspan="1" colspan="1" aria-label=": activate to sort column ascending"]
           tbody
+          - @points.each do |point|
             tr.odd[role="row"]
               td.sorting_1[tabindex="0"]
-                | kk
+                = point.status
               td
-                | nnnnnnnnnnnnnnnnnnnnnnnnnnnnVeer
+                = point.amount
               td
-                | false
-              td
-                | 2017-11-01 06:13:46 UTC
-              td
-                | 2018-02-21 00:24:00 UTC
+                = point.created_at
               td.right-align
-                a[href="/posts/120"]
-                  | Show
-                a[href="/posts/120/edit"]
-                  |  Edit
-                a[data-confirm="Are you sure?" rel="nofollow" data-method="delete" href="/posts/120"]
-                  |  Destroy
-            tr.even[role="row"]
-              td.sorting_1[tabindex="0"]
-                | rewrgewrgewrgweg
-              td
-                | ergewrgwergergergdsfgsdgfsdgfs
-              td
-                | false
-              td
-                | 2018-01-03 03:30:39 UTC
-              td
-                | 2018-01-03 03:30:39 UTC
-              td.right-align
-                a[href="/posts/146"]
-                  | Show
-                a[href="/posts/146/edit"]
-                  |  Edit
-                a[data-confirm="Are you sure?" rel="nofollow" data-method="delete" href="/posts/146"]
-                  |  Destroy
-            tr.odd[role="row"]
-              td.sorting_1[tabindex="0"]
-                | sarixach
-              td
-                | my body
-              td
-                | false
-              td
-                | 2018-02-15 09:55:09 UTC
-              td
-                | 2018-02-15 09:55:09 UTC
-              td.right-align
-                a[href="/posts/151"]
-                  | Show
-                a[href="/posts/151/edit"]
-                  |  Edit
-                a[data-confirm="Are you sure?" rel="nofollow" data-method="delete" href="/posts/151"]
-                  |  Destroy
-            tr.even[role="row"]
-              td.sorting_1[tabindex="0"]
-                | TEST
-              td
-                | TEST
-              td
-                | false
-              td
-                | 2018-01-20 08:38:13 UTC
-              td
-                | 2018-01-20 08:38:13 UTC
-              td.right-align
-                a[href="/posts/148"]
-                  | Show
-                a[href="/posts/148/edit"]
-                  |  Edit
-                a[data-confirm="Are you sure?" rel="nofollow" data-method="delete" href="/posts/148"]
-                  |  Destroy
-            tr.odd[role="row"]
-              td.sorting_1[tabindex="0"]
-                | test
-              td
-                | estes
-              td
-                | false
-              td
-                | 2018-03-06 14:49:17 UTC
-              td
-                | 2018-03-06 14:49:17 UTC
-              td.right-align
-                a[href="/posts/152"]
-                  | Show
-                a[href="/posts/152/edit"]
-                  |  Edit
-                a[data-confirm="Are you sure?" rel="nofollow" data-method="delete" href="/posts/152"]
-                  |  Destroy
-            tr.even[role="row"]
-              td.sorting_1[tabindex="0"]
-                | This is pretty Cool
-              td
-                | Glad to see this works.
-              td
-                | false
-              td
-                | 2018-01-16 06:27:00 UTC
-              td
-                | 2018-01-16 06:27:00 UTC
-              td.right-align
-                a[href="/posts/147"]
-                  | Show
-                a[href="/posts/147/edit"]
-                  |  Edit
-                a[data-confirm="Are you sure?" rel="nofollow" data-method="delete" href="/posts/147"]
-                  |  Destroy
-            tr.odd[role="row"]
-              td.sorting_1[tabindex="0"]
-                | Title can't be blank
-              td
-                | Body can't be blank
-              td
-                | false
-              td
-                | 2018-02-12 05:16:12 UTC
-              td
-                | 2018-02-12 05:16:12 UTC
-              td.right-align
-                a[href="/posts/150"]
-                  | Show
-                a[href="/posts/150/edit"]
-                  |  Edit
-                a[data-confirm="Are you sure?" rel="nofollow" data-method="delete" href="/posts/150"]
-                  |  Destroy
-            tr.even[role="row"]
-              td.sorting_1[tabindex="0"]
-                | wow such materialize
-              td
-                | df
-              td
-                | false
-              td
-                | 2018-01-27 22:11:41 UTC
-              td
-                | 2018-01-28 18:23:16 UTC
-              td.right-align
-                a[href="/posts/149"]
-                  | Show
-                a[href="/posts/149/edit"]
-                  |  Edit
-                a[data-confirm="Are you sure?" rel="nofollow" data-method="delete" href="/posts/149"]
-                  |  Destroy
+                = link_to 'Show', point
         .table-footer
           #dttb_length.dataTables_length
             label

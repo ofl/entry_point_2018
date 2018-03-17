@@ -5,3 +5,6 @@ $secondary-color: color('cyan', 'base') !default;
 @import 'materialize';
 @import 'material_icons';
 @import "https://fonts.googleapis.com/icon?family=Material+Icons";
+@import "datatables";
+@import "devise";
+@import "custom";
