@@ -21,6 +21,8 @@
 class Point < ApplicationRecord
   belongs_to :user
 
+  paginates_per 10
+
   enum status: {
     got: 1, # 獲得(+)
     login_bonus: 2, # ログインボーナスで獲得(+)

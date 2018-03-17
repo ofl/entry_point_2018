@@ -1,5 +1,10 @@
 # README
 
+### ライブラリ
+
+-   [plataformatec/devise](https://github.com/plataformatec/devise)
+-   [mkhairi/materialize-rails](http://materialize.labs.my)
+
 ### セットアップ
 
 ```sh

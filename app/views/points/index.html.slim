@@ -2,68 +2,27 @@
   .col.s12
     .card.material-table
       .table-header
-        h5
-          | Points
+        h5 Points
         .actions[data-turbolinks="false"]
           a.search-toggle.waves-effect.btn-flat.nopadding[href="#"]
-            i.material-icons
-              | search
-      #dttb_wrapper.dataTables_wrapper.no-footer
-        .hiddensearch
-          #dttb_filter.dataTables_filter
-            label
-              input[type="search" placeholder="Enter Keywords Here" aria-controls="dttb"]
-        table#dttb.table.no-footer.dtr-inline.dataTable[role="grid" aria-describedby="dttb_info"]
-          thead
-            tr[role="row"]
-              th.sorting_asc[width="30%" tabindex="0" aria-controls="dttb" rowspan="1" colspan="1" aria-label="Title: activate to sort column descending" aria-sort="ascending"]
-                | Status
-              th.sorting[tabindex="0" aria-controls="dttb" rowspan="1" colspan="1" aria-label="Body: activate to sort column ascending"]
-                | Amount
-              th.sorting[tabindex="0" aria-controls="dttb" rowspan="1" colspan="1" aria-label="Created at: activate to sort column ascending"]
-                | Created at
-              th.sorting[tabindex="0" aria-controls="dttb" rowspan="1" colspan="1" aria-label=": activate to sort column ascending"]
+            i.material-icons search
+
+      table#dttb.table
+        thead
+          tr
+            th width="30%"Status
+            th Amount
+            th Created at
+            th
+
           tbody
-          - @points.each do |point|
-            tr.odd[role="row"]
-              td.sorting_1[tabindex="0"]
-                = point.status
-              td
-                = point.amount
-              td
-                = point.created_at
-              td.right-align
-                = link_to 'Show', point
-        .table-footer
-          #dttb_length.dataTables_length
-            label
-              span
-                | Rows per page:
-              select.browser-default
-                option[value="10"]
-                  | 10
-                option[value="20"]
-                  | 20
-                option[value="30"]
-                  | 30
-                option[value="40"]
-                  | 40
-                option[value="50"]
-                  | 50
-                option[value="-1"]
-                  | All
-          #dttb_info.dataTables_info[role="status" aria-live="polite"]
-            | 1 -8 of 8
-          #dttb_paginate.dataTables_paginate.paging_full
-            a#dttb_first.paginate_button.first.disabled[aria-controls="dttb" data-dt-idx="0" tabindex="0"]
-              i.material-icons
-                | first_page
-            a#dttb_previous.paginate_button.previous.disabled[aria-controls="dttb" data-dt-idx="1" tabindex="0"]
-              i.material-icons
-                | navigate_before
-            a#dttb_next.paginate_button.next.disabled[aria-controls="dttb" data-dt-idx="2" tabindex="0"]
-              i.material-icons
-                | navigate_next
-            a#dttb_last.paginate_button.last.disabled[aria-controls="dttb" data-dt-idx="3" tabindex="0"]
-              i.material-icons
-                | last_page
+            - @points.each do |point|
+              tr
+                td = point.status
+                td = point.amount
+                td = point.created_at
+                td.right-align
+                  = link_to 'Show', point
+
+      .table-footer
+        = paginate @points

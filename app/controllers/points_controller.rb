@@ -2,7 +2,7 @@ class PointsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @points = current_user.points.order(created_at: :desc)
+    @points = current_user.points.order(created_at: :desc).page(params[:page])
   end
 
   def show
