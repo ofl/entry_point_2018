@@ -9,7 +9,7 @@
             = devise_error_messages!
             = alert
         .form-inputs.row
-          = f.input :username, autofocus: true, autocomplete: "off", required: true, icon: "person"
+          = f.input :login, autofocus: true, autocomplete: "off", required: true, icon: "person"
           = f.input :password, autocomplete: "off", required: true, icon: "lock"
           = f.input_field :remember_me, as: :boolean
         .form-actions.center

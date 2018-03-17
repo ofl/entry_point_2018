@@ -31,7 +31,7 @@
 #
 
 class User < ApplicationRecord
-  attr_accessor :login
+  attr_accessor :login, :dummy_password
 
   MIN_USERNAME_LENGTH = Settings.models.user.username.minlength
   MAX_USERNAME_LENGTH = Settings.models.user.username.maxlength
