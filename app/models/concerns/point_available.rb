@@ -16,7 +16,7 @@ module PointAvailable
 
   # ポイントの喪失
   def lose_point!(amount, status = :used)
-    points.create!(status: status, amount: amount)
+    points.create!(status: status, amount: -amount)
   end
 
   # 期限切れのポイントを失効させる
@@ -28,7 +28,7 @@ module PointAvailable
       return if outdated_points.blank?
 
       amount = outdated_point_amount(now) # 失効するポイント数
-      points.create!(status: :outdated, amount: -amount) unless amount.zero? # 失効履歴の作成
+      lose_point!(amount, :outdated) unless amount.zero? # 失効履歴の作成
     end
   end
 
@@ -36,7 +36,7 @@ module PointAvailable
   def outdate_all_points!(status = :withdrawaled)
     outdated_points = point_amount
 
-    points.create!(status: status, amount: -outdated_points) unless outdated_points.zero? # 失効履歴の作成
+    lose_point!(outdated_points, status) unless outdated_points.zero? # 失効履歴の作成
   end
 
   private
