@@ -47,7 +47,12 @@ class Point < ApplicationRecord
   scope :is_outdated, ->(at = Time.zone.now) { created_before(at - EXPIRATION_INTERVAL.days) }
 
   def outdate_at
+    return nil unless positive?
     created_at + EXPIRATION_INTERVAL.days
+  end
+
+  def expired?(now = Time.zone.now)
+    positive? && created_at < now - EXPIRATION_INTERVAL.days
   end
 
   private
