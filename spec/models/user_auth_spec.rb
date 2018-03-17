@@ -51,7 +51,7 @@ RSpec.describe UserAuth, type: :model do
       let(:user_auth) { build :user_auth, user: user }
       let(:user) { create :user }
 
-      subject { user_auth.confirme!(at: Time.zone.parse('2017-07-07 07:07')) }
+      subject { user_auth.confirme!(now: Time.zone.parse('2017-07-07 07:07')) }
 
       context 'old auth not exists' do
         it do
@@ -136,7 +136,7 @@ RSpec.describe UserAuth, type: :model do
     describe 'confirm_by_token!' do
       let(:user_auth) { build :user_auth, confirmation_sent_at: Time.zone.parse('2017-06-06 06:06') }
 
-      subject { user_auth.confirm_by_token!(at: at) }
+      subject { user_auth.confirm_by_token!(now: at) }
 
       context 'token in time' do
         let(:at) { Time.zone.parse('2017-06-06 06:07') }

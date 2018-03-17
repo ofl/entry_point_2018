@@ -65,6 +65,9 @@ Style/FrozenStringLiteralComment:
 Style/ClassAndModuleChildren:
   Enabled: false
 
+Style/ExpandPathArguments:
+  Enabled: false
+
 Style/PercentLiteralDelimiters:
   Enabled: false
 

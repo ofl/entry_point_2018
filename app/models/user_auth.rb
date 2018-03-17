@@ -57,10 +57,10 @@ class UserAuth < ApplicationRecord
     generate_temporary_uid if external_auth_provider?
   end
 
-  def confirme!(at: Time.current)
+  def confirme!(now: Time.current)
     transaction do
       disable_old_auths!
-      self.confirmed_at = at
+      self.confirmed_at = now
       generate_confirmation_token # disable current token
       save!
     end
@@ -71,8 +71,8 @@ class UserAuth < ApplicationRecord
     errors.add(:user_password, ' is invalid')
   end
 
-  def confirm_by_token!(at: Time.current)
-    raise ConfirmationExpired if confirmation_time_out?(at: at)
+  def confirm_by_token!(now: Time.current)
+    raise ConfirmationExpired if confirmation_time_out?(now: now)
     confirme!
   end
 
@@ -109,9 +109,9 @@ class UserAuth < ApplicationRecord
     AuthenticationMailer.confirmation_instructions(user, self).deliver_now
   end
 
-  def confirmation_time_out?(at: Time.current)
+  def confirmation_time_out?(now: Time.current)
     return true if confirmation_sent_at.nil?
-    confirmation_sent_at + Settings.confirmation.mail_expired.minutes < at
+    confirmation_sent_at + Settings.confirmation.mail_expired.minutes < now
   end
 
   private
