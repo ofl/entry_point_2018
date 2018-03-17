@@ -16,7 +16,7 @@ describe 'rake task points' do
   describe 'points:expire' do
     let!(:user) { create :user }
     let!(:got_point) { create :point, :got, user: user, created_at: created_at }
-    let!(:batch_schedule) { create :batch_schedule_point_expiration, user: user, batch_at: 1.day.ago }
+    let!(:batch_schedule) { create :batch_schedule_point_expiration, user: user, run_on: 1.day.ago }
 
     let(:task) { 'points:expire' }
 

@@ -190,7 +190,7 @@ RSpec.describe User, type: :model do
       let!(:used_point) { create :point, :used, user: user, amount: -200, created_at: '2018/3/1 12:10:10'.in_time_zone }
       let!(:got_point_3) { create :point, :got, user: user, amount: 170, created_at: '2018/4/1 12:10:10'.in_time_zone }
 
-      let!(:batch_schedule) { create :batch_schedule_point_expiration, user: user, batch_at: at - 1.second }
+      let!(:batch_schedule) { create :batch_schedule_point_expiration, user: user, run_on: at - 1.second }
 
       context 'at 2018/3/2 12:10:10' do
         let(:at) { '2018/3/2 12:10:10'.in_time_zone }
