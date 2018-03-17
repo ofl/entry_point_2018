@@ -35,11 +35,9 @@ class Point < ApplicationRecord
   NEGATIVE_STATUSES = %i[used outdated withdrawaled].freeze
   EXPIRATION_INTERVAL = Settings.models.point.expiration_interval
 
-  validates :status, presence: true, inclusion: { in: statuses }
-  validates :amount, presence: true, numericality: { only_integer: true, greater_than: 0, less_than: 9999 },
-                     if: :positive?
-  validates :amount, presence: true, numericality: { only_integer: true, greater_than: -9999, less_than: 0 },
-                     if: :negative?
+  validates :status, inclusion: { in: statuses }
+  validates :amount, numericality: { only_integer: true, greater_than: 0, less_than: 9999 }, if: :positive?
+  validates :amount, numericality: { only_integer: true, greater_than: -9999, less_than: 0 }, if: :negative?
 
   scope :positive, -> { where(status: POSITIVE_STATUSES) }
   scope :negative, -> { where(status: NEGATIVE_STATUSES) }
