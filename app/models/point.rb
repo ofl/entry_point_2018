@@ -27,12 +27,12 @@ class Point < ApplicationRecord
     got: 1, # 獲得(+)
     login_bonus: 2, # ログインボーナスで獲得(+)
     used: 21, # 使用(-)
-    expired: 98, # 期限切れによる失効(-)
+    outdated: 98, # 期限切れによる失効(-)
     withdrawaled: 99 # 退会による失効(-)
   }
 
   POSITIVE_STATUSES = %i[got login_bonus].freeze
-  NEGATIVE_STATUSES = %i[used expired withdrawaled].freeze
+  NEGATIVE_STATUSES = %i[used outdated withdrawaled].freeze
   EXPIRATION_INTERVAL = Settings.models.point.expiration_interval
 
   validates :status, presence: true, inclusion: { in: statuses }
@@ -45,10 +45,10 @@ class Point < ApplicationRecord
   scope :negative, -> { where(status: NEGATIVE_STATUSES) }
 
   scope :created_before, ->(at = Time.zone.now) { where('points.created_at < ?', at) }
-  # statusのexpiredとかぶるためexpired -> is_expired
-  scope :is_expired, ->(at = Time.zone.now) { created_before(at - EXPIRATION_INTERVAL.days) }
+  # statusのoutdatedとかぶるためoutdated -> is_outdated
+  scope :is_outdated, ->(at = Time.zone.now) { created_before(at - EXPIRATION_INTERVAL.days) }
 
-  def expire_at
+  def outdate_at
     created_at + EXPIRATION_INTERVAL.days
   end
 

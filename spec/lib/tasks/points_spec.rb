@@ -13,26 +13,26 @@ describe 'rake task points' do
     @rake[task].reenable
   end
 
-  describe 'points:expire' do
+  describe 'points:outdate' do
     let!(:user) { create :user }
     let!(:got_point) { create :point, :got, user: user, created_at: created_at }
     let!(:batch_schedule) { create :batch_schedule_point_expiration, user: user, run_on: 1.day.ago }
 
-    let(:task) { 'points:expire' }
+    let(:task) { 'points:outdate' }
 
     subject { @rake[task].invoke }
 
-    context 'expired points not exists' do
+    context 'outdated points not exists' do
       let(:created_at) { 89.days.ago }
 
-      it { expect { subject }.not_to change(Point.expired, :count) }
+      it { expect { subject }.not_to change(Point.outdated, :count) }
       it { expect { subject }.to change(BatchSchedule::PointExpiration, :count).by(-1) }
     end
 
-    context 'expired points exists' do
+    context 'outdated points exists' do
       let(:created_at) { 91.days.ago }
 
-      it { expect { subject }.to change(Point.expired, :count).by(1) }
+      it { expect { subject }.to change(Point.outdated, :count).by(1) }
       it { expect { subject }.to change(BatchSchedule::PointExpiration, :count).by(-1) }
     end
   end

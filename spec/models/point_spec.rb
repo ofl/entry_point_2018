@@ -24,7 +24,7 @@ RSpec.describe Point, type: :model do
   describe 'scope' do
     let!(:got_point) { create :point, :got }
     let!(:used_point) { create :point, :used }
-    let!(:expired_point) { create :point, :expired }
+    let!(:outdated_point) { create :point, :outdated }
 
     describe '.positive' do
       subject { Point.positive }
@@ -35,7 +35,7 @@ RSpec.describe Point, type: :model do
     describe '.negative' do
       subject { Point.negative }
 
-      it { is_expected.to contain_exactly(used_point, expired_point) }
+      it { is_expected.to contain_exactly(used_point, outdated_point) }
     end
   end
 
