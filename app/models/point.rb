@@ -46,13 +46,14 @@ class Point < ApplicationRecord
   # statusのoutdatedとかぶるためoutdated -> is_outdated
   scope :is_outdated, ->(at = Time.zone.now) { created_before(at - EXPIRATION_INTERVAL.days) }
 
+  # 失効日時。作成日時から失効日数経過した日の1日の終わりの日時
   def outdate_at
     return nil unless positive?
-    created_at + EXPIRATION_INTERVAL.days
+    (created_at + EXPIRATION_INTERVAL.days).end_of_day
   end
 
   def expired?(now = Time.zone.now)
-    positive? && created_at < now - EXPIRATION_INTERVAL.days
+    positive? && outdate_at < now
   end
 
   private
