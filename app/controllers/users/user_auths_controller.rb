@@ -8,7 +8,7 @@ class Users::UserAuthsController < ApplicationController
   def show
     @user_auth = UserAuth.find_by!(provider: params[:provider], confirmation_token: params[:confirmation_token])
     @user_auth.confirm_by_token!
-    redirect_to new_user_session_path, notice: t('.confirmed')
+    redirect_to authenticated_root_path, notice: t('.confirmed')
   rescue UserAuth::ConfirmationExpired
     redirect_to root_path, alert: t('.confirmation_period_expired')
   end
