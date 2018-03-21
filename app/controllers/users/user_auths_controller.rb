@@ -40,7 +40,6 @@ class Users::UserAuthsController < ApplicationController
   end
 
   def after_create_failure
-    flash.now[:alert] = @user_auth.errors.full_messages.join(',')
     render :new
   end
 

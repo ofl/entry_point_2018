@@ -4,6 +4,10 @@
       span.card-title.center= t('.new_user_auth')
       .divider
       = simple_form_for(@user_auth, url: users_user_auths_path) do |f|
+        - if @user_auth.errors.any?
+          .form-errors.red.lighten-1
+            - @user_auth.errors.full_messages.each do |msg|
+              = msg
         .form-inputs.row
           - if @user_auth.email?
             = f.input :uid, as: :email, autofocus: true, autocomplete: "off", icon: "email"

@@ -68,7 +68,7 @@ class UserAuth < ApplicationRecord
 
   def confirm_user_password
     return if user.valid_password?(user_password)
-    errors.add(:user_password, ' is invalid')
+    errors.add(:user_password)
   end
 
   def confirm_by_token!(now: Time.current)
