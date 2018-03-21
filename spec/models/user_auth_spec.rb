@@ -51,7 +51,7 @@ RSpec.describe UserAuth, type: :model do
       let(:user_auth) { build :user_auth, user: user }
       let(:user) { create :user }
 
-      subject { user_auth.confirme!(now: Time.zone.parse('2017-07-07 07:07')) }
+      subject { user_auth.confirme!(now: '2017-07-07 07:07'.in_time_zone) }
 
       context 'old auth not exists' do
         it do
@@ -59,20 +59,20 @@ RSpec.describe UserAuth, type: :model do
 
           subject
           expect(user_auth.persisted?).to be_truthy
-          expect(user_auth.confirmed_at).to eq Time.zone.parse('2017-07-07 07:07')
+          expect(user_auth.confirmed_at).to eq '2017-07-07 07:07'.in_time_zone
           expect(user_auth.confirmation_token).not_to eq old_token
         end
       end
 
       context 'old auth exists' do
-        let!(:old_auth) { create :user_auth, user: user, confirmed_at: Time.zone.parse('2017-06-06 06:06') }
+        let!(:old_auth) { create :user_auth, user: user, confirmed_at: '2017-06-06 06:06'.in_time_zone }
 
         it do
-          expect(old_auth.confirmed_at).to eq Time.zone.parse('2017-06-06 06:06')
+          expect(old_auth.confirmed_at).to eq '2017-06-06 06:06'.in_time_zone
 
           subject
           expect(user_auth.persisted?).to be_truthy
-          expect(user_auth.confirmed_at).to eq Time.zone.parse('2017-07-07 07:07')
+          expect(user_auth.confirmed_at).to eq '2017-07-07 07:07'.in_time_zone
 
           expect(old_auth.reload.confirmed_at).to be_nil
         end
@@ -134,12 +134,12 @@ RSpec.describe UserAuth, type: :model do
     end
 
     describe 'confirm_by_token!' do
-      let(:user_auth) { build :user_auth, confirmation_sent_at: Time.zone.parse('2017-06-06 06:06') }
+      let(:user_auth) { build :user_auth, confirmation_sent_at: '2017-06-06 06:06'.in_time_zone }
 
       subject { user_auth.confirm_by_token!(now: at) }
 
       context 'token in time' do
-        let(:at) { Time.zone.parse('2017-06-06 06:07') }
+        let(:at) { '2017-06-06 06:07'.in_time_zone }
 
         it do
           expect(user_auth.confirmed_at).to be_nil
@@ -151,14 +151,14 @@ RSpec.describe UserAuth, type: :model do
       end
 
       context 'token expired' do
-        let(:at) { Time.zone.parse('2017-06-07 06:07') }
+        let(:at) { '2017-06-07 06:07'.in_time_zone }
 
         it { expect { subject }.to raise_error UserAuth::ConfirmationExpired }
       end
     end
 
     describe 'generate_confirmation_token' do
-      let(:user_auth) { build :user_auth, confirmation_sent_at: Time.zone.parse('2017-06-06 06:06') }
+      let(:user_auth) { build :user_auth, confirmation_sent_at: '2017-06-06 06:06'.in_time_zone }
 
       subject { user_auth.generate_confirmation_token }
 
@@ -172,7 +172,7 @@ RSpec.describe UserAuth, type: :model do
     end
 
     describe 'generate_temporary_uid' do
-      let(:user_auth) { build :user_auth, uid: nil, confirmation_sent_at: Time.zone.parse('2017-06-06 06:06') }
+      let(:user_auth) { build :user_auth, uid: nil, confirmation_sent_at: '2017-06-06 06:06'.in_time_zone }
 
       subject { user_auth.generate_temporary_uid }
 
