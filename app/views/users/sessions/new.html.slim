@@ -14,6 +14,15 @@
           = f.input_field :remember_me, as: :boolean
         .form-actions.center
           = f.button :submit, t('.log_in'), class: 'waves-button-input'
+
+      - if devise_mapping.omniauthable?
+        .divider
+        .form-actions.center
+          h5 = t('.login_via_sns')
+        .form-actions.center
+          - resource_class.omniauth_providers.each do |provider|
+            = link_to t('.sign_in_with', provider: OmniAuth::Utils.camelize(provider)), omniauth_authorize_path(resource_name, provider), class: 'waves-effect waves-light v-aligned-btn btn'
+            br
       .card-action
         .devise-links
           = render "users/shared/links"
