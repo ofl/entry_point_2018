@@ -20,6 +20,9 @@ ja:
     sessions:
       new:
         <<: *default
+        login_via_sns: SNSでログインする
+        signin_via_twitter: Twitterでログイン
+        signin_via_facebook: Facebookでログイン
     shared:
       links:
         <<: *default
