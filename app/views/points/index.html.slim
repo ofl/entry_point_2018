@@ -1,4 +1,7 @@
 .row
+  .buttons
+    = link_to t('.get_point'), points_path, method: :post, class: 'waves-effect waves-light btn-large'
+
   .col.s12
     .card.material-table
       .table-header
@@ -24,9 +27,12 @@
                 td
                   - if point.outdate_at
                     = l(point.outdate_at, format: :day)
-                td = l(point.created_at, format: :day)
+                td = l(point.created_at, format: :short)
                 td.right-align
                   = link_to t('.detail'), point
 
       .table-footer
         = paginate @points
+
+  .links
+    = link_to t('.back'), authenticated_root_path

@@ -1,4 +1,6 @@
 ja:
+  default: &default
+    back: 戻る
   users:
     omniauth_callbacks:
       not_match: "%{provider}アカウントは別ユーザー認証済みです"
@@ -12,5 +14,13 @@ ja:
       confirmation_period_expired: 期限切れです。もう一度手続きをしてください
   points:
     index:
+      <<: *default
       points: ポイント履歴一覧
       detail: 詳細
+      get_point: ポイントガチャ
+    show:
+      <<: *default
+      point: ポイント履歴
+      index: 一覧へ
+    create:
+      got_point: "%{amount}ポイント獲得しました"

@@ -10,7 +10,9 @@ class PointsController < ApplicationController
   end
 
   def create
-    current_user.points.create(status: :got, amount: rand(1..100))
-    redirect_to points_path
+    point_amount = rand(1..100)
+    current_user.get_point!(point_amount)
+
+    redirect_to points_path, flash: { success: t('.got_point', amount: point_amount) }
   end
 end

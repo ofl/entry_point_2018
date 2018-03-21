@@ -1,21 +1,21 @@
-h1
-  | Points
+h3 = t('.point')
+
 table
   tr
-    th
-      | Status
-    td
-      = @point.status
+    th = t('activerecord.attributes.point.status')
+    td = t(@point.status, scope: %i[activerecord attributes point statuses])
   tr
-    th
-      | Amount
-    td
-      = @point.amount
+    th = t('activerecord.attributes.point.amount')
+    td = @point.amount
+
+  - if @point.outdate_at
+    tr
+      th = t('activerecord.attributes.point.outdate_at')
+      td = l(@point.outdate_at, format: :day)
+
   tr
-    th
-      | Created At
-    td
-      = @point.created_at
+    th = t('activerecord.attributes.point.created_at')
+    td = l(@point.created_at, format: :short)
 
 br
-= link_to 'Index', points_path
+= link_to t('.back'), points_path

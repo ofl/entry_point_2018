@@ -11,7 +11,7 @@ html
       nav
         .nav-wrapper
           a.brand-logo[href="/"]
-            | Logos
+            | EntryPoint2018
           ul#nav-mobile.right.hide-on-med-and-down
             - if user_signed_in?
               li
@@ -23,17 +23,11 @@ html
               li
                 - if controller_name != 'registrations'
                   = link_to t('.sign_up'), new_user_registration_path
-            li
-              a[href="collapsible.html"]
-                | JavaScript
     main
       .container
-        p.notice
-          = notice
-        p.alert
-          = alert
+        = render 'layouts/materialize_massege'
+
         = yield
-        = javascript_pack_tag 'hello_vue'
 
     footer.page-footer.blue
       .container
