@@ -17,10 +17,10 @@ ActiveRecord::Schema.define(version: 20180310011752) do
 
   create_table "batch_schedule_point_expirations", force: :cascade do |t|
     t.bigint "user_id"
-    t.date "run_on", null: false, comment: "バッチ実施日(ポイント失効日)"
+    t.datetime "run_at", null: false, comment: "バッチ実施日時(ポイント失効日時)"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["run_on"], name: "index_batch_schedule_point_expirations_on_run_on"
+    t.index ["run_at"], name: "index_batch_schedule_point_expirations_on_run_at"
     t.index ["user_id"], name: "index_batch_schedule_point_expirations_on_user_id"
   end
 

@@ -190,7 +190,7 @@ RSpec.describe User, type: :model do
       let!(:used_point) { create :point, :used, user: user, amount: -200, created_at: '2018/3/1 12:10:10'.in_time_zone }
       let!(:got_point_3) { create :point, :got, user: user, amount: 170, created_at: '2018/4/1 12:10:10'.in_time_zone }
 
-      let!(:batch_schedule) { create :batch_schedule_point_expiration, user: user, run_on: at - 1.second }
+      let!(:batch_schedule) { create :batch_schedule_point_expiration, user: user, run_at: at - 1.second }
 
       context 'at 2018/3/2 12:10:10' do
         let(:at) { '2018/3/2 12:10:10'.in_time_zone }
@@ -284,7 +284,7 @@ RSpec.describe User, type: :model do
         context 'used amount is 200' do
           let(:used_amount) { -200 }
 
-          it { is_expected.to eq 0 } # 100 - 50
+          it { is_expected.to eq 0 } # 100 - 200 < 0
         end
       end
 
@@ -293,13 +293,13 @@ RSpec.describe User, type: :model do
         let(:used_amount) { -200 }
 
         context 'outdated point not exists' do
-          it { is_expected.to eq 50 } # 100 + 150 - 200
+          it { is_expected.to eq 50 } # 100 + 150 - 200 > 0
         end
 
         context 'outdated point is exists' do
           before { create :point, :outdated, user: user, amount: -50 }
 
-          it { is_expected.to eq 0 } # 100 + 150 - 200 - 50
+          it { is_expected.to eq 0 } # 100 + 150 - 200 - 50 == 0
         end
       end
     end

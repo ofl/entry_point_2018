@@ -6,11 +6,11 @@ module PointAvailable
     points.sum(:amount)
   end
 
-  # ポイントの獲得。獲得したポイントは期限がくれば失効する
+  # ポイントの獲得。獲得したポイントは期限がくれば失効するように失効バッチスケジュールを登録する
   def get_point!(amount, status = :got)
     transaction do
       point = points.create!(status: status, amount: amount)
-      point_expiration_schedules.create!(run_on: point.outdate_at) # 失効バッチスケジュールの登録
+      point_expiration_schedules.create!(run_at: point.outdate_at) # 失効バッチスケジュールの登録
     end
   end
 
@@ -24,7 +24,7 @@ module PointAvailable
     outdated_points = points.positive.is_outdated(now)
 
     transaction do
-      point_expiration_schedules.run_on_before(now).delete_all # now以前の失効バッチスケジュールを削除
+      point_expiration_schedules.run_before(now).delete_all # now以前の失効バッチスケジュールを削除
       return if outdated_points.blank?
 
       amount = outdated_point_amount(now) # 失効するポイント数
