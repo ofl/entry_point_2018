@@ -4,6 +4,10 @@
       span.card-title.center= t('.delete_user_auth')
       .divider
       = simple_form_for(@user_auth, url: "/users/user_auths/#{@user_auth.provider}", method: :delete) do |f|
+        - if @user_auth.errors.any?
+          .form-errors.red.lighten-1
+            - @user_auth.errors.full_messages.each do |msg|
+              li= msg
         .form-inputs.row
           = f.input :user_password, as: :password, autocomplete: "off", required: true, icon: "lock"
         .form-actions.center
