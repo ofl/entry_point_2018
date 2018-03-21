@@ -22,9 +22,10 @@ require 'rails_helper'
 
 RSpec.describe Point, type: :model do
   describe 'scope' do
-    let!(:got_point) { create :point, :got }
-    let!(:used_point) { create :point, :used }
-    let!(:outdated_point) { create :point, :outdated }
+    let!(:got_point) { create :point, :got, created_at: created_at }
+    let!(:used_point) { create :point, :used, created_at: created_at }
+    let!(:outdated_point) { create :point, :outdated, created_at: created_at }
+    let(:created_at) { '2018-1-1 12:13:23'.in_time_zone }
 
     describe '.positive' do
       subject { Point.positive }
@@ -36,6 +37,25 @@ RSpec.describe Point, type: :model do
       subject { Point.negative }
 
       it { is_expected.to contain_exactly(used_point, outdated_point) }
+    end
+
+    describe '.is_outdated' do
+      before { Timecop.freeze(now) }
+      after { Timecop.return }
+
+      subject { Point.is_outdated }
+
+      context '2018-4-1' do
+        let(:now) { '2018-4-1'.in_time_zone.end_of_day }
+
+        it { expect(subject.count).to eq 0 }
+      end
+
+      context '2018-4-2' do
+        let(:now) { '2018-4-2'.in_time_zone.beginning_of_day }
+
+        it { expect(subject.count).to eq 3 }
+      end
     end
   end
 
