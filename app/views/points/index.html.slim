@@ -1,0 +1,38 @@
+.row
+  .buttons
+    = link_to t('.get_point'), points_path, method: :post, class: 'waves-effect waves-light btn-large'
+
+  .col.s12
+    .card.material-table
+      .table-header
+        h5 = t('.points')
+        .actions[data-turbolinks="false"]
+          a.search-toggle.waves-effect.btn-flat.nopadding[href="#"]
+            i.material-icons search
+
+      table#dttb.table
+        thead
+          tr
+            th = t('activerecord.attributes.point.status')
+            th = t('activerecord.attributes.point.amount')
+            th = t('activerecord.attributes.point.outdate_at')
+            th = t('activerecord.attributes.point.created_at')
+            th
+
+          tbody
+            - @points.each do |point|
+              tr class=(point.expired? ? 'expired' : 'active')
+                td = t(point.status, scope: %i[activerecord attributes point statuses])
+                td = point.amount
+                td
+                  - if point.outdate_at
+                    = l(point.outdate_at, format: :day)
+                td = l(point.created_at, format: :short)
+                td.right-align
+                  = link_to t('.detail'), point
+
+      .table-footer
+        = paginate @points
+
+  .links
+    = link_to t('.back'), authenticated_root_path

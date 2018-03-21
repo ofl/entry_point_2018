@@ -57,6 +57,8 @@ RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
   config.include RequestSpecHelper, type: :request
   config.include Devise::Test::ControllerHelpers, type: :controller
+  config.include ActiveSupport::Testing::TimeHelpers
+
   OmniAuth.config.test_mode = true
 end
 

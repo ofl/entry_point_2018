@@ -3,7 +3,12 @@ ja:
     models:
       user: ユーザー
       user_auth: 本人確認
+      point: ポイント
     attributes:
+      default: &default
+        id: ID
+        created_at: 登録日時
+        updated_at: 更新日時
       user:
         name: 名前
         login: ユーザー名(メールアドレス)
@@ -16,6 +21,17 @@ ja:
         uid: メールアドレス
         email: メールアドレス
         user_password: パスワード
+      point:
+        <<: *default
+        status: 状態
+        statuses:
+          got: 獲得
+          login_bonus: ログインボーナス
+          used: 使用
+          outdated: 失効
+          withdrawaled: 退会による失効
+        amount: 数量
+        outdate_at: 失効日
     errors:
       models:
         user:

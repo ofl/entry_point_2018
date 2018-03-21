@@ -1,4 +1,6 @@
 ja:
+  default: &default
+    back: 戻る
   users:
     omniauth_callbacks:
       not_match: "%{provider}アカウントは別ユーザー認証済みです"
@@ -10,3 +12,15 @@ ja:
       sent_mail: 登録したアドレスに確認メールを送信しました。メール内のリンクからユーザー確認を行ってください
       mail_not_sent: 確認メールを送信できませんでした
       confirmation_period_expired: 期限切れです。もう一度手続きをしてください
+  points:
+    index:
+      <<: *default
+      points: ポイント履歴一覧
+      detail: 詳細
+      get_point: ポイントガチャ
+    show:
+      <<: *default
+      point: ポイント履歴
+      index: 一覧へ
+    create:
+      got_point: "%{amount}ポイント獲得しました"

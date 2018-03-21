@@ -32,8 +32,6 @@
 
 require 'rails_helper'
 
-require 'rails_helper'
-
 RSpec.describe User, type: :model do
   let(:user) { create :user }
 
@@ -144,6 +142,165 @@ RSpec.describe User, type: :model do
 
         expect(user.authentication_token).not_to eq before_token
         expect(user.authentication_token).not_to start_with user.id.to_s
+      end
+    end
+
+    describe '#point_amount' do
+      subject { user.point_amount }
+
+      let!(:got_point_1) { create :point, :got, user: user, amount: 100, created_at: '2018-1-1 12:10:10'.in_time_zone }
+      let!(:got_point_2) { create :point, :got, user: user, amount: 150, created_at: '2018-2-1 12:10:10'.in_time_zone }
+      let!(:used_point) { create :point, :used, user: user, amount: -200, created_at: '2018-3-1 12:10:10'.in_time_zone }
+      let!(:got_point_3) { create :point, :got, user: user, amount: 170, created_at: '2018-4-1 12:10:10'.in_time_zone }
+      let!(:outdated_point) do
+        create :point, :outdated, user: user, amount: -50, created_at: '2018-5-1 12:10:10'.in_time_zone
+      end
+
+      it { is_expected.to eq 170 }
+    end
+
+    describe '#get_point!' do
+      let(:amount) { 150 }
+      subject { user.get_point!(amount) }
+
+      context 'save successfully' do
+        it do
+          expect { subject }.to change(Point.got, :count).by(1) # 250 - 200
+          expect(Point.last.amount).to eq(150)
+        end
+        it { expect { subject }.to change(BatchSchedule::PointExpiration, :count).by(1) }
+      end
+
+      context 'save failure' do
+        let(:amount) { -150 }
+
+        it { expect { subject }.to raise_error(ActiveRecord::RecordInvalid) }
+      end
+    end
+
+    describe '#outdate_points!' do
+      shared_examples 'delete batch schedule' do
+        it { expect { subject }.to change(BatchSchedule::PointExpiration, :count).by(-1) }
+      end
+
+      subject { user.outdate_points!(at) }
+
+      let!(:got_point_1) { create :point, :got, user: user, amount: 100, created_at: '2018-1-1 12:10:10'.in_time_zone }
+      let!(:got_point_2) { create :point, :got, user: user, amount: 150, created_at: '2018-2-1 12:10:10'.in_time_zone }
+      let!(:used_point) { create :point, :used, user: user, amount: -200, created_at: '2018-3-1 12:10:10'.in_time_zone }
+      let!(:got_point_3) { create :point, :got, user: user, amount: 170, created_at: '2018-4-1 12:10:10'.in_time_zone }
+
+      let!(:batch_schedule) { create :batch_schedule_point_expiration, user: user, run_at: at - 1.second }
+
+      context 'at 2018-3-2 12:10:10' do
+        let(:at) { '2018-3-2 12:10:10'.in_time_zone }
+
+        it { expect { subject }.not_to change(Point.outdated, :count) }
+        it { expect { subject }.to change(BatchSchedule::PointExpiration, :count).by(-1) }
+      end
+
+      context 'at 2018-4-2 12:10:10' do
+        let(:at) { '2018-4-2 12:10:10'.in_time_zone }
+
+        it do
+          expect { subject }.not_to change(Point.outdated, :count) # 獲得ポイント < 使用ポイントのため
+        end
+        it_behaves_like 'delete batch schedule'
+      end
+
+      context 'at 2018-5-3 12:10:10' do
+        let(:at) { '2018-5-3 12:10:10'.in_time_zone }
+
+        it do
+          expect { subject }.to change(Point.outdated, :count).by(1) # 250 - 200
+          expect(Point.last.amount).to eq(-50)
+        end
+        it_behaves_like 'delete batch schedule'
+      end
+
+      context 'at 2018-7-4 12:10:10' do
+        let(:at) { '2018-7-4 12:10:10'.in_time_zone }
+
+        it do
+          expect { subject }.to change(Point.outdated, :count).by(1) # 獲得ポイント < 使用ポイントのため
+          expect(Point.last.amount).to eq(-220) # 420 - 200
+        end
+        it_behaves_like 'delete batch schedule'
+      end
+
+      context 'save failure' do
+        let(:at) { '2018-7-4 12:10:10'.in_time_zone }
+        before { allow_any_instance_of(User).to receive(:outdated_point_amount).and_return(-150) }
+
+        it { expect { subject }.to raise_error(ActiveRecord::RecordInvalid) }
+      end
+    end
+
+    describe '#outdate_all_points!' do
+      subject { user.outdate_all_points! }
+
+      let!(:got_point_1) { create :point, :got, user: user, amount: 100, created_at: '2018-1-1 12:10:10'.in_time_zone }
+      let!(:got_point_2) { create :point, :got, user: user, amount: 150, created_at: '2018-2-1 12:10:10'.in_time_zone }
+      let!(:used_point) { create :point, :used, user: user, amount: -200, created_at: '2018-3-1 12:10:10'.in_time_zone }
+      let!(:got_point_3) { create :point, :got, user: user, amount: 170, created_at: '2018-4-1 12:10:10'.in_time_zone }
+
+      context 'save successfully' do
+        it do
+          expect { subject }.to change(Point.withdrawaled, :count).by(1)
+          expect(Point.last.amount).to eq(-220) # 420 - 200
+        end
+      end
+
+      context 'save failure' do
+        before { allow_any_instance_of(User).to receive(:point_amount).and_return(-150) }
+
+        it { expect { subject }.to raise_error(ActiveRecord::RecordInvalid) }
+      end
+    end
+
+    describe '#outdated_point_amount' do
+      subject { user.send :outdated_point_amount, at }
+
+      let!(:got_point_1) { create :point, :got, user: user, amount: 100, created_at: '2018-1-1 12:10:10'.in_time_zone }
+      let!(:got_point_2) { create :point, :got, user: user, amount: 150, created_at: '2018-2-1 12:10:10'.in_time_zone }
+      let!(:used_point) do
+        create :point, :used, user: user, amount: used_amount, created_at: '2018-3-1 12:10:10'.in_time_zone
+      end
+      let(:used_amount) { -50 }
+
+      context 'at 2018-3-2 12:10:10' do
+        let(:at) { '2018-3-2 12:10:10'.in_time_zone }
+
+        it { is_expected.to eq 0 }
+      end
+
+      context 'at 2018-4-2 12:10:10' do
+        let(:at) { '2018-4-2 12:10:10'.in_time_zone }
+
+        context 'used amount is 50' do
+          it { is_expected.to eq 50 } # 100 - 50
+        end
+
+        context 'used amount is 200' do
+          let(:used_amount) { -200 }
+
+          it { is_expected.to eq 0 } # 100 - 200 < 0
+        end
+      end
+
+      context 'at 2018-5-4 12:10:10' do
+        let(:at) { '2018-5-4 12:10:10'.in_time_zone }
+        let(:used_amount) { -200 }
+
+        context 'outdated point not exists' do
+          it { is_expected.to eq 50 } # 100 + 150 - 200 > 0
+        end
+
+        context 'outdated point is exists' do
+          before { create :point, :outdated, user: user, amount: -50 }
+
+          it { is_expected.to eq 0 } # 100 + 150 - 200 - 50 == 0
+        end
       end
     end
   end
