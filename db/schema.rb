@@ -73,6 +73,5 @@ ActiveRecord::Schema.define(version: 20180310011752) do
   end
 
   add_foreign_key "batch_schedule_point_expirations", "users"
-  add_foreign_key "points", "users"
   add_foreign_key "user_auths", "users"
 end
