@@ -54,4 +54,56 @@ RSpec.describe 'Users::Registrations', type: :request do
       end
     end
   end
+
+  describe 'DELETE /users/registration' do
+    subject { delete user_registration_path, params: params }
+    let(:valid_params) { { user: { password: 'password' } } }
+    let(:invalid_params) { { user: { password: 'a' } } }
+
+    context 'ログインしている場合' do
+      before { sign_in user }
+
+      context '正しいパスワードを入力した場合' do
+        let(:params) { valid_params }
+
+        it 'ルート画面にリダイレクトされること' do
+          is_expected.to redirect_to root_path
+        end
+
+        it 'ユーザーが削除されること' do
+          subject
+          expect(User.find_by(id: user.id)).to be_nil
+        end
+
+        it 'ユーザー数が-1になること' do
+          expect { subject }.to change(User, :count).by(-1)
+        end
+      end
+
+      context '不正なパスワードを入力した場合' do
+        let(:params) { invalid_params }
+
+        it '退会画面に戻ること' do
+          expect(subject).to eq 200
+        end
+
+        it '「パスワードは不正な値です」と表示されること' do
+          subject
+          expect(response.body).to include 'パスワードは不正な値です'
+        end
+
+        it 'ユーザー数は変化しないこと' do
+          expect { subject }.not_to change(User, :count)
+        end
+      end
+    end
+
+    context 'ログインしていない場合' do
+      let(:params) { valid_params }
+
+      it 'ログイン画面にリダイレクトされること' do
+        is_expected.to redirect_to new_user_session_path
+      end
+    end
+  end
 end

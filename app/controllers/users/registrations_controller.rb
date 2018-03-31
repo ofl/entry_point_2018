@@ -43,7 +43,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def destroy
     @user = User.find(current_user.id)
 
-    if @user.destroy_with_password(params[:user])
+    if @user.destroy_with_password(params[:user][:password])
       redirect_to root_url, notice: 'User deleted.'
     else
       render :edit
