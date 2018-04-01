@@ -15,6 +15,7 @@ ja:
         username: ユーザー名
         email: メールアドレス
         password: パスワード
+        current_password: パスワード
         dummy_password: パスワード
         password_confirmation: パスワード(確認)
       user_auth:

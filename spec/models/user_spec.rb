@@ -40,6 +40,30 @@ RSpec.describe User, type: :model do
   end
 
   describe 'methods' do
+    describe '#destroy' do
+      subject { user.destroy }
+
+      before do
+        create :user_auth, user: user
+        create :point, :got, user: user, amount: 100
+      end
+
+      it 'ユーザーの本人確認は削除されること' do
+        expect { subject }.to change(UserAuth.where(user_id: user.id), :count).by(-1)
+      end
+
+      it 'ユーザーのポイント数は0になること' do
+        expect(Point.where(user_id: user.id).sum(:amount)).to eq 100
+        subject
+        expect(Point.where(user_id: user.id).sum(:amount)).to eq 0
+      end
+
+      it 'ポイント履歴は削除されないこと' do
+        subject
+        expect(Point.where(user_id: user.id).count).to eq 2
+      end
+    end
+
     describe '#confirmed?' do
       subject { user.confirmed? }
 

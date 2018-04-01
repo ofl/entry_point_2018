@@ -32,6 +32,7 @@ ja:
         <<: *default
       edit:
         <<: *default
+        withdrawal: 退会
         cancel_my_account: 退会する
         leave_blank: 変更したくない場合は空欄のままにしておいてください
         current_password: 現在のパスワード
