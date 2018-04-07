@@ -3,9 +3,6 @@ require 'rails_helper'
 RSpec.describe 'registrations', type: :request do
   include ApiRequestSpecHelper
 
-  let(:valid_params) { { user: { username: 'foo', email: 'foo@example.com', password: 'foobarbaz' } } }
-  let(:invalid_params) { { user: { username: 'あああ', email: 'foo@example.com', password: 'ぱすわーど' } } }
-
   describe 'GET /api/users/registrations' do
     subject { get '/api/users/registrations', headers: headers }
 
@@ -27,7 +24,16 @@ RSpec.describe 'registrations', type: :request do
   end
 
   describe 'POST /api/users/registrations' do
-    subject { post '/api/users/registrations', params: params }
+    let(:valid_params) { { user: { username: 'foo', email: 'foo@example.com', password: 'foobarbaz' } } }
+    let(:invalid_params) { { user: { username: 'あああ', email: 'foo@example.com', password: 'ぱすわーど' } } }
+    let(:headers) do
+      {
+        accept: 'application/json',
+        'Content-Type': 'application/json'
+      }
+    end
+
+    subject { post '/api/users/registrations', params: params.to_json, headers: headers }
 
     context '入力値がない場合' do
       it '500エラーになること' do
@@ -64,6 +70,9 @@ RSpec.describe 'registrations', type: :request do
   end
 
   describe 'PUT /api/users/registrations' do
+    let(:valid_params) { { user: { username: 'foo', email: 'foo@example.com', password: 'foobarbaz' } } }
+    let(:invalid_params) { { user: { username: 'あああ', email: 'foo@example.com', password: 'ぱすわーど' } } }
+
     subject { put '/api/users/registrations', params: params.to_json, headers: headers }
 
     context 'ログインしていない場合' do
@@ -115,8 +124,6 @@ RSpec.describe 'registrations', type: :request do
 
     context 'ログインしている場合' do
       before { login }
-
-      let(:params) { valid_params }
 
       it 'ユーザーが削除されること', autodoc: true do
         subject

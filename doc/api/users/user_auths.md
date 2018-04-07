@@ -7,7 +7,7 @@
 ```
 POST /api/users/user_auths HTTP/1.1
 Accept: application/json
-Authorization: 1g1ceYkyysejAaXz92XA
+Authorization: D_Qh8qWiUHsyLYSgxXV-
 Content-Length: 91
 Content-Type: application/json
 Host: www.example.com
@@ -29,8 +29,8 @@ Cache-Control: max-age=0, private, must-revalidate
 Content-Length: 36
 Content-Type: application/json; charset=utf-8
 ETag: W/"ab9be7c96ccbc5495cb099741e208ea9"
-X-Request-Id: 54e1cc4d-cd0a-43d4-ab45-994b75974705
-X-Runtime: 0.508882
+X-Request-Id: d4824147-7f58-46ba-9223-8aa565ce93fd
+X-Runtime: 0.453424
 
 {
   "message": "Sent confirmation mail"

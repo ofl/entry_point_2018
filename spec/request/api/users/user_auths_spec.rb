@@ -64,40 +64,39 @@ RSpec.describe 'user_auths', type: :request do
     end
   end
 
-  # TODO: テストエラーの解消
-  # describe 'DELETE /api/users/user_auths/:provider' do
-  #   subject { delete api_users_user_auth_path(provider: provider), params: params, headers: headers }
-  #   let(:provider) { 'facebook' }
-  #   let(:params) { { user_auth: { user_password: password } } }
-  #   let(:password) { user.password }
-  #
-  #   context 'not ログインしている場合' do
-  #     it { is_expected.to eq 401 }
-  #   end
-  #
-  #   context 'ログインしている場合' do
-  #     before { login }
-  #     let(:user) { login_user }
-  #
-  #     context 'user_auth not exists' do
-  #       it { is_expected.to eq 404 }
-  #     end
-  #
-  #     context 'user_auth exists' do
-  #       before { create :user_auth, user: user, provider: :facebook }
-  #
-  #       context '不正な入力値の場合' do
-  #         let(:password) { 'foobaabaz' }
-  #
-  #         it { is_expected.to eq 400 }
-  #         it { expect { subject }.not_to change(UserAuth, :count) }
-  #       end
-  #
-  #       context '正しい入力値の場合' do
-  #         it { is_expected.to eq 200 }
-  #         it { expect { subject }.to change(UserAuth, :count).by(-1) }
-  #       end
-  #     end
-  #   end
-  # end
+  describe 'DELETE /api/users/user_auths/:provider' do
+    subject { delete api_users_user_auth_path(provider: provider), params: params.to_json, headers: headers }
+    let(:provider) { 'facebook' }
+    let(:params) { { user_auth: { user_password: password } } }
+    let(:password) { user.password }
+
+    context 'not ログインしている場合' do
+      it { is_expected.to eq 401 }
+    end
+
+    context 'ログインしている場合' do
+      before { login }
+      let(:user) { login_user }
+
+      context 'user_auth not exists' do
+        it { is_expected.to eq 404 }
+      end
+
+      context 'user_auth exists' do
+        before { create :user_auth, user: user, provider: :facebook }
+
+        context '不正な入力値の場合' do
+          let(:password) { 'foobaabaz' }
+
+          it { is_expected.to eq 400 }
+          it { expect { subject }.not_to change(UserAuth, :count) }
+        end
+
+        context '正しい入力値の場合' do
+          it { is_expected.to eq 200 }
+          it { expect { subject }.to change(UserAuth, :count).by(-1) }
+        end
+      end
+    end
+  end
 end

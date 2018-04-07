@@ -7,7 +7,7 @@
 ```
 GET /api/users/registrations HTTP/1.1
 Accept: application/json
-Authorization: UF89C2xmeoVeQGoksjw_
+Authorization: 2dgk-P7yLEiRuJgfpqFo
 Content-Length: 0
 Content-Type: application/json
 Host: www.example.com
@@ -20,17 +20,17 @@ HTTP/1.1 200
 Cache-Control: max-age=0, private, must-revalidate
 Content-Length: 283
 Content-Type: application/json; charset=utf-8
-ETag: W/"ec7838f37426ebb4f5be7d68a4928475"
-X-Request-Id: a9a1be0a-0f0a-43c4-8c23-f65b486c611d
-X-Runtime: 0.059269
+ETag: W/"629663f74dbdabf40aa919232558b11b"
+X-Request-Id: fe257e0a-9b0f-4876-9009-bec9fa28b203
+X-Runtime: 0.062482
 
 {
-  "id": 1961,
+  "id": 2532,
   "username": "user_76",
   "email": "user_76@example.com",
-  "authentication_token": "UF89C2xmeoVeQGoksjw_",
-  "created_at": "2018-04-07T10:26:06.522+09:00",
-  "updated_at": "2018-04-07T10:26:06.538+09:00",
+  "authentication_token": "2dgk-P7yLEiRuJgfpqFo",
+  "created_at": "2018-04-07T11:08:25.522+09:00",
+  "updated_at": "2018-04-07T11:08:25.542+09:00",
   "confirmed_by_email": false,
   "confirmed_by_twitter": true,
   "confirmed_by_facebook": false
@@ -45,12 +45,18 @@ X-Runtime: 0.059269
 #### Request
 ```
 POST /api/users/registrations HTTP/1.1
-Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
-Content-Length: 73
-Content-Type: application/x-www-form-urlencoded
+Accept: application/json
+Content-Length: 76
+Content-Type: application/json
 Host: www.example.com
 
-user[username]=foo&user[email]=foo%40example.com&user[password]=foobarbaz
+{
+  "user": {
+    "username": "foo",
+    "email": "foo@example.com",
+    "password": "foobarbaz"
+  }
+}
 ```
 
 #### Response
@@ -59,18 +65,18 @@ HTTP/1.1 200
 Cache-Control: max-age=0, private, must-revalidate
 Content-Length: 276
 Content-Type: application/json; charset=utf-8
-ETag: W/"e8b43d1af3a31e5915081624e61a76db"
-Set-Cookie: _entry_point2018_session=My94ejZTU1p4emVyYjFQbjVaVmZYQjgzcHVxdUFqQjM5dFB1cHlmUGZlMkk4dEVxTXlzN09WNnZWVGFrWTBCSGtYYitvSHIyNGVmMnF5YXRXZms0eGNMalgxRjJueEVhRkQ4aGNkZExuam9pNTRVam9XVGtsbVdTNTFjLzNlazVvSVdlMVhrQVlURnNObmo2NlltbUhubmRrNEIxa1BSSkNBZTZBZi9teEtVPS0tb3Zhd3VqWmliRFYxcUsvWnVTaWQ1dz09--c5b03c75053aa6b7920081a304e23f5f8efda9e8; path=/; HttpOnly
-X-Request-Id: 289862c6-8524-420e-886c-c7d594ef47f9
-X-Runtime: 0.020014
+ETag: W/"10eb82e7fca9baa0ffb25dedc253ac68"
+Set-Cookie: _entry_point2018_session=SmhCLzYrcE9yQ2hZRk5NaDRWbHNuclRTQk02Z0krQWIyeWdlOG9IWUhCd29WMXdPTHhYSStXOG5nVEdsMFNHcTdYNExxd2VTUThsQ2FWR0g4NjE2dHRHTzZydkozVkpiMWdZN3luSnNTTFV3OWRKdjg1eTlRNUo4TGlsYldYdXgwN2NmMTY2RkJBMlYwZ2xJZHAwN0pkdVVPeDQwVmg3b3ZqVHF4K0NuZXJnPS0tRVc3TVVmaUVIeWNmVURzV2QybmgrUT09--9d213a7a44a4648a9a6e9dfa0df38c254ef70bda; path=/; HttpOnly
+X-Request-Id: 5decd290-f97e-4a8b-b7a5-bd9ebe681b53
+X-Runtime: 0.025668
 
 {
-  "id": 1962,
+  "id": 2533,
   "username": "foo",
   "email": "foo@example.com",
-  "authentication_token": "Z5qse2Mw5b2gz5kn1Rf3",
-  "created_at": "2018-04-07T10:26:06.638+09:00",
-  "updated_at": "2018-04-07T10:26:06.642+09:00",
+  "authentication_token": "tfR5729jpceuabnMcbBq",
+  "created_at": "2018-04-07T11:08:25.631+09:00",
+  "updated_at": "2018-04-07T11:08:25.637+09:00",
   "confirmed_by_email": false,
   "confirmed_by_twitter": false,
   "confirmed_by_facebook": false
@@ -86,7 +92,7 @@ X-Runtime: 0.020014
 ```
 PUT /api/users/registrations HTTP/1.1
 Accept: application/json
-Authorization: EhWMNWSxzaHsUMCZLp2r
+Authorization: mmjJhT6LqiMma13xdi-k
 Content-Length: 76
 Content-Type: application/json
 Host: www.example.com
@@ -107,17 +113,17 @@ HTTP/1.1 200
 Cache-Control: max-age=0, private, must-revalidate
 Content-Length: 275
 Content-Type: application/json; charset=utf-8
-ETag: W/"4d36b80c0b49706938873c8af899d3ec"
-X-Request-Id: fd6dce3e-e470-414d-84ea-2ee2125a136d
-X-Runtime: 0.019833
+ETag: W/"1d8e6e8a2a90e4304414a3d4c81862a0"
+X-Request-Id: bcdb99ab-d88a-422f-990c-df14467dbed6
+X-Runtime: 0.021192
 
 {
-  "id": 1968,
+  "id": 2539,
   "username": "foo",
   "email": "foo@example.com",
-  "authentication_token": "EhWMNWSxzaHsUMCZLp2r",
-  "created_at": "2018-04-07T10:26:06.787+09:00",
-  "updated_at": "2018-04-07T10:26:06.809+09:00",
+  "authentication_token": "mmjJhT6LqiMma13xdi-k",
+  "created_at": "2018-04-07T11:08:25.814+09:00",
+  "updated_at": "2018-04-07T11:08:25.838+09:00",
   "confirmed_by_email": false,
   "confirmed_by_twitter": true,
   "confirmed_by_facebook": false
@@ -133,7 +139,7 @@ X-Runtime: 0.019833
 ```
 DELETE /api/users/registrations HTTP/1.1
 Accept: application/json
-Authorization: zdmaTw4dEPHBxwQFsGMx
+Authorization: eKZwsZnpeTMAiH9iof6i
 Content-Length: 0
 Content-Type: application/json
 Host: www.example.com
@@ -147,9 +153,9 @@ Cache-Control: max-age=0, private, must-revalidate
 Content-Length: 13
 Content-Type: application/json; charset=utf-8
 ETag: W/"b3930ec395ac5e1738ab6d02f69ed9e9"
-Set-Cookie: _entry_point2018_session=TFpodjl0WlRyLzNTa1hNeHJyOHNVdk4zZTdXZ3BJYVdIUEZHUkxtd01Hb2xWSWI5NXVTSXcxMXR6c2w1STdUZk52SlA2MFh6SGk5VUNETDV4eDVneWc9PS0tWnlweEZ1aFpBc1VVYUYybEwrek8vQT09--53170ccd800304d7ffaff3e60af90c6ccded70e0; path=/; HttpOnly
-X-Request-Id: 79179349-cd06-407d-a04e-69b5b2daa7a1
-X-Runtime: 0.025263
+Set-Cookie: _entry_point2018_session=aGdVVXp0d3hUMGZKVkJFdzNHcDc1dW1WVm9PQ2dTRXZHL0JEbnpjaUE2czdlZUNvaUJ0U3VwcGRKSXJlaTVmcDFSc3FTc0FjMHhpY3pRQXpIQjN6TVE9PS0tSmR6YTBUd0ZlTUlmSjZjOEE5Vm13UT09--04dd652fdd63800242ee7c16f4ec4c4e47e6f2c9; path=/; HttpOnly
+X-Request-Id: 502f99cd-acd9-4375-942b-145be141ffe8
+X-Runtime: 0.029201
 
 {
   "head": "ok"
