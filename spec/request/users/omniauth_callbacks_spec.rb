@@ -1,29 +1,30 @@
 require 'rails_helper'
 
-RSpec.shared_examples 'use social user_auth' do
+RSpec.shared_examples 'ソーシャルログインの使用' do
   subject { get "/users/auth/#{provider}/callback" }
 
-  context 'user_auth failed' do
+  context '本人確認が失敗した場合' do
     before do
       allow($stdout).to receive(:write) # Suppress console output
       preset_mock(provider, nil, invalid: true)
     end
 
-    it { is_expected.to redirect_to new_user_session_path }
+    it 'ログイン画面にリダイレクトされること' do is_expected.to redirect_to new_user_session_path end
   end
 
-  context 'user_auth success' do
+  context '本人確認が成功した場合' do
     before do
       preset_mock(provider, uid)
       Rails.application.env_config['omniauth.test_params'] = callback_params
     end
 
-    context 'sign in' do
+    context 'ログインの場合' do
       let(:callback_params) { {} }
 
-      context 'user not exist' do
+      context 'ユーザーが存在しない場合' do
         let(:uid) { nil }
-        it do
+
+        it 'ログイン画面にリダイレクトされること' do
           is_expected.to redirect_to new_user_session_path
           expect(flash[:alert]).to eq(
             I18n.t('users.omniauth_callbacks.failure', provider: provider.capitalize)
@@ -31,20 +32,20 @@ RSpec.shared_examples 'use social user_auth' do
         end
       end
 
-      context 'user exists' do
+      context 'ユーザーが存在する場合' do
         let!(:user_auth) { create :user_auth, user: user, provider: provider, confirmed_at: confirmed_at }
         let(:uid) { user_auth.uid }
 
-        context 'user_auth not confirmed' do
+        context '本人確認が認証されていない場合' do
           let(:confirmed_at) { nil }
 
-          it { is_expected.to eq 302 }
+          it 'マイページにリダイレクトされること' do is_expected.to eq 302 end
         end
 
-        context 'user_auth not confirmed' do
+        context '本人確認が認証済みの場合' do
           let(:confirmed_at) { 1.day.ago }
 
-          it do
+          it 'マイページにリダイレクトされること' do
             is_expected.to redirect_to authenticated_root_path
             expect(flash[:notice]).to eq(
               I18n.t('devise.omniauth_callbacks.success', provider: provider.capitalize)
@@ -54,7 +55,7 @@ RSpec.shared_examples 'use social user_auth' do
       end
     end
 
-    context 'connect' do
+    context '本人確認の追加の場合' do
       let(:callback_params) { { 'confirmation_token' => confirmation_token } }
       let!(:user_auth) do
         create :user_auth, user: user, provider: provider, confirmation_token: 'abc',
@@ -64,40 +65,47 @@ RSpec.shared_examples 'use social user_auth' do
       let(:confirmation_token) { user_auth.confirmation_token }
       let(:confirmation_sent_at) { 1.minute.ago }
 
-      context 'not logged in' do
-        it { is_expected.to eq 302 }
+      context 'ログインしていない場合' do
+        it 'ログインページにリダイレクトされること' do is_expected.to eq 302 end
       end
 
-      context 'logged in' do
+      context 'ログインしている場合' do
         before { sign_in user }
 
         let(:user) { create :user, :confirmed }
 
-        context 'user_auth user not match' do
+        context '確認トークンがマッチしない場合' do
           let!(:another_user) { create :user }
           let!(:another_user_auth) do
             create :user_auth, user: another_user, provider: provider, confirmation_token: 'xyz'
           end
           let(:confirmation_token) { another_user_auth.confirmation_token }
 
-          it { is_expected.to eq 302 }
+          it 'マイページにリダイレクトされること' do is_expected.to eq 302 end
         end
 
-        context 'user_auth user confirmation_token match' do
-          context 'confirmation_token time out' do
+        context '確認トークンがマッチした場合' do
+          context '本人確認が時間切れの場合' do
             let(:confirmation_sent_at) { 3.days.ago }
 
-            it do
-              is_expected.to redirect_to root_path
+            it 'マイページにリダイレクトされること' do
+              is_expected.to redirect_to authenticated_root_path
+            end
+
+            it '「時間切れ」が表示されること' do
+              subject
               expect(flash[:alert]).to eq(
                 I18n.t('users.omniauth_callbacks.confirmation_period_expired')
               )
             end
           end
 
-          context 'confirmation_token not time out' do
-            it do
-              is_expected.to redirect_to root_path
+          context '本人確認が時間切れでない場合' do
+            it 'マイページにリダイレクトされること' do
+              is_expected.to redirect_to authenticated_root_path
+            end
+            it '「本人確認の成功」が表示されること' do
+              subject
               expect(flash[:notice]).to eq(
                 I18n.t('devise.omniauth_callbacks.success', provider: provider.capitalize)
               )
@@ -107,7 +115,7 @@ RSpec.shared_examples 'use social user_auth' do
       end
     end
 
-    context 'reset_password' do
+    context 'パスワード変更の場合' do
       let(:callback_params) { { 'reset_password' => true } }
       let!(:user_auth) { create :user_auth, user: user, provider: provider, confirmed_at: confirmed_at }
       let(:uid) { user_auth.uid }
@@ -117,15 +125,16 @@ RSpec.shared_examples 'use social user_auth' do
         allow_any_instance_of(User).to receive(:raw_reset_password_token).and_return('foobarbaz')
       end
 
-      context 'confirmed user_auth not exists' do
+      context '認証された本人確認が存在しない場合' do
         let(:confirmed_at) { nil }
-        it { is_expected.to eq 403 }
+
+        it '403エラーになること' do is_expected.to eq 403 end
       end
 
-      context 'confirmed user_auth exists' do
+      context '認証された本人確認が存在する場合' do
         let(:confirmed_at) { 1.day.ago }
 
-        it do
+        it 'パスワード変更画面にリダイレクトされること' do
           is_expected.to redirect_to edit_user_password_path(reset_password_token: 'foobarbaz')
         end
       end
@@ -139,7 +148,7 @@ RSpec.describe 'Users::OmniauthCallbacks', type: :request do
   let(:user) { create :user }
 
   %i[facebook twitter].each do |provider|
-    it_behaves_like 'use social user_auth' do
+    it_behaves_like 'ソーシャルログインの使用' do
       let(:provider) { provider }
     end
   end

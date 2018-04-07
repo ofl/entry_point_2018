@@ -71,30 +71,30 @@ RSpec.describe 'user_auths', type: :request do
     let(:password) { user.password }
 
     context 'not ログインしている場合' do
-      it { is_expected.to eq 401 }
+      it '401エラーになること' do is_expected.to eq 401 end
     end
 
     context 'ログインしている場合' do
       before { login }
       let(:user) { login_user }
 
-      context 'user_auth not exists' do
-        it { is_expected.to eq 404 }
+      context '本人確認が存在しない場合' do
+        it '404エラーになること' do is_expected.to eq 404 end
       end
 
-      context 'user_auth exists' do
+      context '本人確認が存在する場合' do
         before { create :user_auth, user: user, provider: :facebook }
 
         context '不正な入力値の場合' do
           let(:password) { 'foobaabaz' }
 
-          it { is_expected.to eq 400 }
-          it { expect { subject }.not_to change(UserAuth, :count) }
+          it '400エラーになること' do is_expected.to eq 400 end
+          it '本人確認は減少しないこと' do expect { subject }.not_to change(UserAuth, :count) end
         end
 
         context '正しい入力値の場合' do
-          it { is_expected.to eq 200 }
-          it { expect { subject }.to change(UserAuth, :count).by(-1) }
+          it 'エラーが発生しないこと' do is_expected.to eq 200 end
+          it '本人確認が減少すること' do expect { subject }.to change(UserAuth, :count).by(-1) end
         end
       end
     end

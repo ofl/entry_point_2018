@@ -46,10 +46,10 @@ RSpec.describe '本人確認について', type: :request do
 
     it_behaves_like 'ログインしていないユーザーはサインインページにリダイレクトされる'
 
-    context 'logged in' do
+    context 'ログインしている場合' do
       before { sign_in user }
 
-      it { is_expected.to eq 200 }
+      it '編集画面が表示されること' do is_expected.to eq 200 end
     end
   end
 
@@ -64,24 +64,24 @@ RSpec.describe '本人確認について', type: :request do
 
     it_behaves_like 'ログインしていないユーザーはサインインページにリダイレクトされる'
 
-    context 'logged in' do
+    context 'ログインしている場合' do
       before { sign_in user }
 
-      context 'invalid params' do
+      context '不正な入力値の場合' do
         let(:params) { invalid_params }
 
-        it { is_expected.to eq 200 }
+        it '編集画面が表示されること' do is_expected.to eq 200 end
       end
 
-      context 'invalid password params' do
+      context '不正なパスワードの場合' do
         let(:params) { invalid_password_params }
 
-        it { is_expected.to eq 200 }
+        it '編集画面が表示されること' do is_expected.to eq 200 end
       end
 
-      context 'valid params' do
-        it { is_expected.to eq 302 }
-        it do
+      context '正しい入力値の場合' do
+        it 'マイページにリダイレクトされること' do is_expected.to eq 302 end
+        it '本人確認が増加すること' do
           expect { subject }
             .to change { UserAuth.count }
             .by(1)
@@ -98,17 +98,19 @@ RSpec.describe '本人確認について', type: :request do
 
     it_behaves_like 'ログインしていないユーザーはサインインページにリダイレクトされる'
 
-    context 'logged in' do
+    context 'ログインしている場合' do
       before { sign_in user }
 
-      context 'user_auth not exists' do
-        it { expect { subject }.to raise_error ActiveRecord::RecordNotFound }
+      context '本人確認が存在しない場合' do
+        it 'RecordNotFoundエラーになること' do
+          expect { subject }.to raise_error ActiveRecord::RecordNotFound
+        end
       end
 
-      context 'user_auth exists' do
+      context '本人確認が存在する場合' do
         before { create :user_auth, user: user, provider: :facebook }
 
-        it { is_expected.to eq 200 }
+        it '編集画面が表示されること' do is_expected.to eq 200 end
       end
     end
   end
@@ -120,31 +122,37 @@ RSpec.describe '本人確認について', type: :request do
 
     it_behaves_like 'ログインしていないユーザーはサインインページにリダイレクトされる'
 
-    context 'logged in' do
+    context 'ログインしている場合' do
       before { sign_in user }
 
-      context 'user_auth not exists' do
-        it { expect { subject }.to raise_error ActiveRecord::RecordNotFound }
+      context '本人確認が存在しない場合' do
+        it 'RecordNotFoundエラーになること' do
+          expect { subject }.to raise_error ActiveRecord::RecordNotFound
+        end
       end
 
-      context 'user_auth exists' do
+      context '本人確認が存在する場合' do
         before { create :user_auth, user: user, provider: :facebook }
 
-        context 'invalid params' do
+        context '不正な入力値の場合' do
           let(:password) { 'fonnbarbaz' }
 
-          it { is_expected.to eq 200 }
-          it { expect { subject }.not_to change(UserAuth, :count) }
+          it '編集画面が表示されること' do is_expected.to eq 200 end
+          it '本人確認が減少しないこと' do
+            expect { subject }.not_to change(UserAuth, :count)
+          end
         end
 
-        context 'valid params' do
-          it do
+        context '正しい入力値の場合' do
+          it 'マイページにリダイレクトされること' do
             is_expected.to redirect_to(authenticated_root_path)
             expect(flash[:notice]).to eq(
               I18n.t('users.user_auths.delete_user_auth', provider: provider.capitalize)
             )
           end
-          it { expect { subject }.to change(UserAuth, :count).by(-1) }
+          it '本人確認が減少すること' do
+            expect { subject }.to change(UserAuth, :count).by(-1)
+          end
         end
       end
     end

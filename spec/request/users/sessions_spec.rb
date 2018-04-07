@@ -6,14 +6,14 @@ RSpec.describe 'Users::Sessions', type: :request do
   describe 'GET /users/session/new' do
     subject { get new_user_session_path }
 
-    context 'not logged in' do
-      it { is_expected.to eq 200 }
+    context 'ログインしていない場合' do
+      it 'ログイン画面が表示されること' do is_expected.to eq 200 end
     end
 
-    context 'logged in' do
+    context 'ログインしている場合' do
       before { sign_in user }
 
-      it { is_expected.to redirect_to authenticated_root_path }
+      it 'マイページにリダイレクトされること' do is_expected.to redirect_to authenticated_root_path end
     end
   end
 
@@ -23,27 +23,27 @@ RSpec.describe 'Users::Sessions', type: :request do
     let(:valid_email_params) { { user: { login: user.email, password: user.password } } }
     let(:invalid_params) { { user: { login: user.username, password: 'a' } } }
 
-    context 'logged in' do
+    context 'ログインしている場合' do
       let(:params) { valid_params }
       before { sign_in user }
 
-      it { is_expected.to redirect_to authenticated_root_path }
+      it 'マイページにリダイレクトされること' do is_expected.to redirect_to authenticated_root_path end
     end
 
-    context 'not logged in' do
-      context 'invalid params' do
+    context 'ログインしていない場合' do
+      context '不正な入力値の場合' do
         let(:params) { invalid_params }
-        it { is_expected.to eq 200 }
+        it 'ログイン画面が表示されること' do is_expected.to eq 200 end
       end
 
-      context 'valid params' do
+      context '正しい入力値の場合' do
         let(:params) { valid_params }
-        it { is_expected.to redirect_to authenticated_root_path }
+        it 'マイページにリダイレクトされること' do is_expected.to redirect_to authenticated_root_path end
       end
 
-      context 'valid email params' do
+      context '正しい入力値の場合(Eメールを使用)' do
         let(:params) { valid_email_params }
-        it { is_expected.to redirect_to authenticated_root_path }
+        it 'マイページにリダイレクトされること' do is_expected.to redirect_to authenticated_root_path end
       end
     end
   end

@@ -16,7 +16,7 @@ module RequestSpecHelper
   end
 
   shared_examples 'ログインしていないユーザーはサインインページにリダイレクトされる' do
-    it { is_expected.to redirect_to(new_user_session_path) }
+    it 'サインインページにリダイレクトされること' do is_expected.to redirect_to(new_user_session_path) end
   end
 
   private

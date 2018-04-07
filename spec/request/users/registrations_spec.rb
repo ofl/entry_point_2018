@@ -6,14 +6,14 @@ RSpec.describe 'Users::Registrations', type: :request do
   describe 'GET /users/registration/new' do
     subject { get new_user_registration_path }
 
-    context 'not logged in' do
-      it { is_expected.to eq 200 }
+    context 'ログインしていない場合' do
+      it '編集画面が表示されること' do is_expected.to eq 200 end
     end
 
-    context 'logged in' do
+    context 'ログインしている場合' do
       before { sign_in user }
 
-      it { is_expected.to redirect_to authenticated_root_path }
+      it 'マイページにリダイレクトされること' do is_expected.to redirect_to authenticated_root_path end
     end
   end
 
@@ -22,34 +22,34 @@ RSpec.describe 'Users::Registrations', type: :request do
     let(:valid_params) { { user: { username: 'foo', email: 'foo@sample.com', password: 'password' } } }
     let(:invalid_params) { { user: { username: 'foo', email: user.email, password: 'a' } } }
 
-    context 'logged in' do
+    context 'ログインしている場合' do
       let(:params) { valid_params }
       before { sign_in user }
 
-      it { is_expected.to redirect_to authenticated_root_path }
-      it { expect { subject }.not_to change(User, :count) }
+      it 'マイページにリダイレクトされること' do is_expected.to redirect_to authenticated_root_path end
+      it 'ユーザーが増加しないこと' do expect { subject }.not_to change(User, :count) end
     end
 
-    context 'not logged in' do
-      context 'invalid params' do
+    context 'ログインしていない場合' do
+      context '不正な入力値の場合' do
         let(:params) { invalid_params }
 
-        it { is_expected.to eq 200 }
+        it '編集画面が表示されること' do is_expected.to eq 200 end
       end
 
-      context 'valid params' do
-        context 'preview' do
+      context '正しい入力値の場合' do
+        context '入力内容の確認の場合' do
           let(:params) { valid_params.merge(preview: true) }
 
-          it { is_expected.to eq 200 }
-          it { expect { subject }.not_to change(User, :count) }
+          it '入力内容の確認画面が表示されること' do is_expected.to eq 200 end
+          it 'ユーザーが増加しないこと' do expect { subject }.not_to change(User, :count) end
         end
 
-        context 'auth_via_email' do
+        context 'メールで本人確認の場合' do
           let(:params) { valid_params.merge(auth_via_email: true) }
 
-          it { is_expected.to redirect_to authenticated_root_path }
-          it { expect { subject }.to change(User, :count).by(1) }
+          it 'マイページにリダイレクトされること' do is_expected.to redirect_to authenticated_root_path end
+          it 'ユーザーが増加すること' do expect { subject }.to change(User, :count).by(1) end
         end
       end
     end
