@@ -125,6 +125,7 @@ class UserAuth < ApplicationRecord
     end
   end
 
+  # 古い本人確認のconfirmed_atをnilにする
   def disable_old_auths!
     self.class.where(user: user, provider: provider).where.not(id: id).find_each do |old_auth|
       old_auth.update!(confirmed_at: nil)
