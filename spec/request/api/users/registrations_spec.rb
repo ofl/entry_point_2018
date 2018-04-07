@@ -9,14 +9,16 @@ RSpec.describe 'registrations', type: :request do
   describe 'GET /api/users/registrations' do
     subject { get '/api/users/registrations', headers: headers }
 
-    context 'not logged in' do
-      it { is_expected.to eq 401 }
+    context 'ログインしていない場合' do
+      it '401エラーになること' do
+        is_expected.to eq 401
+      end
     end
 
-    context 'logged in' do
+    context 'ログインしている場合' do
       before { login }
 
-      it do
+      it 'ユーザー情報を取得できること', autodoc: true do
         subject
         is_expected.to eq 200
         expect(json).to match(registrant_structure)
@@ -27,28 +29,36 @@ RSpec.describe 'registrations', type: :request do
   describe 'POST /api/users/registrations' do
     subject { post '/api/users/registrations', params: params }
 
-    context 'no params' do
-      it { is_expected.to eq 500 }
-
-      it do
-        subject
+    context '入力値がない場合' do
+      it '500エラーになること' do
+        is_expected.to eq 500
         expect(json['errors'][0]).to eq 'param is missing or the value is empty: user'
       end
     end
 
-    context 'valid params' do
+    context '正しい入力値の場合' do
       let(:params) { valid_params }
 
-      it do
+      it 'ユーザーが登録されること', autodoc: true do
         subject
         is_expected.to eq 200
         expect(json).to match(registrant_structure)
       end
 
-      it do
+      it 'ユーザーが増加すること' do
         expect do
           subject
         end.to change(User, :count).by(1)
+      end
+    end
+
+    context '不正な入力値の場合' do
+      let(:params) { invalid_params }
+
+      it '422エラーになること' do
+        subject
+        is_expected.to eq 422
+        expect(json['errors'][0]).to include 'バリデーションに失敗しました'
       end
     end
   end
@@ -56,36 +66,36 @@ RSpec.describe 'registrations', type: :request do
   describe 'PUT /api/users/registrations' do
     subject { put '/api/users/registrations', params: params.to_json, headers: headers }
 
-    context 'not logged in' do
-      it { is_expected.to eq 401 }
+    context 'ログインしていない場合' do
+      it '401エラーになること' do
+        is_expected.to eq 401
+      end
     end
 
-    context 'logged in' do
+    context 'ログインしている場合' do
       before { login }
 
-      context 'no params' do
-        it { is_expected.to eq 500 }
-
-        it do
-          subject
+      context '入力値がない場合' do
+        it '500エラーになること' do
+          is_expected.to eq 500
           expect(json['errors'][0]).to eq 'param is missing or the value is empty: user'
         end
       end
 
-      context 'valid params' do
+      context '正しい入力値の場合' do
         let(:params) { valid_params }
 
-        it do
+        it 'ユーザー情報が修正されること', autodoc: true do
           subject
           is_expected.to eq 200
           expect(json).to match(registrant_structure)
         end
       end
 
-      context 'invalid params' do
+      context '不正な入力値の場合' do
         let(:params) { invalid_params }
 
-        it do
+        it '422エラーになること' do
           subject
           is_expected.to eq 422
           expect(json['errors'][0]).to include 'バリデーションに失敗しました'
@@ -97,21 +107,23 @@ RSpec.describe 'registrations', type: :request do
   describe 'DELETE /api/users/registrations' do
     subject { delete '/api/users/registrations', headers: headers }
 
-    context 'not logged in' do
-      it { is_expected.to eq 401 }
+    context 'ログインしていない場合' do
+      it '401エラーになること' do
+        is_expected.to eq 401
+      end
     end
 
-    context 'logged in' do
+    context 'ログインしている場合' do
       before { login }
 
       let(:params) { valid_params }
 
-      it do
+      it 'ユーザーが削除されること', autodoc: true do
         subject
         is_expected.to eq 200
       end
 
-      it do
+      it 'ユーザーが減少すること' do
         expect { subject }.to change(User, :count).by(-1)
       end
     end

@@ -16,44 +16,50 @@ RSpec.describe 'user_auths', type: :request do
 
     subject { post api_users_user_auths_path, params: params.to_json, headers: headers }
 
-    context 'not logged in' do
-      it { is_expected.to eq 401 }
+    context 'ログインしていない場合' do
+      it '401エラーになること' do
+        is_expected.to eq 401
+      end
     end
 
-    context 'logged in' do
+    context 'ログインしている場合' do
       before { login }
       let(:user) { login_user }
 
-      context 'no params' do
-        it { is_expected.to eq 500 }
-
-        it do
-          subject
+      context '入力値がない場合' do
+        it '500エラーになること' do
+          is_expected.to eq 500
           expect(json['errors'][0]).to eq 'param is missing or the value is empty: user_auth'
         end
       end
 
-      context 'invalid params' do
+      context '不正な入力値の場合' do
         let(:params) { invalid_params }
 
-        it { is_expected.to eq 400 }
+        it '400エラーになること' do
+          is_expected.to eq 400
+        end
       end
 
-      context 'invalid password params' do
+      context 'パスワードが間違っている場合' do
         let(:params) { invalid_password_params }
 
-        it { is_expected.to eq 400 }
+        it '400エラーになること' do
+          is_expected.to eq 400
+        end
       end
 
-      context 'valid params' do
+      context '正しい入力値の場合' do
         let(:params) { valid_params }
 
-        it do
+        it 'ユーザー認証が作成されること', autodoc: true do
           is_expected.to eq 200
           expect(json['message']).to eq 'Sent confirmation mail'
         end
 
-        it { expect { subject }.to change(UserAuth, :count).by(1) }
+        it 'ユーザー認証が増加すること' do
+          expect { subject }.to change(UserAuth, :count).by(1)
+        end
       end
     end
   end
@@ -65,11 +71,11 @@ RSpec.describe 'user_auths', type: :request do
   #   let(:params) { { user_auth: { user_password: password } } }
   #   let(:password) { user.password }
   #
-  #   context 'not logged in' do
+  #   context 'not ログインしている場合' do
   #     it { is_expected.to eq 401 }
   #   end
   #
-  #   context 'logged in' do
+  #   context 'ログインしている場合' do
   #     before { login }
   #     let(:user) { login_user }
   #
@@ -80,14 +86,14 @@ RSpec.describe 'user_auths', type: :request do
   #     context 'user_auth exists' do
   #       before { create :user_auth, user: user, provider: :facebook }
   #
-  #       context 'invalid params' do
+  #       context '不正な入力値の場合' do
   #         let(:password) { 'foobaabaz' }
   #
   #         it { is_expected.to eq 400 }
   #         it { expect { subject }.not_to change(UserAuth, :count) }
   #       end
   #
-  #       context 'valid params' do
+  #       context '正しい入力値の場合' do
   #         it { is_expected.to eq 200 }
   #         it { expect { subject }.to change(UserAuth, :count).by(-1) }
   #       end

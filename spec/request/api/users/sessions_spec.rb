@@ -32,30 +32,28 @@ RSpec.describe 'sessions', type: :request do
   describe 'POST /api/users/sessions' do
     subject { post '/api/users/sessions', params: params.to_json, headers: headers }
 
-    context 'no params' do
-      it { is_expected.to eq 500 }
-
-      it do
-        subject
+    context '入力値がない場合' do
+      it '500エラーになること' do
+        is_expected.to eq 500
         expect(json['errors'][0]).to eq 'param is missing or the value is empty: user_auth'
       end
     end
 
-    context 'valid params' do
+    context '正しい入力値の場合' do
       let(:params) { valid_params }
 
       before do
         create(:user, username: 'foo', password: 'password')
       end
 
-      it do
+      it 'ログインできること', autodoc: true do
         subject
         is_expected.to eq 200
         expect(json).to match(session_structure)
       end
     end
 
-    context 'valid twitter params' do
+    context '正しいtwitterの入力値の場合' do
       let(:params) { valid_tw_params }
 
       before do
@@ -63,7 +61,7 @@ RSpec.describe 'sessions', type: :request do
         create(:user_auth, provider: 'twitter', uid: test_tw_user[:uid], user: user)
       end
 
-      it do
+      it 'ログインできること', autodoc: true do
         VCR.use_cassette 'twitter_valid_credential' do
           subject
           is_expected.to eq 200
@@ -89,24 +87,28 @@ RSpec.describe 'sessions', type: :request do
     #   end
     # end
 
-    context 'user not found' do
+    context 'ユーザーが存在しない場合' do
       let(:params) { valid_params }
 
-      it { is_expected.to eq 404 }
+      it '404エラーになること' do
+        is_expected.to eq 404
+      end
     end
   end
 
   describe 'DELETE /api/users/sessions' do
     subject { delete '/api/users/sessions', params: params.to_json, headers: headers }
 
-    context 'not logged in' do
-      it { is_expected.to eq 401 }
+    context 'ログインしていない場合' do
+      it '401エラーになること' do
+        is_expected.to eq 401
+      end
     end
 
-    context 'logged in' do
+    context 'ログインしている場合' do
       before { login }
 
-      it do
+      it 'ログアウトすること', autodoc: true do
         before_authentication_token = login_user.authentication_token
 
         subject
