@@ -5,22 +5,18 @@ RSpec.describe 'Mypage', type: :request do
     let!(:user) { create :user }
     subject { get root_path }
 
-    context 'not logged in' do
-      it { is_expected.to eq 200 }
-
-      it do
-        subject
+    context 'ログインしていない場合' do
+      it 'ホームが表示されること' do
+        is_expected.to eq 200
         expect(response.body).not_to include user.username
       end
     end
 
-    context 'logged in' do
+    context 'ログインしている場合' do
       before { sign_in(user) }
 
-      it { is_expected.to eq 200 }
-
-      it do
-        subject
+      it 'マイページが表示されること' do
+        is_expected.to eq 200
         expect(response.body).to include user.username
       end
     end
