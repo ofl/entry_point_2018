@@ -21,5 +21,7 @@
 require 'rails_helper'
 
 RSpec.describe BatchSchedule::PointExpiration, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe 'relation' do
+    it 'Userに所属すること' do skip end
+  end
 end

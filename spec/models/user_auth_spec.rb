@@ -27,7 +27,7 @@ require 'rails_helper'
 
 RSpec.describe UserAuth, type: :model do
   describe 'relation' do
-    it 'Userに所属すること'
+    it 'Userに所属すること' do skip end
   end
 
   describe 'scope' do

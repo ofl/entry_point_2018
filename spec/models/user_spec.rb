@@ -36,7 +36,7 @@ RSpec.describe User, type: :model do
   let(:user) { create :user }
 
   describe 'relations' do
-    it '複数のUserAuth所有できること'
+    it '複数のUserAuth所有できること' do skip end
   end
 
   describe 'methods' do
