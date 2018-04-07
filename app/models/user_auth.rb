@@ -38,8 +38,7 @@ class UserAuth < ApplicationRecord
 
   scope :confirmed, -> { where.not(confirmed_at: nil) }
 
-  validates :user_id, presence: true
-  validates :uid, presence: true
+  validates :user, :uid, presence: true
   validates :uid, format: { with: VALID_EMAIL_REGEX }, if: :email?
   validates :provider, presence: true, inclusion: { in: providers }
   validates_associated :user
