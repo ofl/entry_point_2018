@@ -79,6 +79,7 @@ group :development do
 end
 
 group :test do
+  gem 'autodoc'
   gem 'email_spec'
   gem 'shoulda-matchers'
   gem 'simplecov', require: false

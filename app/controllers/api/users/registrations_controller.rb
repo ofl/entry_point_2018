@@ -23,7 +23,7 @@ class Api::Users::RegistrationsController < Api::ApiController
     current_user.destroy
     sign_out(:user)
 
-    render json: { head: 200 }
+    render json: { head: :ok }
   end
 
   private
