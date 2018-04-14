@@ -27,18 +27,26 @@ describe 'rake task points' do
 
     subject { @rake[task].invoke }
 
-    context 'outdated points exists' do
+    context '期限切れのポイントが存在する場合' do
       let(:created_at) { '2018-1-1 23:59:59'.in_time_zone }
 
-      it { expect { subject }.to change(Point.outdated, :count).by(1) }
-      it { expect { subject }.to change(BatchSchedule::PointExpiration, :count).by(-1) }
+      it '期限切れのポイント履歴が増えること' do
+        expect { subject }.to change(Point.outdated, :count).by(1)
+      end
+      it 'BatchSchedule::PointExpirationが減ること' do
+        expect { subject }.to change(BatchSchedule::PointExpiration, :count).by(-1)
+      end
     end
 
-    context 'outdated points not exists' do
+    context '期限切れのポイントが存在しない場合' do
       let(:created_at) { '2018-1-2 00:00:00'.in_time_zone }
 
-      it { expect { subject }.not_to change(Point.outdated, :count) }
-      it { expect { subject }.to change(BatchSchedule::PointExpiration, :count).by(-1) }
+      it '期限切れのポイント履歴が増えないこと' do
+        expect { subject }.not_to change(Point.outdated, :count)
+      end
+      it 'BatchSchedule::PointExpirationが減ること' do
+        expect { subject }.to change(BatchSchedule::PointExpiration, :count).by(-1)
+      end
     end
   end
 end

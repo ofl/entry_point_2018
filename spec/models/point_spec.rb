@@ -26,13 +26,13 @@ RSpec.describe Point, type: :model do
     describe '.positive' do
       subject { Point.positive }
 
-      it { is_expected.to contain_exactly(got_point) }
+      it '正のポイントが含まれること' do is_expected.to contain_exactly(got_point) end
     end
 
     describe '.negative' do
       subject { Point.negative }
 
-      it { is_expected.to contain_exactly(used_point, outdated_point) }
+      it '負のポイントが含まれること' do is_expected.to contain_exactly(used_point, outdated_point) end
     end
 
     describe '.is_outdated' do
@@ -41,16 +41,16 @@ RSpec.describe Point, type: :model do
 
       subject { Point.is_outdated }
 
-      context '2018-4-1' do
+      context '期限が来てない場合' do
         let(:now) { '2018-4-1'.in_time_zone.end_of_day }
 
-        it { expect(subject.count).to eq 0 }
+        it '該当数は0であること' do expect(subject.count).to eq 0 end
       end
 
-      context '2018-4-2' do
+      context '期限が来た場合' do
         let(:now) { '2018-4-2'.in_time_zone.beginning_of_day }
 
-        it { expect(subject.count).to eq 3 }
+        it '該当数は0でないこと' do expect(subject.count).to eq 3 end
       end
     end
   end
@@ -58,28 +58,28 @@ RSpec.describe Point, type: :model do
   describe 'validation' do
     subject { point.valid? }
 
-    context 'got amount(+)' do
+    context 'カテゴリーが獲得でポイント数が正の場合' do
       let(:point) { build :point, :got, amount: 100 }
 
-      it { is_expected.to be_truthy }
+      it '真であること' do is_expected.to be_truthy end
     end
 
-    context 'got amount(-)' do
+    context 'カテゴリーが獲得でポイント数が負の場合' do
       let(:point) { build :point, :got, amount: -100 }
 
-      it { is_expected.to be_falsey }
+      it '偽であること' do is_expected.to be_falsey end
     end
 
-    context 'used amount(+)' do
+    context 'カテゴリーが使用でポイント数が正の場合' do
       let(:point) { build :point, :used, amount: 100 }
 
-      it { is_expected.to be_falsey }
+      it '偽であること' do is_expected.to be_falsey end
     end
 
-    context 'used amount(-)' do
+    context 'カテゴリーが使用でポイント数が負の場合' do
       let(:point) { build :point, :used, amount: -100 }
 
-      it { is_expected.to be_truthy }
+      it '真であること' do is_expected.to be_truthy end
     end
   end
 
@@ -91,16 +91,16 @@ RSpec.describe Point, type: :model do
 
     subject { point.outdate_at }
 
-    context 'negative point' do
+    context '負のポイントの場合' do
       let(:point) { create :point, :used }
 
-      it { is_expected.to be_nil }
+      it 'nilであること' do is_expected.to be_nil end
     end
 
-    context 'positive point' do
+    context '正のポイントの場合' do
       let(:point) { create :point, :got }
 
-      it { is_expected.to eq '2018-4-1'.in_time_zone.end_of_day }
+      it '3ヶ月後の日にちが返ること' do is_expected.to eq '2018-4-1'.in_time_zone.end_of_day end
     end
   end
 
@@ -113,23 +113,23 @@ RSpec.describe Point, type: :model do
 
     subject { point.expired? }
 
-    context 'negative point' do
+    context '負のポイントの場合' do
       let(:point) { create :point, :used, created_at: created_at }
 
-      it { is_expected.to be_falsey }
+      it '偽であること' do is_expected.to be_falsey end
     end
 
-    context 'positive point' do
+    context '正のポイントの場合' do
       let(:point) { create :point, :got, created_at: created_at }
 
-      context '2018-4-1' do
-        it { is_expected.to be_falsey }
+      context '期限切れでない場合' do
+        it '偽であること' do is_expected.to be_falsey end
       end
 
-      context '2018-4-2' do
+      context '期限切れの場合' do
         let(:now) { '2018-4-2'.in_time_zone.beginning_of_day }
 
-        it { is_expected.to be_truthy }
+        it '真であること' do is_expected.to be_truthy end
       end
     end
   end

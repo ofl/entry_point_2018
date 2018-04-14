@@ -38,8 +38,7 @@ class UserAuth < ApplicationRecord
 
   scope :confirmed, -> { where.not(confirmed_at: nil) }
 
-  validates :user_id, presence: true
-  validates :uid, presence: true
+  validates :user, :uid, presence: true
   validates :uid, format: { with: VALID_EMAIL_REGEX }, if: :email?
   validates :provider, presence: true, inclusion: { in: providers }
   validates_associated :user
@@ -125,6 +124,7 @@ class UserAuth < ApplicationRecord
     end
   end
 
+  # 古い本人確認のconfirmed_atをnilにする
   def disable_old_auths!
     self.class.where(user: user, provider: provider).where.not(id: id).find_each do |old_auth|
       old_auth.update!(confirmed_at: nil)

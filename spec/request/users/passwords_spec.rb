@@ -6,14 +6,14 @@ RSpec.describe 'Users::Passwords', type: :request do
   describe 'GET /users/password/new' do
     subject { get new_user_password_path }
 
-    context 'not logged in' do
-      it { is_expected.to eq 200 }
+    context 'ログインしていない場合' do
+      it '編集画面が表示されること' do is_expected.to eq 200 end
     end
 
-    context 'logged in' do
+    context 'ログインしている場合' do
       before { sign_in user }
 
-      it { is_expected.to redirect_to authenticated_root_path }
+      it 'マイページにリダイレクトされること' do is_expected.to redirect_to authenticated_root_path end
     end
   end
 
@@ -22,25 +22,25 @@ RSpec.describe 'Users::Passwords', type: :request do
     let(:valid_params) { { user: { email: user.email } } }
     let(:invalid_params) { { user: { email: 'foo@example.com' } } }
 
-    context 'logged in' do
+    context 'ログインしている場合' do
       let(:params) { valid_params }
       before { sign_in user }
 
-      it { is_expected.to redirect_to authenticated_root_path }
+      it 'マイページにリダイレクトされること' do is_expected.to redirect_to authenticated_root_path end
     end
 
-    context 'not logged in' do
-      context 'invalid params' do
+    context 'ログインしていない場合' do
+      context '不正な入力値の場合' do
         let(:params) { invalid_params }
 
-        it { is_expected.to eq 200 }
+        it '編集画面が表示されること' do is_expected.to eq 200 end
       end
 
-      context 'valid params' do
+      context '正しい入力値の場合' do
         let(:params) { valid_params }
 
-        it { is_expected.to redirect_to new_user_session_path }
-        it do
+        it 'ログイン画面にリダイレクトされること' do is_expected.to redirect_to new_user_session_path end
+        it 'パスワード変更メールは送信されないこと' do
           expect { subject }.to(change { ActionMailer::Base.deliveries.count })
         end
       end
@@ -52,25 +52,25 @@ RSpec.describe 'Users::Passwords', type: :request do
     let(:valid_params) { { reset_password_token: 'abc' } }
     let(:invalid_params) { {} }
 
-    context 'not logged in' do
-      context 'invalid params' do
+    context 'ログインしていない場合' do
+      context '不正な入力値の場合' do
         let(:params) { invalid_params }
 
-        it { is_expected.to redirect_to new_user_session_path }
+        it 'ログイン画面にリダイレクトされること' do is_expected.to redirect_to new_user_session_path end
       end
 
-      context 'valid params' do
+      context '正しい入力値の場合' do
         let(:params) { valid_params }
 
-        it { is_expected.to eq 200 }
+        it '編集画面が表示されること' do is_expected.to eq 200 end
       end
     end
 
-    context 'logged in' do
+    context 'ログインしている場合' do
       before { sign_in user }
       let(:params) { valid_params }
 
-      it { is_expected.to redirect_to authenticated_root_path }
+      it 'マイページにリダイレクトされること' do is_expected.to redirect_to authenticated_root_path end
     end
   end
 
@@ -90,31 +90,31 @@ RSpec.describe 'Users::Passwords', type: :request do
       { user: { reset_password_token: @token, password: 'foobarbaz', password_confirmation: 'xxxxxxxxx' } }
     end
 
-    context 'not logged in' do
-      context 'invalid token params' do
+    context 'ログインしていない場合' do
+      context '不正なトークンの場合' do
         let(:params) { invalid_token_params }
 
-        it { is_expected.to eq 200 }
+        it '編集画面が表示されること' do is_expected.to eq 200 end
       end
 
       context 'invalid value params' do
         let(:params) { invalid_value_params }
 
-        it { is_expected.to eq 200 }
+        it '編集画面が表示されること' do is_expected.to eq 200 end
       end
 
-      context 'valid params' do
+      context '正しい入力値の場合' do
         let(:params) { valid_params }
 
-        it { is_expected.to redirect_to authenticated_root_path }
+        it 'マイページにリダイレクトされること' do is_expected.to redirect_to authenticated_root_path end
       end
     end
 
-    context 'logged in' do
+    context 'ログインしている場合' do
       before { sign_in user }
       let(:params) { valid_params }
 
-      it { is_expected.to redirect_to authenticated_root_path }
+      it 'マイページにリダイレクトされること' do is_expected.to redirect_to authenticated_root_path end
     end
   end
 end

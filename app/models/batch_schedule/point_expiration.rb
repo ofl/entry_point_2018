@@ -23,4 +23,6 @@ class BatchSchedule::PointExpiration < ApplicationRecord
   belongs_to :user
 
   scope :run_before, ->(now = Time.zone.now) { where('run_at <= ?', now) }
+
+  validates :user, :run_at, presence: true
 end
