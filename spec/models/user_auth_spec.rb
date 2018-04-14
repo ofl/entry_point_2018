@@ -197,13 +197,13 @@ RSpec.describe UserAuth, type: :model do
 
       subject { user_auth.external_auth_provider? }
 
-      context 'プロバイダーがemailの場合' do
+      context '本人確認手段がemailの場合' do
         let(:provider) { :email }
 
         it '偽であること' do is_expected.to be_falsey end
       end
 
-      context 'プロバイダーがtwitterの場合' do
+      context '本人確認手段がtwitterの場合' do
         let(:provider) { :twitter }
 
         it '真であること' do is_expected.to be_truthy end

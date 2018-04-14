@@ -202,7 +202,7 @@ RSpec.describe User, type: :model do
 
       let!(:batch_schedule) { create :batch_schedule_point_expiration, user: user, run_at: at - 1.second }
 
-      context 'at 2018-3-2 12:10:10' do
+      context '2018-3-2 12:10:10に実行した場合' do
         let(:at) { '2018-3-2 12:10:10'.in_time_zone }
 
         it '期限切れのポイント数は変わらないこと' do
@@ -213,7 +213,7 @@ RSpec.describe User, type: :model do
         end
       end
 
-      context 'at 2018-4-2 12:10:10' do
+      context '2018-4-2 12:10:10に実行した場合' do
         let(:at) { '2018-4-2 12:10:10'.in_time_zone }
 
         it '期限切れのポイント履歴は増えないこと' do
@@ -222,7 +222,7 @@ RSpec.describe User, type: :model do
         it_behaves_like 'バッチスケジュールが削除される'
       end
 
-      context 'at 2018-5-3 12:10:10' do
+      context '2018-5-3 12:10:10に実行した場合' do
         let(:at) { '2018-5-3 12:10:10'.in_time_zone }
 
         it '期限切れのポイント履歴が増えること' do
@@ -232,7 +232,7 @@ RSpec.describe User, type: :model do
         it_behaves_like 'バッチスケジュールが削除される'
       end
 
-      context 'at 2018-7-4 12:10:10' do
+      context '2018-7-4 12:10:10に実行した場合' do
         let(:at) { '2018-7-4 12:10:10'.in_time_zone }
 
         it '期限切れのポイント履歴が増えること' do
@@ -286,27 +286,27 @@ RSpec.describe User, type: :model do
       end
       let(:used_amount) { -50 }
 
-      context 'at 2018-3-2 12:10:10' do
+      context '2018-3-2 12:10:10に実行した場合' do
         let(:at) { '2018-3-2 12:10:10'.in_time_zone }
 
         it '期限切れのポイント数は0であること' do is_expected.to eq 0 end
       end
 
-      context 'at 2018-4-2 12:10:10' do
+      context '2018-4-2 12:10:10に実行した場合' do
         let(:at) { '2018-4-2 12:10:10'.in_time_zone }
 
-        context 'used amount is 50' do
+        context '使用量が50の場合' do
           it '期限切れのポイント数は50であること' do is_expected.to eq 50 end # 100 - 50
         end
 
-        context 'used amount is 200' do
+        context '使用量が200の場合' do
           let(:used_amount) { -200 }
 
           it '期限切れのポイント数は0であること' do is_expected.to eq 0 end # 100 - 200 < 0
         end
       end
 
-      context 'at 2018-5-4 12:10:10' do
+      context '2018-5-4 12:10:10に実行した場合' do
         let(:at) { '2018-5-4 12:10:10'.in_time_zone }
         let(:used_amount) { -200 }
 
