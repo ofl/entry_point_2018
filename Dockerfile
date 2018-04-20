@@ -1,6 +1,6 @@
 FROM node:8.7.0-alpine as node
 
-FROM ruby:2.4.2-alpine3.6
+FROM ruby:2.5.1-alpine3.7
 
 # timezone
 RUN apk add --no-cache tzdata && \
