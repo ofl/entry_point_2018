@@ -9,7 +9,7 @@ services:
       PGDATA: /var/lib/postgresql/data
     volumes:
       - postgresql-data:/var/lib/postgresql/data
-  rails: &app_base
+  rails:
     build: .
     image: ofl/entry_point_2018:0.1
     ports:
@@ -26,22 +26,6 @@ services:
       POSTGRES_PASSWORD: mysecurepass
       POSTGRES_DB: app_development
     command: bundle exec foreman start -f Procfile.dev
-  spring:
-    <<: *app_base
-    stdin_open: true
-    tty: true
-    command: spring server
-    ports: []
-    pid: host
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: mysecurepass
-      POSTGRES_DB: app_development
-      SPRING_SOCKET: /tmp/spring/spring.sock
-    volumes:
-      - .:/usr/src/entry_point_2018
-      - bundle_cache:/bundle
-      - spring:/tmp/spring
   mailcatcher:
     image: schickling/mailcatcher
     ports:
@@ -51,4 +35,3 @@ volumes:
   postgresql-data:
     driver: local
   bundle_cache:
-  spring:
