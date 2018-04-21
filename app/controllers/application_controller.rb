@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
 
   def handle_403(error)
     @exception = error
-    render file: Rails.root.join('public', '403.html'), layout: false, status: 403
+    render file: Rails.root.join('public', '403.html'), layout: false, status: :forbidden
   end
 
   def handle_401(error)
@@ -33,6 +33,6 @@ class ApplicationController < ActionController::Base
 
   def handle_400(error)
     @exception = error
-    render file: Rails.root.join('public', '400.html'), layout: false, status: 403
+    render file: Rails.root.join('public', '400.html'), layout: false, status: :forbidden
   end
 end
