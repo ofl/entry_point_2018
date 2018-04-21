@@ -35,6 +35,8 @@ gem 'bcrypt', '~> 3.1.7'
 
 gem 'active_model_serializers'
 
+gem 'bootsnap', require: false
+
 gem 'config'
 gem 'devise'
 gem 'foreman'
@@ -62,9 +64,9 @@ group :development, :test do
   gem 'faker'
   gem 'rspec-rails', '~> 3.5.0'
   # https://github.com/rails/spring/pull/546
-  gem 'spring', github: 'mattbrictson/spring', branch: 'honor-bundle-app-config'
-  gem 'spring-commands-rspec'
-  gem 'spring-watcher-listen', '~> 2.0.0'
+  # gem 'spring', github: 'mattbrictson/spring', branch: 'honor-bundle-app-config'
+  # gem 'spring-commands-rspec'
+  # gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
 group :development do
