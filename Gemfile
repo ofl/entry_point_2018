@@ -7,7 +7,7 @@ end
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.1.4'
+gem 'rails', '~> 5.2.0'
 # Use postgres as the database for Active Record
 gem 'pg'
 # Use Puma as the app server
@@ -34,6 +34,8 @@ gem 'bcrypt', '~> 3.1.7'
 # gem 'capistrano-rails', group: :development
 
 gem 'active_model_serializers'
+
+gem 'bootsnap', require: false
 
 gem 'config'
 gem 'devise'
@@ -62,9 +64,9 @@ group :development, :test do
   gem 'faker'
   gem 'rspec-rails', '~> 3.5.0'
   # https://github.com/rails/spring/pull/546
-  gem 'spring', github: 'mattbrictson/spring', branch: 'honor-bundle-app-config'
-  gem 'spring-commands-rspec'
-  gem 'spring-watcher-listen', '~> 2.0.0'
+  # gem 'spring', github: 'mattbrictson/spring', branch: 'honor-bundle-app-config'
+  # gem 'spring-commands-rspec'
+  # gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
 group :development do

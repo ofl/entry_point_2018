@@ -26,6 +26,7 @@ Metrics/AbcSize:
 
 Metrics/BlockLength:
   Exclude:
+    - config/environments/development.rb
     - config/initializers/simple_form.rb
     - config/initializers/simple_form_materialize.rb
     - spec/**/*
