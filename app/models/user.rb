@@ -33,6 +33,7 @@
 
 class User < ApplicationRecord
   include PointAvailable
+  include AvatarUploader[:avatar]
 
   attr_accessor :login, :dummy_password
 

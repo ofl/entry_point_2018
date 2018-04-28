@@ -1,6 +1,6 @@
 en:
   views:
-    mypages:
+    mypage:
       add_password: Add Password
       edit_password: Edit Password
       connect_twitter: Connect with Twitter
