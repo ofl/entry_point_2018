@@ -1,0 +1,8 @@
+en:
+  mypage:
+    avatar:
+      edit:
+        upload_avatar: Upload Avatar
+        back: Back
+      update:
+        success: Success Upload Avatar
