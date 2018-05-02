@@ -16,6 +16,9 @@ ul
   - else
     li= link_to t('.disconnect_facebook'), edit_users_user_auth_path(provider: :facebook)
 
+h3 アバターの編集
+p= link_to t('.edit_avatar'), edit_mypage_avatar_path
+
 h3 ポイント
 p= "所持ポイント: #{current_user.point_amount}"
 p= link_to t('.point_histories'), points_path

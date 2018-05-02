@@ -54,6 +54,8 @@ class User < ApplicationRecord
   has_many :point_expiration_schedules, class_name: 'BatchSchedule::PointExpiration',
                                         dependent: :destroy, inverse_of: :user
 
+  has_one_attached :avatar
+
   before_create :ensure_dummy_authentication_token
   before_destroy :outdate_all_points! # 所持しているポイントを無効にする
 

@@ -16,6 +16,10 @@ Rails.application.routes.draw do
     resources :user_auths, param: :provider, except: [:update]
   end
 
+  namespace :mypage do
+    resource :avatar, only: %i[edit update], controller: 'avatar'
+  end
+
   namespace :api do
     namespace :users do
       resource :registrations, only: %i[show create update destroy]

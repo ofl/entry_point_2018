@@ -1,0 +1,13 @@
+h2 プロフィール編集
+
+= user_avatar(@user, size = :large)
+
+.divider
+
+= simple_form_for(@user, url: mypage_avatar_path, method: :put) do |f|
+  .form-inputs.row
+    = f.input :avatar, as: :file, icon: 'file', required: true
+  .form-actions.center
+    = f.button :submit, t('.upload_avatar'), class: 'waves-button-input v-aligned-btn'
+
+    = link_to t('.back'), authenticated_root_path, class: 'btn waves-button-input v-aligned-btn'

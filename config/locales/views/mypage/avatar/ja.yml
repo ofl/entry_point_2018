@@ -1,0 +1,8 @@
+ja:
+  mypage:
+    avatar:
+      edit:
+        upload_avatar: アバターのアップロード
+        back: 戻る
+      update:
+        success: アバターのアップロードに成功しました
