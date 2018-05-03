@@ -2,11 +2,11 @@
 #
 # Table name: batch_schedule_point_expirations
 #
-#  id         :integer          not null, primary key
-#  user_id    :integer
-#  run_at     :datetime         not null              # バッチ実施日時(ポイント失効日時)
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id                        :bigint(8)        not null, primary key
+#  user_id                   :bigint(8)
+#  run_at(バッチ実施日時(ポイント失効日時)) :datetime         not null
+#  created_at                :datetime         not null
+#  updated_at                :datetime         not null
 #
 # Indexes
 #
