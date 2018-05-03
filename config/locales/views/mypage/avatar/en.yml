@@ -3,6 +3,10 @@ en:
     avatar:
       edit:
         upload_avatar: Upload Avatar
+        delete: Delete
         back: Back
+        are_you_sure: Are you sure?
       update:
         success: Success Upload Avatar
+      destroy:
+        success: Success Destroy Avatar

@@ -15,6 +15,16 @@ class Mypage::AvatarController < ApplicationController
     end
   end
 
+  def destroy
+    @user = current_user
+
+    if @user.update(avatar: nil)
+      redirect_to authenticated_root_path, notice: t('.success')
+    else
+      render 'edit'
+    end
+  end
+
   private
 
   def avatar_params

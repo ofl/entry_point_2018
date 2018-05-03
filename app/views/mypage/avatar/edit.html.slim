@@ -15,4 +15,6 @@ h2 プロフィール編集
   .form-actions.center
     = f.button :submit, t('.upload_avatar'), class: 'waves-button-input v-aligned-btn'
 
+    - unless f.object.avatar.nil?
+      = link_to t('.delete'), mypage_avatar_path, method: :delete, class: 'btn waves-button-input v-aligned-btn', data: { confirm: t('.are_you_sure') }
     = link_to t('.back'), authenticated_root_path, class: 'btn waves-button-input v-aligned-btn'

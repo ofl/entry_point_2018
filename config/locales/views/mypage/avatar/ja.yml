@@ -3,6 +3,10 @@ ja:
     avatar:
       edit:
         upload_avatar: アバターのアップロード
+        delete: 削除
         back: 戻る
+        are_you_sure: 本当に削除しますか？
       update:
-        success: アバターのアップロードに成功しました
+        success: アバターをアップロードしました
+      destroy:
+        success: アバターを削除しました

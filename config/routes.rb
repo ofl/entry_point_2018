@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   end
 
   namespace :mypage do
-    resource :avatar, only: %i[edit update], controller: 'avatar'
+    resource :avatar, only: %i[edit update destroy], controller: 'avatar'
   end
 
   namespace :api do
