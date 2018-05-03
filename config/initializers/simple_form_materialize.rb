@@ -192,12 +192,12 @@ SimpleForm.setup do |config|
 
     # Form Components
     b.wrapper tag: :div, class: "btn" do |ba|
-      ba.use :tag, tag: :span, text: :label_text
+      ba.use :label_text, wrap_with: { tag: "span" }
       ba.use :input
     end
     b.wrapper tag: :div, class: "file-path-wrapper" do |ba|
-      ba.use :tag, tag: :input, class: "file-path validate", type: "text",
-                   placeholder: "Browse...", error_class: "invalid"
+      ba.use :input, class: "file-path validate", type: "text",
+                     placeholder: "Browse...", error_class: "invalid"
     end
     b.use :hint, wrap_with: { tag: "span", class: "help-text" }
   end
@@ -210,13 +210,13 @@ SimpleForm.setup do |config|
 
     # Form Components
     b.wrapper tag: :div, class: "btn" do |ba|
-      ba.use :tag, tag: :span, text: :label_text
+      ba.use :label_text, wrap_with: { tag: "span" }
       ba.use :input, multiple: true
     end
     b.wrapper tag: :div, class: "file-path-wrapper" do |ba|
-      ba.use :tag, tag: :input, class: "file-path validate", type: "text",
-                   placeholder: "Upload one or more files",
-                   error_class: "invalid"
+      ba.use :input, class: "file-path validate", type: "text",
+                     placeholder: "Upload one or more files",
+                     error_class: "invalid"
     end
     b.use :hint, wrap_with: { tag: "span", class: "help-text" }
   end
