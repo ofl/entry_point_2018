@@ -1,0 +1,15 @@
+ja:
+  shrine:
+    errors:
+      format: "%{attribute}%{message}"
+      messages:
+        max_size: "はファイルサイズが大きすぎます(最大 %{max} MB)"
+        min_size: "はファイルサイズが小さすぎます(最小 %{min} MB)"
+        max_width: "は幅が大きすぎます(最大 %{max} px)"
+        min_width: "は幅が小さすぎます(最小 %{min} px)"
+        max_height: "は高さが大きすぎます(最大 %{max} px)"
+        min_height: "は高さが小さすぎます(最小 %{min} px)"
+        mime_type_inclusion: "は許可されていないMIMEタイプです(許可されたMIMEタイプ: %{list})"
+        mime_type_exclusion: "は禁止されたMIMEタイプです"
+        extension_inclusion: "は許可されていないフォーマットです(許可されたフォーマット: %{list})"
+        extension_exclusion: "は禁止されたフォーマットです"
