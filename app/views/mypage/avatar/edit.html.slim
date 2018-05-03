@@ -5,6 +5,10 @@ h2 プロフィール編集
 .divider
 
 = simple_form_for(@user, url: mypage_avatar_path, method: :put) do |f|
+  - if f.object.errors.any? || alert
+    .form-errors.red.lighten-1
+      = error_messages!(f.object)
+      = alert
   .form-inputs.row
     = f.input :avatar, as: :hidden, input_html: { value: @user.cached_avatar_data }
     = f.input :avatar, as: :file, icon: 'file', required: true
