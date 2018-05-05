@@ -37,6 +37,7 @@ gem 'active_model_serializers'
 
 gem 'bootsnap', require: false
 
+gem 'aws-sdk-s3', '~> 1.2'
 gem 'config'
 gem 'devise'
 gem 'foreman'
