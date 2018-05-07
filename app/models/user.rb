@@ -55,6 +55,21 @@ class User < ApplicationRecord
   has_many :points # rubocop:disable Rails/HasManyOrHasOneDependent
   has_many :point_expiration_schedules, class_name: 'BatchSchedule::PointExpiration',
                                         dependent: :destroy, inverse_of: :user
+  has_many :articles, lambda {
+    order(created_at: :desc)
+  }, class_name: :Article
+
+  has_many :positive_points, lambda {
+    where('points.amount > 0')
+  }, class_name: :Point
+
+  scope :with_articles, lambda {
+    includes(:articles).merge(Article.order('articles.created_at DESC'))
+  }
+
+  has_one :latest_article, lambda {
+    where('articles.title = ?', 'foo').order(created_at: :desc)
+  }, class_name: :Article
 
   before_create :ensure_dummy_authentication_token
   before_destroy :outdate_all_points! # 所持しているポイントを無効にする

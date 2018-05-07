@@ -12,9 +12,15 @@ def create(*args)
   FactoryBot.create(*args)
 end
 
+def create_list(*args)
+  FactoryBot.create_list(*args)
+end
+
 unless User.exists?
   user = create :user, username: 'testuser', email: 'test@example.com', password: 'password'
   create :user_auth, user: user, provider: :email, uid: 'test@example.com'
+
+  create_list :user, 10
 end
 
 unless Point.exists?
@@ -23,5 +29,11 @@ unless Point.exists?
       create :point, :got, user: u, created_at: rand(2..120).days.ago
       create :point, :used, user: u, created_at: rand(2..60).days.ago
     end
+  end
+end
+
+unless Article.exists?
+  User.all.each do |u|
+    create_list :article, 3, user: u
   end
 end
