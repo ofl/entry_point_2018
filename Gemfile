@@ -86,6 +86,7 @@ group :test do
   gem 'autodoc'
   gem 'email_spec'
   gem 'shoulda-matchers'
+  gem 'shrine-memory'
   gem 'simplecov', require: false
   gem 'timecop'
   gem 'vcr'

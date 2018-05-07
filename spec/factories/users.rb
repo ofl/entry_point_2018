@@ -45,5 +45,9 @@ FactoryBot.define do
         )
       end
     end
+
+    trait :with_avatar do
+      image { File.open(Rails.root.join('spec', 'fixtures', 'files', 'youngman_31.png')) }
+    end
   end
 end

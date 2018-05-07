@@ -349,6 +349,8 @@ GEM
       activesupport (>= 4.0.0)
     shrine (2.11.0)
       down (~> 4.1)
+    shrine-memory (0.3.0)
+      shrine (~> 2.2)
     simple_form (4.0.0)
       actionpack (> 4)
       activemodel (> 4)
@@ -389,7 +391,7 @@ GEM
       simple_oauth (~> 0.3.0)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
-    tzinfo-data (1.2018.4)
+    tzinfo-data (1.2018.5)
       tzinfo (>= 1.0.0)
     uglifier (4.1.10)
       execjs (>= 0.3.0, < 3)
@@ -457,6 +459,7 @@ DEPENDENCIES
   sass-rails (~> 5.0)
   shoulda-matchers
   shrine (~> 2.0)
+  shrine-memory
   simple_form
   simplecov
   slim
