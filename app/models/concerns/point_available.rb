@@ -7,16 +7,16 @@ module PointAvailable
   end
 
   # ポイントの獲得。獲得したポイントは期限がくれば失効するように失効バッチスケジュールを登録する
-  def get_point!(amount, status = :got)
+  def get_point!(amount, operation_type = :got)
     transaction do
-      point = points.create!(status: status, amount: amount)
+      point = points.create!(operation_type: operation_type, amount: amount)
       point_expiration_schedules.create!(run_at: point.outdate_at) # 失効バッチスケジュールの登録
     end
   end
 
   # ポイントの喪失
-  def lose_point!(amount, status = :used)
-    points.create!(status: status, amount: -amount)
+  def lose_point!(amount, operation_type = :used)
+    points.create!(operation_type: operation_type, amount: -amount)
   end
 
   # 期限切れのポイントを失効させる
@@ -33,10 +33,10 @@ module PointAvailable
   end
 
   # 手持ちのポイント全てを失効させる(退会時など)
-  def outdate_all_points!(status = :withdrawaled)
+  def outdate_all_points!(operation_type = :withdrawaled)
     outdated_points = point_amount
 
-    lose_point!(outdated_points, status) unless outdated_points.zero? # 失効履歴の作成
+    lose_point!(outdated_points, operation_type) unless outdated_points.zero? # 失効履歴の作成
   end
 
   private

@@ -2,12 +2,12 @@
 #
 # Table name: points
 #
-#  id                   :bigint(8)        not null, primary key
-#  user_id              :bigint(8)
-#  status(状態(獲得/使用/失効)) :integer          not null
-#  amount(ポイント数)        :integer          default(0), not null
-#  created_at           :datetime         not null
-#  updated_at           :datetime         not null
+#  id                               :bigint(8)        not null, primary key
+#  user_id                          :bigint(8)
+#  operation_type((0:獲得,1:使用,2:失効)) :integer          not null
+#  amount(ポイント数)                    :integer          default(0), not null
+#  created_at                       :datetime         not null
+#  updated_at                       :datetime         not null
 #
 # Indexes
 #
@@ -17,20 +17,20 @@
 FactoryBot.define do
   factory :point do
     user
-    status { Point.statuses.keys.sample }
+    operation_type { Point.operation_types.keys.sample }
 
     trait :got do
-      status :got
+      operation_type :got
       amount { rand(1..20) }
     end
 
     trait :used do
-      status :used
+      operation_type :used
       amount { -rand(1..10) }
     end
 
     trait :outdated do
-      status :outdated
+      operation_type :outdated
       amount { -rand(1..10) }
       created_at { (Point::EXPIRATION_INTERVAL + 1).days.ago }
     end

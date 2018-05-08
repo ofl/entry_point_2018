@@ -2,12 +2,12 @@
 #
 # Table name: points
 #
-#  id                   :bigint(8)        not null, primary key
-#  user_id              :bigint(8)
-#  status(状態(獲得/使用/失効)) :integer          not null
-#  amount(ポイント数)        :integer          default(0), not null
-#  created_at           :datetime         not null
-#  updated_at           :datetime         not null
+#  id                               :bigint(8)        not null, primary key
+#  user_id                          :bigint(8)
+#  operation_type((0:獲得,1:使用,2:失効)) :integer          not null
+#  amount(ポイント数)                    :integer          default(0), not null
+#  created_at                       :datetime         not null
+#  updated_at                       :datetime         not null
 #
 # Indexes
 #
