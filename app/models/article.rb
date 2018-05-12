@@ -2,12 +2,13 @@
 #
 # Table name: articles
 #
-#  id         :bigint(8)        not null, primary key
-#  user_id    :bigint(8)
-#  title      :string
-#  body       :text
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id                 :bigint(8)        not null, primary key
+#  user_id(著者)        :bigint(8)
+#  title(タイトル)        :string           not null
+#  body(本文)           :text             not null
+#  published_at(公開日時) :datetime
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
 #
 # Indexes
 #
