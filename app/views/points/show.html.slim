@@ -2,8 +2,8 @@ h3 = t('.point')
 
 table
   tr
-    th = t('activerecord.attributes.point.status')
-    td = t(@point.status, scope: %i[activerecord attributes point statuses])
+    th = t('activerecord.attributes.point.operation_type')
+    td = t(@point.operation_type, scope: %i[activerecord attributes point operation_types])
   tr
     th = t('activerecord.attributes.point.amount')
     td = @point.amount

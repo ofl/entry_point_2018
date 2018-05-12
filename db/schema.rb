@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(version: 2018_05_03_001823) do
 
   create_table "points", force: :cascade do |t|
     t.bigint "user_id"
-    t.integer "status", null: false, comment: "状態(獲得/使用/失効)"
+    t.integer "operation_type", null: false, comment: "(0:獲得,1:使用,2:失効)"
     t.integer "amount", default: 0, null: false, comment: "ポイント数"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

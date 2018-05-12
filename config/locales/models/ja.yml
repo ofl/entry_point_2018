@@ -25,8 +25,8 @@ ja:
         user_password: パスワード
       point:
         <<: *default
-        status: 状態
-        statuses:
+        operation_type: 状態
+        operation_types:
           got: 獲得
           login_bonus: ログインボーナス
           used: 使用

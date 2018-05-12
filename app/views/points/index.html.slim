@@ -13,7 +13,7 @@
       table#dttb.table
         thead
           tr
-            th = t('activerecord.attributes.point.status')
+            th = t('activerecord.attributes.point.operation_type')
             th = t('activerecord.attributes.point.amount')
             th = t('activerecord.attributes.point.outdate_at')
             th = t('activerecord.attributes.point.created_at')
@@ -22,7 +22,7 @@
           tbody
             - @points.each do |point|
               tr class=(point.expired? ? 'expired' : 'active')
-                td = t(point.status, scope: %i[activerecord attributes point statuses])
+                td = t(point.operation_type, scope: %i[activerecord attributes point operation_types])
                 td = point.amount
                 td
                   - if point.outdate_at

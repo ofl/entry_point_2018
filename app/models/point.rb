@@ -2,12 +2,12 @@
 #
 # Table name: points
 #
-#  id                   :bigint(8)        not null, primary key
-#  user_id              :bigint(8)
-#  status(状態(獲得/使用/失効)) :integer          not null
-#  amount(ポイント数)        :integer          default(0), not null
-#  created_at           :datetime         not null
-#  updated_at           :datetime         not null
+#  id                               :bigint(8)        not null, primary key
+#  user_id                          :bigint(8)
+#  operation_type((0:獲得,1:使用,2:失効)) :integer          not null
+#  amount(ポイント数)                    :integer          default(0), not null
+#  created_at                       :datetime         not null
+#  updated_at                       :datetime         not null
 #
 # Indexes
 #
@@ -19,7 +19,7 @@ class Point < ApplicationRecord
 
   paginates_per 10
 
-  enum status: {
+  enum operation_type: {
     got: 1, # 獲得(+)
     login_bonus: 2, # ログインボーナスで獲得(+)
     used: 21, # 使用(-)
@@ -27,19 +27,19 @@ class Point < ApplicationRecord
     withdrawaled: 99 # 退会による失効(-)
   }
 
-  POSITIVE_STATUSES = %i[got login_bonus].freeze
-  NEGATIVE_STATUSES = %i[used outdated withdrawaled].freeze
+  POSITIVE_OPERATION = %i[got login_bonus].freeze
+  NEGATIVE_OPERATION = %i[used outdated withdrawaled].freeze
   EXPIRATION_INTERVAL = Settings.models.point.expiration_interval
 
-  validates :status, inclusion: { in: statuses }
+  validates :operation_type, inclusion: { in: operation_types }
   validates :amount, numericality: { only_integer: true, greater_than: 0, less_than: 9999 }, if: :positive?
   validates :amount, numericality: { only_integer: true, greater_than: -9999, less_than: 0 }, if: :negative?
 
-  scope :positive, -> { where(status: POSITIVE_STATUSES) }
-  scope :negative, -> { where(status: NEGATIVE_STATUSES) }
+  scope :positive, -> { where(operation_type: POSITIVE_OPERATION) }
+  scope :negative, -> { where(operation_type: NEGATIVE_OPERATION) }
 
   scope :created_before, ->(at = Time.zone.now) { where('points.created_at < ?', at) }
-  # statusのoutdatedとかぶるためoutdated -> is_outdated
+  # operation_typeのoutdatedとかぶるためoutdated -> is_outdated
   scope :is_outdated, ->(at = Time.zone.now) { created_before(at.beginning_of_day - EXPIRATION_INTERVAL.days) }
 
   # 失効日時。作成日時から失効日数経過した日の1日の終わりの日時
@@ -55,10 +55,10 @@ class Point < ApplicationRecord
   private
 
   def positive?
-    POSITIVE_STATUSES.include?(status.to_sym)
+    POSITIVE_OPERATION.include?(operation_type.to_sym)
   end
 
   def negative?
-    NEGATIVE_STATUSES.include?(status.to_sym)
+    NEGATIVE_OPERATION.include?(operation_type.to_sym)
   end
 end
