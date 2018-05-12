@@ -37,6 +37,7 @@ gem 'active_model_serializers'
 
 gem 'bootsnap', require: false
 
+gem 'aws-sdk-s3', '~> 1.2'
 gem 'config'
 gem 'devise'
 gem 'foreman'
@@ -45,6 +46,7 @@ gem 'jquery-turbolinks'
 gem 'kaminari'
 gem 'material_icons'
 gem 'materialize-sass'
+gem 'shrine', '~> 2.0'
 gem 'simple_form'
 gem 'slim'
 gem 'webpacker', '~> 2.0'
@@ -84,6 +86,7 @@ group :test do
   gem 'autodoc'
   gem 'email_spec'
   gem 'shoulda-matchers'
+  gem 'shrine-memory'
   gem 'simplecov', require: false
   gem 'timecop'
   gem 'vcr'

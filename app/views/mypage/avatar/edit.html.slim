@@ -1,0 +1,20 @@
+h2 プロフィール編集
+
+= user_avatar(@user, size = :large)
+
+.divider
+
+= simple_form_for(@user, url: mypage_avatar_path, method: :put) do |f|
+  - if f.object.errors.any? || alert
+    .form-errors.red.lighten-1
+      = error_messages!(f.object)
+      = alert
+  .form-inputs.row
+    = f.input :avatar, as: :hidden, input_html: { value: @user.cached_avatar_data }
+    = f.input :avatar, as: :file, icon: 'file', required: true
+  .form-actions.center
+    = f.button :submit, t('.upload_avatar'), class: 'waves-button-input v-aligned-btn'
+
+    - unless f.object.avatar.nil?
+      = link_to t('.delete'), mypage_avatar_path, method: :delete, class: 'btn waves-button-input v-aligned-btn', data: { confirm: t('.are_you_sure') }
+    = link_to t('.back'), authenticated_root_path, class: 'btn waves-button-input v-aligned-btn'

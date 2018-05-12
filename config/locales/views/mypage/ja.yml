@@ -8,6 +8,8 @@ ja:
       disconnect_twitter: Twitterとの連携を解除する
       connect_facebook: Facebookと連携する
       disconnect_facebook: Facebookとの連携を解除する
+      edit_avatar: アバターを編集する
+      point_histories: ポイント履歴
       confirm_password: パスワードでの本人確認(ログアウトします)
       confirm_twitter: Twitterでの本人確認
       confirm_facebook: Facebookでの本人確認

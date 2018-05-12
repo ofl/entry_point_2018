@@ -18,6 +18,7 @@ ja:
         current_password: パスワード
         dummy_password: パスワード
         password_confirmation: パスワード(確認)
+        avatar: アバター
       user_auth:
         uid: メールアドレス
         email: メールアドレス

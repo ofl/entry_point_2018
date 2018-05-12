@@ -9,3 +9,12 @@ models:
       maxlength: 15
   point:
     expiration_interval: 90 # days
+uploaders:
+  default: &default
+    max_size: 2 # MB
+    allowed_mime_types:
+      - image/png
+      - image/jpeg
+      - image/gif
+  avatar:
+    <<: *default

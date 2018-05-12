@@ -1,0 +1,15 @@
+en:
+  shrine:
+    errors:
+      format: "%{attribute}%{message}"
+      messages:
+        max_size: "is too large (max is %{max} MB)"
+        min_size: "is too small (min is %{min} MB)"
+        max_width: "is too wide (max is %{max} px)"
+        min_width: "is too narrow (min is %{min} px)"
+        max_height: "is too tall (max is %{max} px)"
+        min_height: "is too short (min is %{min} px)"
+        mime_type_inclusion: "isn't of allowed type (allowed types: %{list})"
+        mime_type_exclusion: "is of forbidden type"
+        extension_inclusion: "isn't of allowed format (allowed formats: %{list})"
+        extension_exclusion: "is of forbidden format"
