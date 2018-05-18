@@ -21,4 +21,13 @@
 
 class Article < ApplicationRecord
   belongs_to :user
+
+  validates :title, :body, presence: true
+  validates :title, length: { maximum: 255 }
+
+  attribute :name, :string
+  attribute :password, :string
+  attribute :prefecture, :string
+  attribute :closed_at, :datetime
+  attribute :count, :integer
 end

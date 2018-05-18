@@ -1,0 +1,22 @@
+h3 = t('.article')
+
+table
+  tr
+    th = t('activerecord.attributes.article.title')
+    td = @article.title
+  tr
+    th = t('activerecord.attributes.article.body')
+    td = @article.body
+  - if @article.published_at
+    tr
+      th = t('activerecord.attributes.article.outdate_at')
+      td = l(@article.published_at, format: :day)
+  tr
+    th = t('activerecord.attributes.article.created_at')
+    td = l(@article.created_at, format: :short)
+  tr
+    th = t('activerecord.attributes.article.updated_at')
+    td = l(@article.updated_at, format: :short)
+
+br
+= link_to t('.back'), articles_path

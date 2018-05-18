@@ -1,0 +1,27 @@
+= form_with model: @article do |f|
+  table
+    tr
+      td
+        / = f.password_field :password, maxlength: 15, minlength: 6
+        = f.password_field :password, maxlength: 15, autocomplete: 'new-password'
+        / = f.password_field :password, pattern: '.{8,12}'
+        / = f.password_field :password, pattern: '[A-Za-z]{3}'
+        / = f.password_field :password, required: true
+    tr
+      td
+        = f.password_field :password_confirmation
+    tr
+      td
+        = f.text_field :name, autocomplete: 'name'
+    tr
+      td
+        = f.text_field :prefecture, autocomplete: 'address-line1'
+    tr
+      td
+        = f.datetime_field :closed_at
+    tr
+      td
+        = f.number_field :count
+    tr
+      td
+        = f.submit

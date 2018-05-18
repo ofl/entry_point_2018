@@ -1,0 +1,39 @@
+.row
+  .buttons
+    = link_to t('.new_article'), new_article_path, class: 'waves-effect waves-light btn-large'
+
+  .col.s12
+    .card.material-table
+      .table-header
+        h5 = t('.articles')
+        .actions[data-turbolinks="false"]
+          a.search-toggle.waves-effect.btn-flat.nopadding[href="#"]
+            i.material-icons search
+
+      table#dttb.table
+        thead
+          tr
+            th = t('activerecord.attributes.article.title')
+            th = t('activerecord.attributes.article.published_at')
+            th = t('activerecord.attributes.article.created_at')
+            th = t('activerecord.attributes.article.updated_at')
+            th
+
+          tbody
+            - @articles.each do |article|
+              tr
+                td = article.title
+                - if article.published_at
+                  td = l(article.published_at, format: :short)
+                - else
+                  td
+                td = l(article.created_at, format: :short)
+                td = l(article.updated_at, format: :short)
+                td.right-align
+                  = link_to t('.detail'), article
+
+      .table-footer
+        = paginate @articles
+
+  .links
+    = link_to t('.back'), authenticated_root_path
