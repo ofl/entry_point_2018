@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: points
+# Table name: point_histories
 #
 #  id                               :bigint(8)        not null, primary key
 #  user_id                          :bigint(8)
@@ -11,10 +11,10 @@
 #
 # Indexes
 #
-#  index_points_on_user_id  (user_id)
+#  index_point_histories_on_user_id  (user_id)
 #
 
-class Point < ApplicationRecord
+class PointHistory < ApplicationRecord
   belongs_to :user
 
   paginates_per 10
@@ -38,7 +38,7 @@ class Point < ApplicationRecord
   scope :positive, -> { where(operation_type: POSITIVE_OPERATION) }
   scope :negative, -> { where(operation_type: NEGATIVE_OPERATION) }
 
-  scope :created_before, ->(at = Time.zone.now) { where('points.created_at < ?', at) }
+  scope :created_before, ->(at = Time.zone.now) { where('point_histories.created_at < ?', at) }
   # operation_typeのoutdatedとかぶるためoutdated -> is_outdated
   scope :is_outdated, ->(at = Time.zone.now) { created_before(at.beginning_of_day - EXPIRATION_INTERVAL.days) }
 

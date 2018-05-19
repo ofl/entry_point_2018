@@ -3,25 +3,25 @@ module PointAvailable
 
   # 所持しているポイント
   def point_amount
-    points.sum(:amount)
+    point_histories.sum(:amount)
   end
 
   # ポイントの獲得。獲得したポイントは期限がくれば失効するように失効バッチスケジュールを登録する
   def get_point!(amount, operation_type = :got)
     transaction do
-      point = points.create!(operation_type: operation_type, amount: amount)
+      point = point_histories.create!(operation_type: operation_type, amount: amount)
       point_expiration_schedules.create!(run_at: point.outdate_at) # 失効バッチスケジュールの登録
     end
   end
 
   # ポイントの喪失
   def lose_point!(amount, operation_type = :used)
-    points.create!(operation_type: operation_type, amount: -amount)
+    point_histories.create!(operation_type: operation_type, amount: -amount)
   end
 
   # 期限切れのポイントを失効させる
   def outdate_points!(now = Time.zone.now)
-    outdated_points = points.positive.is_outdated(now)
+    outdated_points = point_histories.positive.is_outdated(now)
 
     transaction do
       point_expiration_schedules.run_before(now).delete_all # now以前の失効バッチスケジュールを削除
@@ -43,8 +43,8 @@ module PointAvailable
 
   # 失効するポイント数
   def outdated_point_amount(now = Time.zone.now)
-    outdated_amount = points.positive.is_outdated(now).sum(:amount) # 失効以前に獲得したポイント
-    used_amount = points.negative.created_before(now).sum(:amount) # 現在までに使用（失効）したポイント(マイナス値)
+    outdated_amount = point_histories.positive.is_outdated(now).sum(:amount) # 失効以前に獲得したポイント
+    used_amount = point_histories.negative.created_before(now).sum(:amount) # 現在までに使用（失効）したポイント(マイナス値)
 
     # 失効以前に獲得したポイントから現在までに使用したポイントを引いたものを0と比較し、多い方を返す
     [outdated_amount - used_amount.abs, 0].max

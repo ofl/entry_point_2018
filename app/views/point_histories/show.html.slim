@@ -1,0 +1,21 @@
+h3 = t('.point_history')
+
+table
+  tr
+    th = t('activerecord.attributes.point.operation_type')
+    td = t(@point_history.operation_type, scope: %i[activerecord attributes point_history operation_types])
+  tr
+    th = t('activerecord.attributes.point_history.amount')
+    td = @point_history.amount
+
+  - if @point_history.outdate_at
+    tr
+      th = t('activerecord.attributes.point_history.outdate_at')
+      td = l(@point_history.outdate_at, format: :day)
+
+  tr
+    th = t('activerecord.attributes.point_history.created_at')
+    td = l(@point_history.created_at, format: :short)
+
+br
+= link_to t('.back'), point_histories_path

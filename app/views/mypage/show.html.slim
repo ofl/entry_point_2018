@@ -25,7 +25,7 @@
 
   h3 ポイント
   p= "所持ポイント: #{current_user.point_amount}"
-  p= link_to t('.point_histories'), points_path
+  p= link_to t('.point_histories'), point_histories_path
 
   h3 退会
   p= link_to t('.withdrawal'), edit_user_registration_path

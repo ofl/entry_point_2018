@@ -3,7 +3,7 @@ ja:
     models:
       user: ユーザー
       user_auth: 本人確認
-      point: ポイント
+      point_history: ポイント
     attributes:
       default: &default
         id: ID
@@ -24,7 +24,7 @@ ja:
         uid: メールアドレス
         email: メールアドレス
         user_password: パスワード
-      point:
+      point_history:
         <<: *default
         operation_type: 操作
         operation_types:

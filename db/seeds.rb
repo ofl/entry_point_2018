@@ -17,11 +17,11 @@ unless User.exists?
   create :user_auth, user: user, provider: :email, uid: 'test@example.com'
 end
 
-unless Point.exists?
+unless PointHistory.exists?
   User.all.each do |u|
     10.times do
-      create :point, :got, user: u, created_at: rand(2..120).days.ago
-      create :point, :used, user: u, created_at: rand(2..60).days.ago
+      create :point_history, :got, user: u, created_at: rand(2..120).days.ago
+      create :point_history, :used, user: u, created_at: rand(2..60).days.ago
     end
   end
 end

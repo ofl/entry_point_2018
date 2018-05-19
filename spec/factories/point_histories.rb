@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: points
+# Table name: point_histories
 #
 #  id                               :bigint(8)        not null, primary key
 #  user_id                          :bigint(8)
@@ -11,13 +11,13 @@
 #
 # Indexes
 #
-#  index_points_on_user_id  (user_id)
+#  index_point_histories_on_user_id  (user_id)
 #
 
 FactoryBot.define do
-  factory :point do
+  factory :point_history do
     user
-    operation_type { Point.operation_types.keys.sample }
+    operation_type { PointHistory.operation_types.keys.sample }
 
     trait :got do
       operation_type :got
@@ -32,7 +32,7 @@ FactoryBot.define do
     trait :outdated do
       operation_type :outdated
       amount { -rand(1..10) }
-      created_at { (Point::EXPIRATION_INTERVAL + 1).days.ago }
+      created_at { (PointHistory::EXPIRATION_INTERVAL + 1).days.ago }
     end
   end
 end
