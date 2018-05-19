@@ -15,7 +15,7 @@ AllCops:
     - bin/webpack-dev-server
     - bin/spring
     - lib/tasks/*
-    - config/initializers/materialize.rb
+    - config/initializers/simple_form_bootstrap.rb
 
 Documentation:
   Enabled: false
