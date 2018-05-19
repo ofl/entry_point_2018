@@ -1,9 +1,18 @@
 module PointAvailable
   extend ActiveSupport::Concern
 
+  included do
+    has_many :point_histories # rubocop:disable Rails/HasManyOrHasOneDependent
+    has_many :point_expiration_schedules, class_name: 'BatchSchedule::PointExpiration',
+                                          dependent: :destroy, inverse_of: :user
+    has_one :last_point_history, lambda {
+      order(version: :desc)
+    }, class_name: :PointHistory, inverse_of: :user
+  end
+
   # 所持しているポイント
   def point_amount
-    point_histories.sum(:amount)
+    last_point_history&.total || 0
   end
 
   # ポイントの獲得。獲得したポイントは期限がくれば失効するように失効バッチスケジュールを登録する

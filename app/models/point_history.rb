@@ -37,6 +37,8 @@ class PointHistory < ApplicationRecord
   validates :operation_type, inclusion: { in: operation_types }
   validates :amount, numericality: { only_integer: true, greater_than: 0, less_than: 9999 }, if: :positive?
   validates :amount, numericality: { only_integer: true, greater_than: -9999, less_than: 0 }, if: :negative?
+  validates :total, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+  validates :version, uniqueness: { scope: :user_id }
 
   scope :positive, -> { where(operation_type: POSITIVE_OPERATION) }
   scope :negative, -> { where(operation_type: NEGATIVE_OPERATION) }
@@ -44,6 +46,8 @@ class PointHistory < ApplicationRecord
   scope :created_before, ->(at = Time.zone.now) { where('point_histories.created_at < ?', at) }
   # operation_typeのoutdatedとかぶるためoutdated -> is_outdated
   scope :is_outdated, ->(at = Time.zone.now) { created_before(at.beginning_of_day - EXPIRATION_INTERVAL.days) }
+
+  before_validation :set_total_and_version
 
   # 失効日時。作成日時から失効日数経過した日の1日の終わりの日時
   def outdate_at
@@ -63,5 +67,11 @@ class PointHistory < ApplicationRecord
 
   def negative?
     NEGATIVE_OPERATION.include?(operation_type.to_sym)
+  end
+
+  def set_total_and_version
+    last_user_point_history = self.class.where(user: user).order(version: :desc).take
+    self.total = (last_user_point_history&.total || 0) + amount
+    self.version = (last_user_point_history&.version || 0) + 1
   end
 end
