@@ -9,12 +9,7 @@ html
       | EntryPoint2018
     = csrf_meta_tags
     = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
-    = stylesheet_link_tag 'users/main', media: 'all'
+    = stylesheet_link_tag 'users/signin', media: 'all'
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
-  body.pink
-    main[style="padding-top: 4rem"]
-      section#login
-        .container-fluid.pt-3
-          .row
-            .col.s4.offset-s4
-              == yield
+  body.text-center
+    == yield

@@ -12,13 +12,18 @@ ja:
     error_notification:
       default_message: "エラーがあります。確認してください。"
     # Labels and hints examples
-    # labels:
-    #   password: 'Password'
-    #   user:
-    #     new:
-    #       email: 'E-mail para efetuar o sign in.'
-    #     edit:
-    #       email: 'E-mail.'
-    # hints:
-    #   username: 'User name to sign in.'
-    #   password: 'No special characters, please.'
+    labels:
+      password: 'Password'
+      user:
+        new:
+          login: 'E-mail para efetuar o sign in.'
+        edit:
+          login: 'E-mail.'
+    hints:
+      username: 'User name to sign in.'
+      password: 'No special characters, please.'
+    placeholders:
+      user:
+        login: 'ユーザー名(Email)'
+        password: 'パスワード'
+        remember_me: '記憶する'
