@@ -19,9 +19,16 @@ end
 
 unless PointHistory.exists?
   User.all.each do |u|
+    operation_day = 120.days.ago
+    last_point_history = create :point_history, :got, amount: 100, total: 100, user: u, created_at: operation_day
     10.times do
-      create :point_history, :got, user: u, created_at: rand(2..120).days.ago
-      create :point_history, :used, user: u, created_at: rand(2..60).days.ago
+      operation_day += 10.days
+      point = [-15, -10, -5, 5, 10, 15].sample
+      total = last_point_history.total + point
+      operation = point.positive? ? :got : :used
+
+      last_point_history = create :point_history, operation, amount: point, total: total,
+                                                             user: u, created_at: operation_day
     end
   end
 end

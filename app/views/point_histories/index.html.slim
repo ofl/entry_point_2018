@@ -7,16 +7,20 @@
   table.table
     thead
       tr
-        th = t('activerecord.attributes.point_historie_history.operation_type')
-        th = t('activerecord.attributes.point_historie_history.amount')
-        th = t('activerecord.attributes.point_historie_history.outdate_at')
-        th = t('activerecord.attributes.point_historie_history.created_at')
+        th = t('activerecord.attributes.point_history.version')
+        th = t('activerecord.attributes.point_history.operation_type')
+        th = t('activerecord.attributes.point_history.amount')
+        th = t('activerecord.attributes.point_history.total')
+        th = t('activerecord.attributes.point_history.outdate_at')
+        th = t('activerecord.attributes.point_history.created_at')
         th
     tbody
       - @point_histories.each do |point_history|
         tr class=(point_history.expired? ? 'expired' : 'active')
+          td = point_history.version
           td = t(point_history.operation_type, scope: %i[activerecord attributes point_history operation_types])
           td = point_history.amount
+          td = point_history.total
           td
             - if point_history.outdate_at
               = l(point_history.outdate_at, format: :day)

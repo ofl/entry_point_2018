@@ -5,13 +5,16 @@
 #  id                               :bigint(8)        not null, primary key
 #  user_id                          :bigint(8)
 #  operation_type((0:獲得,1:使用,2:失効)) :integer          not null
-#  amount(ポイント数)                    :integer          default(0), not null
+#  amount(増減したポイント数)                :integer          default(0), not null
+#  total(総ポイント数)                    :integer          default(0), not null
+#  version(衝突防止のためのバージョン)           :integer          default(0), not null
 #  created_at                       :datetime         not null
 #  updated_at                       :datetime         not null
 #
 # Indexes
 #
-#  index_point_histories_on_user_id  (user_id)
+#  index_point_histories_on_user_id              (user_id)
+#  index_point_histories_on_user_id_and_version  (user_id,version DESC)
 #
 
 require 'rails_helper'
