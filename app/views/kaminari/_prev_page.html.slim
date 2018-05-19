@@ -1,8 +1,2 @@
-- if current_page.first?
-  li.disabled
-    = content_tag :a do
-      i.material-icons chevron_left
-- else
-  li.waves-effect
-    = link_to url, :rel => 'prev', :remote => remote do
-      i.material-icons chevron_left
+li.page-item
+  = link_to_unless current_page.first?, raw(t 'views.pagination.previous'), url, rel: 'prev', remote: remote, class: 'page-link'
