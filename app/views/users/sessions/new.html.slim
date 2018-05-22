@@ -1,15 +1,15 @@
-= simple_form_for(resource, as: resource_name, url: session_path(resource_name), html: { :class => 'form-signin' }) do |f|
+= bootstrap_form_with(model: resource, as: resource_name, url: session_path(resource_name), html: { :class => 'form-signin' }) do |f|
   img.mb-4 src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" width="72" height="72"
   h1.h3.mb-3.font-weight-normal= t('.login_via_password')
-  = f.error_notification
+  / = f.error_notification
   / - if devise_error_messages? || alert
   /   .form-errors.red.lighten-1
   /     = devise_error_messages!
   /     = alert
-  = f.input :login, autofocus: true, autocomplete: "off", required: true, wrapper: :inline_form
-  = f.input :password, autocomplete: "off", required: true, wrapper: :inline_form
-  = f.input :remember_me, as: :boolean, wrapper: :inline_boolean
-  = f.button :button, t('.log_in'), class: 'btn-lg btn-primary btn-block'
+  = f.text_field :login, autofocus: true, autocomplete: "off", required: true
+  = f.password_field :password, autocomplete: "off", required: true
+  = f.check_box :remember_me, as: :boolean
+  = f.submit t('.log_in'), class: 'btn-lg btn-primary btn-block'
 
 - if devise_mapping.omniauthable?
   .divider

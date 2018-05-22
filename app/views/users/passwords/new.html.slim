@@ -3,15 +3,15 @@
     .card-content
       span.card-title.center= t('.forgot_your_password')
       .divider
-      = simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f|
+      = bootstrap_form_with(model: resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f|
         - if devise_error_messages? || alert
           .form-errors.red.lighten-1
             = devise_error_messages!
             = alert
         .form-inputs.row
-          = f.input :email, autofocus: true, required: true, icon: "email"
+          = f.email_field :email, autofocus: true, required: true, icon: "email"
         .form-actions.center
-          = f.button :submit, t('.send_me_reset_password'), name: 'auth_via_email', class: 'waves-button-input'
+          = f.submit t('.send_me_reset_password'), name: 'auth_via_email', class: 'btn btn-lg btn-primary btn-block'
       .card-action
         .devise-links
           = render "users/shared/links"

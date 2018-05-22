@@ -3,19 +3,19 @@
     .card-content
       span.card-title.center= title
       .divider
-      = simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
+      = bootstrap_form_with(model: resource, as: resource_name, url: registration_path(resource_name)) do |f|
         - if devise_error_messages? || alert
           .form-errors.red.lighten-1
             = devise_error_messages!
             = alert
         .form-inputs.row
-          = f.input :email, autofocus: true, icon: "email"
+          = f.email_field :email, autofocus: true, icon: "email"
         .form-actions.center
           = f.hidden_field :username
           = f.hidden_field :password
-          = f.button :submit, t('.send_confirmation_email'), name: 'auth_via_email', class: 'waves-button-input'
+          = f.submit t('.send_confirmation_email'), name: 'auth_via_email', class: 'btn btn-lg btn-primary btn-block'
           br/
-          = f.button :submit, t('.back'), name: 'preview', class: 'waves-button-input'
+          = f.submit t('.back'), name: 'preview', class: 'btn btn-lg btn-primary btn-block'
 javascript:
   document.onkeypress = function(e){
       var ref=e.target;

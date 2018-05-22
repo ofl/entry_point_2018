@@ -3,15 +3,15 @@
     .card-content
       span.card-title.center= t('.delete_user_auth')
       .divider
-      = simple_form_for(@user_auth, url: "/users/user_auths/#{@user_auth.provider}", method: :delete) do |f|
+      = bootstrap_form_with(model: @user_auth, url: "/users/user_auths/#{@user_auth.provider}", method: :delete) do |f|
         - if @user_auth.errors.any?
           .form-errors.red.lighten-1
             - @user_auth.errors.full_messages.each do |msg|
               li= msg
         .form-inputs.row
-          = f.input :user_password, as: :password, autocomplete: "off", required: true, icon: "lock"
+          = f.password_field :user_password, autocomplete: "off", required: true, icon: "lock"
         .form-actions.center
           = f.hidden_field :provider
-          = f.button :submit, t(".disconnect_#{@user_auth.provider}"), class: 'waves-button-input v-aligned-btn',
+          = f.submit t(".disconnect_#{@user_auth.provider}"), class: 'btn btn-lg btn-primary btn-block',
                                                                        data: { confirm: t('.are_you_sure') }
-          = link_to t(".back"), authenticated_root_path, class: 'btn waves-button-input v-aligned-btn'
+          = link_to t(".back"), authenticated_root_path, class: 'btn btn btn-lg btn-primary btn-block'
