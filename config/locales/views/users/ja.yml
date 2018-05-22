@@ -20,7 +20,8 @@ ja:
     sessions:
       new:
         <<: *default
-        login_via_sns: SNSでログインする
+        login_via_password: パスワードでログイン
+        login_via_sns: SNSでログイン
         signin_via_twitter: Twitterでログイン
         signin_via_facebook: Facebookでログイン
     shared:

@@ -1,6 +1,6 @@
 = simple_form_for(resource, as: resource_name, url: session_path(resource_name), html: { :class => 'form-signin' }) do |f|
   img.mb-4 src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" width="72" height="72"
-  h1.h3.mb-3.font-weight-normal= t('.log_in')
+  h1.h3.mb-3.font-weight-normal= t('.login_via_password')
   = f.error_notification
   / - if devise_error_messages? || alert
   /   .form-errors.red.lighten-1
@@ -8,15 +8,16 @@
   /     = alert
   = f.input :login, autofocus: true, autocomplete: "off", required: true, wrapper: :inline_form
   = f.input :password, autocomplete: "off", required: true, wrapper: :inline_form
-  = f.input :remember_me, as: :boolean, class: 'checkbox mb-3', wrapper: :inline_boolean
-  = f.button :submit, t('.log_in'), class: 'btn btn-lg btn-primary btn-block'
+  = f.input :remember_me, as: :boolean, wrapper: :inline_boolean
+  = f.button :button, t('.log_in'), class: 'btn-lg btn-primary btn-block'
 
 - if devise_mapping.omniauthable?
   .divider
   .form-signin
     h2.h3.mb-3.font-weight-normal= t('.login_via_sns')
     - resource_class.omniauth_providers.each do |provider|
-      = link_to t('.sign_in_with', provider: OmniAuth::Utils.camelize(provider)), omniauth_authorize_path(resource_name, provider), class: 'btn btn-lg btn-primary btn-block'
+      = link_to t('.sign_in_with', provider: OmniAuth::Utils.camelize(provider)),
+        omniauth_authorize_path(resource_name, provider), class: "btn btn-lg btn-primary btn-block #{provider}"
       br
     .devise-links
       = render "users/shared/links"
