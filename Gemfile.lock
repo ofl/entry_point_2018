@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/bootstrap-ruby/bootstrap_form.git
+  revision: 96ce4f73197adfd54651be364b90bf5ce32f1ac9
+  branch: master
+  specs:
+    bootstrap_form (4.0.0.dev)
+      rails (>= 5.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -356,9 +364,6 @@ GEM
       down (~> 4.1)
     shrine-memory (0.3.0)
       shrine (~> 2.2)
-    simple_form (4.0.1)
-      actionpack (>= 5.0)
-      activemodel (>= 5.0)
     simple_oauth (0.3.1)
     simplecov (0.16.1)
       docile (~> 1.1)
@@ -435,6 +440,7 @@ DEPENDENCIES
   bcrypt (~> 3.1.7)
   bootsnap
   bootstrap (~> 4.1.1)
+  bootstrap_form!
   byebug
   coffee-rails (~> 4.2)
   config
@@ -464,7 +470,6 @@ DEPENDENCIES
   shoulda-matchers
   shrine (~> 2.0)
   shrine-memory
-  simple_form
   simplecov
   slim
   timecop
@@ -478,4 +483,4 @@ DEPENDENCIES
   webpacker (~> 2.0)
 
 BUNDLED WITH
-   1.16.1
+   1.16.2

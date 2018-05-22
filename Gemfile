@@ -36,6 +36,9 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'active_model_serializers'
 
 gem 'bootsnap', require: false
+gem 'bootstrap_form',
+    git: 'https://github.com/bootstrap-ruby/bootstrap_form.git',
+    branch: 'master'
 
 gem 'aws-sdk-s3', '~> 1.2'
 gem 'bootstrap', '~> 4.1.1'
@@ -46,7 +49,6 @@ gem 'jquery-rails'
 gem 'jquery-turbolinks'
 gem 'kaminari'
 gem 'shrine', '~> 2.0'
-gem 'simple_form'
 gem 'slim'
 gem 'webpacker', '~> 2.0'
 
