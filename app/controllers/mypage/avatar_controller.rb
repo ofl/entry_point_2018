@@ -1,5 +1,6 @@
 class Mypage::AvatarController < ApplicationController
   before_action :authenticate_user!
+  layout 'signup'
 
   def edit
     @user = current_user

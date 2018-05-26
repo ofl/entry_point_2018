@@ -1,18 +1,12 @@
-.login-form
-  .card.hoverable
-    .card-content
-      span.card-title.center= t('.new_user_auth')
-      .divider
-      = bootstrap_form_with(model: @user_auth, url: users_user_auths_path) do |f|
-        - if @user_auth.errors.any?
-          .form-errors.red.lighten-1
-            - @user_auth.errors.full_messages.each do |msg|
-              = msg
-        .form-inputs.row
-          - if @user_auth.email?
-            = f.text_field :uid, autofocus: true, autocomplete: "off", icon: "email"
-          = f.password_field :user_password, autocomplete: "off", required: true, icon: "lock"
-        .form-actions.center
-          = f.hidden_field :provider
-          = f.submit t(".auth_via_#{@user_auth.provider}"), class: 'btn btn-lg btn-primary btn-block'
-          = link_to t(".back"), authenticated_root_path, class: 'btn btn btn-lg btn-primary btn-block'
+.container
+  .py-5.text-center
+    h2= t('.new_user_auth')
+
+  = bootstrap_form_with model: @user_auth, url: users_user_auths_path, local: true do |f|
+    - if @user_auth.email?
+      = f.text_field :uid, autofocus: true, autocomplete: 'off', hide_label: true, placeholder: 'you@example.com'
+    = f.password_field :user_password, autocomplete: 'off', required: true, hide_label: true, placeholder: t('.enter_password')
+    = f.hidden_field :provider
+
+    = f.submit t(".auth_via_#{@user_auth.provider}"), class: 'btn btn-lg btn-success btn-block'
+    = link_to t('.back'), authenticated_root_path, class: 'btn btn btn-lg btn-secondary btn-block'

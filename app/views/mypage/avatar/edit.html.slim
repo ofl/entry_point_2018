@@ -1,20 +1,14 @@
-h2 プロフィール編集
+.container
+  .py-5.text-center
+    h2 プロフィール編集
 
-= user_avatar(@user, size = :large)
+  = user_avatar(@user, size = :large)
 
-.divider
-
-= bootstrap_form_with(model: @user, url: mypage_avatar_path, method: :put) do |f|
-  - if f.object.errors.any? || alert
-    .form-errors.red.lighten-1
-      = error_messages!(f.object)
-      = alert
-  .form-inputs.row
+  = bootstrap_form_with(model: @user, url: mypage_avatar_path, method: :put) do |f|
     = f.hidden_field :avatar, input_html: { value: @user.cached_avatar_data }
     = f.file_field :avatar, icon: 'file', required: true
-  .form-actions.center
-    = f.submit t('.upload_avatar'), class: 'btn btn-lg btn-primary btn-block'
+    = f.submit t('.upload_avatar'), class: 'btn btn-lg btn-success btn-block'
 
     - unless f.object.avatar.nil?
-      = link_to t('.delete'), mypage_avatar_path, method: :delete, class: 'btn btn btn-lg btn-primary btn-block', data: { confirm: t('.are_you_sure') }
-    = link_to t('.back'), authenticated_root_path, class: 'btn btn btn-lg btn-primary btn-block'
+      = link_to t('.delete'), mypage_avatar_path, method: :delete, class: 'btn btn btn-lg btn-danger btn-block', data: { confirm: t('.are_you_sure') }
+    = link_to t('.back'), authenticated_root_path, class: 'btn btn btn-lg btn-secondary btn-block'

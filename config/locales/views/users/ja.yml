@@ -11,6 +11,7 @@ ja:
       confirmation_instructions: 確認メールが届きませんか？
       unlock_instructions: ロック解除メールが届きませんか？
       send_user_auth_mail: ユーザー認証メールを再送する
+      enter_password: パスワードを入力してください
       update: 更新する
       characters_minimum: 文字以上
       back: 戻る
