@@ -19,6 +19,7 @@ ja:
         dummy_password: パスワード
         password_confirmation: パスワード(確認)
         avatar: アバター
+        remember_me: ログイン状態を維持する
       user_auth:
         uid: メールアドレス
         email: メールアドレス

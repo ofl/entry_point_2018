@@ -24,6 +24,8 @@ ja:
         login_via_sns: SNSでログイン
         signin_via_twitter: Twitterでログイン
         signin_via_facebook: Facebookでログイン
+        login: ユーザー名（Eメールアドレス）
+        password: パスワード
     shared:
       links:
         <<: *default
