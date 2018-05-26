@@ -1,4 +1,5 @@
-= bootstrap_form_with(model: resource, as: resource_name, url: session_path(resource_name), html: { :class => 'form-signin' }) do |f|
+= bootstrap_form_with model: resource, as: resource_name, url: session_path(resource_name),
+                      local: true, html: { :class => 'form-signin' } do |f|
   img.mb-4 src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" width="72" height="72"
   h1.h3.mb-3.font-weight-normal= t('.login_via_password')
   / = f.error_notification

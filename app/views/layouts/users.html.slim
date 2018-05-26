@@ -12,4 +12,5 @@ html
     = stylesheet_link_tag 'users/signin', media: 'all'
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
   body.text-center
+    = render 'layouts/messages'
     == yield
