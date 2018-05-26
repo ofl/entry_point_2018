@@ -1,20 +1,15 @@
-.login-form
-  .card.hoverable
-    .card-content
-      span.card-title.center= title
-      .divider
-      = bootstrap_form_with(model: resource, as: resource_name, url: registration_path(resource_name)) do |f|
-        - if devise_error_messages? || alert
-          .form-errors.red.lighten-1
-            = devise_error_messages!
-            = alert
-        .form-inputs.row
-          = f.text_field :username, autofocus: true, autocomplete: "off", required: true, icon: "person",
-                               input_html: { minlength: User::MIN_USERNAME_LENGTH, maxlength: User::MAX_USERNAME_LENGTH }
-          = f.password_field :password, autocomplete: "off", required: true, icon: "lock",
-                               input_html: { minlength: User.password_length.min, maxlength: User.password_length.max }
-        .form-actions.center
-          = f.submit t('.preview'), name: 'preview', class: 'btn btn-lg btn-primary btn-block'
-      .card-action
-        .devise-links
-          = render "users/shared/links"
+.py-5.text-center
+  h2= title
+  p.lead
+    | Below is an example form built entirely with Bootstrap's form controls. Each required form group has a validation state that can be triggered by attempting to submit the form without completing it.
+
+= bootstrap_form_with model: resource, as: resource_name, url: registration_path(resource_name),
+                      local: true, html: { :class => 'form-signup' } do |f|
+  = f.text_field :username, autofocus: true, autocomplete: 'off', required: true,
+                            icon: 'person', prepend: '@', placeholder: t('.username'),
+                            input_html: { minlength: User::MIN_USERNAME_LENGTH, maxlength: User::MAX_USERNAME_LENGTH }
+  = f.password_field :password, autocomplete: 'off', required: true, icon: 'lock', placeholder: t('.password'),
+                                input_html: { minlength: User.password_length.min, maxlength: User.password_length.max }
+  = f.submit t('.preview'), name: 'preview', class: 'btn btn-lg btn-success btn-block'
+
+  = render 'users/shared/links'

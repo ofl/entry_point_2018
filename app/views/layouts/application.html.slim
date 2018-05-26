@@ -1,6 +1,7 @@
 doctype html
 html
   head
+    meta[content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"]
     title
       | EntryPoint2018
     = csrf_meta_tags
@@ -26,9 +27,4 @@ html
     main.container
       = yield
 
-    footer.footer
-      .footer-copyright.blue.darken-1
-        .container
-          | © 2017 Copyright Text
-          a.grey-text.text-lighten-4.right[href="#!"]
-            |  More Links
+      = render 'layouts/footer'

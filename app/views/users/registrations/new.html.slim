@@ -1,12 +1,13 @@
-- if resource.errors.blank? && @registration_step == :preview
-  = render partial: 'preview', locals: { title: t('.preview') }
-- elsif @registration_step == :email_form
-  = render partial: 'email_form', locals: { title: t('.email_form') }
-- else
-  = render partial: 'form', locals: { title: t('.sign_up') }
+.container
+  - if resource.errors.blank? && @registration_step == :preview
+    = render partial: 'preview', locals: { title: t('.preview') }
+  - elsif @registration_step == :email_form
+    = render partial: 'email_form', locals: { title: t('.email_form') }
+  - else
+    = render partial: 'form', locals: { title: t('.sign_up') }
 
-javascript:
-  window.location.hash="#noback";
-  window.onhashchange=function(){
-      window.location.hash="#noback";
-  }
+  javascript:
+    window.location.hash="#noback";
+    window.onhashchange=function(){
+        window.location.hash="#noback";
+    }
