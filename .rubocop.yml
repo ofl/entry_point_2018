@@ -112,3 +112,7 @@ Layout/EmptyLineAfterMagicComment:
   Exclude:
     - config/initializers/simple_form.rb
     - config/initializers/simple_form_materialize.rb
+
+Lint/SplatKeywordArguments:
+  Exclude:
+    - config/initializers/shrine.rb
