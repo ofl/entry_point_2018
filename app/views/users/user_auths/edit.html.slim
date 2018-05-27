@@ -4,6 +4,7 @@
 
   = bootstrap_form_with model: @user_auth, url: "/users/user_auths/#{@user_auth.provider}",
                         local: true, method: :delete do |f|
+    = error_messages!(f.object)
 
     = f.password_field :user_password, autocomplete: 'off', required: true, hide_label: true, placeholder: t('.enter_password')
     = f.hidden_field :provider

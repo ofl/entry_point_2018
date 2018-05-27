@@ -1,5 +1,7 @@
 = bootstrap_form_with(model: resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f|
   h1.h3.mb-3.font-weight-normal= t('.change_your_password')
+  = error_messages!(f.object)
+
   = f.password_field :password, autocomplete: 'off', required: true, icon: 'lock',
                                 input_html: { minlength: User.password_length.min, maxlength: User.password_length.max }
   = f.password_field :password_confirmation, autocomplete: 'off', required: true, icon: 'lock',

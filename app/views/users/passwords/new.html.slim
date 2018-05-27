@@ -1,6 +1,7 @@
 = bootstrap_form_with model: resource, as: resource_name, url: password_path(resource_name),
                       local: true, html: { method: :post } do |f|
   h1.h3.mb-3.font-weight-normal= t('.forgot_your_password')
+  = error_messages!(f.object)
 
   = f.email_field :email, autofocus: true, required: true, icon: 'email', placeholder: 'you@example.com'
   = f.submit t('.send_me_reset_password'), name: 'auth_via_email', class: 'btn btn-lg btn-success btn-block'

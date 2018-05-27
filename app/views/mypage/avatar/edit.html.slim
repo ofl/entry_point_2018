@@ -2,9 +2,11 @@
   .py-5.text-center
     h2 プロフィール編集
 
-  = user_avatar(@user, size = :large)
+    = user_avatar(@user, size = :large)
 
-  = bootstrap_form_with(model: @user, url: mypage_avatar_path, method: :put) do |f|
+  = bootstrap_form_with model: @user, url: mypage_avatar_path, local: true, method: :put do |f|
+    = error_messages!(f.object)
+
     = f.hidden_field :avatar, input_html: { value: @user.cached_avatar_data }
     = f.file_field :avatar, icon: 'file', required: true
     = f.submit t('.upload_avatar'), class: 'btn btn-lg btn-success btn-block'

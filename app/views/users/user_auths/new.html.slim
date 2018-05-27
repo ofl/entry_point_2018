@@ -3,6 +3,8 @@
     h2= t('.new_user_auth')
 
   = bootstrap_form_with model: @user_auth, url: users_user_auths_path, local: true do |f|
+    = error_messages!(f.object)
+
     - if @user_auth.email?
       = f.text_field :uid, autofocus: true, autocomplete: 'off', hide_label: true, placeholder: 'you@example.com'
     = f.password_field :user_password, autocomplete: 'off', required: true, hide_label: true, placeholder: t('.enter_password')
