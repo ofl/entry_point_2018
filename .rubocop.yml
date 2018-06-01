@@ -15,7 +15,6 @@ AllCops:
     - bin/webpack-dev-server
     - bin/spring
     - lib/tasks/*
-    - config/initializers/simple_form_bootstrap.rb
 
 Documentation:
   Enabled: false
@@ -27,8 +26,6 @@ Metrics/AbcSize:
 Metrics/BlockLength:
   Exclude:
     - config/environments/development.rb
-    - config/initializers/simple_form.rb
-    - config/initializers/simple_form_materialize.rb
     - spec/**/*
 
 Metrics/LineLength:
@@ -81,7 +78,6 @@ Style/StringLiterals:
     - Gemfile
     - bin/yarn
     - config/environments/production.rb
-    - config/initializers/simple_form_materialize.rb
     - config/puma.rb
     - config/application.rb
     - spec/rails_helper.rb
@@ -99,19 +95,10 @@ Style/SymbolArray:
   Exclude:
     - Gemfile
 
-Layout/AlignHash:
-  Exclude:
-    - config/initializers/simple_form.rb
-
 Layout/EmptyLines:
   Exclude:
     - Gemfile
     - bin/setup
-
-Layout/EmptyLineAfterMagicComment:
-  Exclude:
-    - config/initializers/simple_form.rb
-    - config/initializers/simple_form_materialize.rb
 
 Lint/SplatKeywordArguments:
   Exclude:
