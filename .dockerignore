@@ -1,22 +1,17 @@
 ## Environment normalisation:
-.bundle
-vendor/bundle
 .git*
+.rspec
+log
+tmp
+doc
+vendor/assets
+node_modules
 
-## log
-log/*
-tmp/*
+node_modules
+yarn-error.log
 
-## OSX
-.DS_Store
+public/packs
+public/packs-test
+public/uploads
 
-## docker
-.dockerignore
-
-/node_modules
-/yarn-error.log
-
-/public/packs
-/public/packs-test
-
-.env
+.env*
