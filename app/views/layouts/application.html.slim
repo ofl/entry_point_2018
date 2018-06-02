@@ -1,65 +1,30 @@
 doctype html
 html
   head
+    meta[content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"]
     title
       | EntryPoint2018
     = csrf_meta_tags
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
   body
-    header#app.navbar-fixed
-      nav
-        .nav-wrapper
-          a.brand-logo[href="/"]
-            | EntryPoint2018
-          ul#nav-mobile.right.hide-on-med-and-down
-            - if user_signed_in?
-              li
-                = link_to(t('.sign_out'), destroy_user_session_path, method: :delete)
-            - else
-              li
-                - if controller_name != 'sessions'
-                  = link_to t('.sign_in'), new_session_path(resource_name)
-              li
-                - if controller_name != 'registrations'
-                  = link_to t('.sign_up'), new_user_registration_path
-    main
-      .container
-        = render 'layouts/materialize_massege'
+    nav.navbar.navbar-expand-md.navbar-dark.bg-dark.mb-4
+      a.navbar-brand[href="/"]
+        | EntryPoint2018
+      #navbarCollapse.collapse.navbar-collapse
+        ul.navbar-nav.mr-auto
+          - if user_signed_in?
+            li.nav-item
+              = link_to(t('.sign_out'), destroy_user_session_path, method: :delete, class: 'nav-link')
+          - else
+            li.nav-item
+              - if controller_name != 'sessions'
+                = link_to t('.sign_in'), new_session_path(resource_name), class: 'nav-link'
+            li.nav-item
+              - if controller_name != 'registrations'
+                = link_to t('.sign_up'), new_user_registration_path, class: 'nav-link'
+    = render 'layouts/messages'
+    main.container
+      = yield
 
-        = yield
-
-    footer.page-footer.blue
-      .container
-        .row
-          .col.l6.s12
-            h5.white-text
-              | Footer Content
-            p.grey-text.text-lighten-4
-              | You can use rows and columns here to organize your footer content.
-            svg#Layer_1.main-logo[xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewbox="0 0 400 140" enable-background="new 0 0 400 140" xml:space="preserve"]
-              style
-                | .a{fill:#fff;}
-              title
-                | rails-logo
-          .col.l4.offset-l2.s12
-            h5.white-text
-              | Links
-            ul
-              li
-                a.grey-text.text-lighten-3[href="#!"]
-                  |  Link 1
-              li
-                a.grey-text.text-lighten-3[href="#!"]
-                  |  Link 2
-              li
-                a.grey-text.text-lighten-3[href="#!"]
-                  |  Link 3
-              li
-                a.grey-text.text-lighten-3[href="#!"]
-                  |  Link 4
-      .footer-copyright.blue.darken-1
-        .container
-          | © 2017 Copyright Text
-          a.grey-text.text-lighten-4.right[href="#!"]
-            |  More Links
+      = render 'layouts/footer'

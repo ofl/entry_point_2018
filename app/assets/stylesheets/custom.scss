@@ -29,10 +29,6 @@ main {
   margin-bottom: 10px;
 }
 
-.btn {
-  margin-left: 10px;
-}
-
 :not(pre) > code[class*="language-"] {
   border-radius: 0.3em;
   padding: 0.1em;
@@ -48,3 +44,58 @@ main {
   max-height: calc(100vh - 4rem);
   overflow-y: auto;
 }
+
+.twitter {
+  background-color: #00aced;
+  border-color: #00aced;
+}
+a.twitter:hover {
+  background-color: #0099D1;
+  border-color: #0099D1;
+}
+
+.facebook {
+  background-color: #3b5998;
+  border-color: #3b5998;
+}
+a.facebook:hover {
+  background-color: #154096;
+  border-color: #154096;
+}
+
+form.was-validated {
+  .is-invalid {
+    .form-control {
+      border-color: #dc3545;
+    }
+  }
+}
+
+/*flash*/
+.alert-error {
+    background-color: #f2dede;
+    border-color: #eed3d7;
+    color: #b94a48;
+    text-align: left;
+ }
+
+.alert-alert {
+    background-color: #f2dede;
+    border-color: #eed3d7;
+    color: #b94a48;
+    text-align: left;
+ }
+
+.alert-success {
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+    color: #468847;
+    text-align: left;
+ }
+
+.alert-notice {
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+    color: #468847;
+    text-align: left;
+ }

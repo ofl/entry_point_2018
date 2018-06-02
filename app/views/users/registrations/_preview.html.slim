@@ -1,31 +1,24 @@
-.login-form
-  .card.hoverable
-    .card-content
-      span.card-title.center= title
-      .divider
-      = simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
-        - if devise_error_messages? || alert
-          .form-errors.red.lighten-1
-            = devise_error_messages!
-            = alert
-        .form-inputs.row
-          = f.input :username, readonly: true, icon: "person"
-          = f.input :dummy_password, readonly: true, icon: "lock", input_html: { value: '************' }
-          = f.hidden_field :password
-        .form-actions.center
-          - if resource.auth_with_email?
-            = f.button :submit, t('.send_confirmation_email'), name: 'auth_via_email', class: 'waves-button-input'
-          - else
-            = f.button :submit, t('.auth_via_email'), name: 'email_form', class: 'waves-button-input'
-          br/
-          = f.button :submit, t('.auth_via_twitter'), name: 'auth_via_twitter', class: 'waves-button-input'
-          br/
-          = f.button :submit, t('.auth_via_facebook'), name: 'auth_via_facebook', class: 'waves-button-input'
-          br/
-          = f.button :submit, t('.back'), name: 'form', class: 'waves-button-input'
-      .card-action
-        .devise-links
-          = render "users/shared/links"
+.py-5.text-center
+  h2= title
+
+= bootstrap_form_with model: resource, as: resource_name, url: registration_path(resource_name), local: true do |f|
+  = error_messages!(f.object)
+
+  = f.text_field :username, readonly: true, icon: "person"
+  = f.text_field :dummy_password, readonly: true, icon: "lock", input_html: { value: '************' }
+  = f.hidden_field :password
+
+  - if resource.auth_with_email?
+    = f.submit t('.send_confirmation_email'), name: 'auth_via_email', class: 'btn btn-lg btn-primary btn-block'
+  - else
+    = f.submit t('.auth_via_email'), name: 'email_form', class: 'btn btn-lg btn-success btn-block'
+
+  = f.submit t('.auth_via_twitter'), name: 'auth_via_twitter', class: 'btn btn-lg btn-primary btn-block twitter'
+  = f.submit t('.auth_via_facebook'), name: 'auth_via_facebook', class: 'btn btn-lg btn-primary btn-block facebook'
+  = f.submit t('.back'), name: 'form', class: 'btn btn-lg btn-secondary btn-block'
+
+  = render "users/shared/links"
+
 javascript:
   document.onkeypress = function(e){
       var ref=e.target;

@@ -11,6 +11,7 @@ ja:
       confirmation_instructions: 確認メールが届きませんか？
       unlock_instructions: ロック解除メールが届きませんか？
       send_user_auth_mail: ユーザー認証メールを再送する
+      enter_password: パスワードを入力してください
       update: 更新する
       characters_minimum: 文字以上
       back: 戻る
@@ -20,9 +21,12 @@ ja:
     sessions:
       new:
         <<: *default
-        login_via_sns: SNSでログインする
+        login_via_password: パスワードでログイン
+        login_via_sns: SNSでログイン
         signin_via_twitter: Twitterでログイン
         signin_via_facebook: Facebookでログイン
+        login: ユーザー名（Eメールアドレス）
+        password: パスワード
     shared:
       links:
         <<: *default
@@ -40,11 +44,13 @@ ja:
         are_you_sure: 本当に更新しますか？
       form:
         <<: *default
+        username: 半角英数字3~15文字
+        password: 半角英数字8文字以上
       preview:
         <<: *default
-        auth_via_email: Eメールで本人確認して登録
-        auth_via_twitter: Twitterで本人確認して登録
-        auth_via_facebook: Facebookで本人確認して登録
+        auth_via_email: Eメールで本人確認
+        auth_via_twitter: Twitterで本人確認
+        auth_via_facebook: Facebookで本人確認
       email_form:
         <<: *default
         send_confirmation_email: 確認メールを送信して登録

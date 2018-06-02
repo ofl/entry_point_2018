@@ -4,7 +4,7 @@ RSpec.describe 'registrations', type: :request do
   include ApiRequestSpecHelper
 
   describe 'GET /api/users/registrations' do
-    subject { get '/api/users/registrations', headers: headers }
+    subject { get '/api/users/registrations', params: {}, headers: headers }
 
     context 'ログインしていない場合' do
       it '401エラーになること' do
@@ -114,7 +114,7 @@ RSpec.describe 'registrations', type: :request do
   end
 
   describe 'DELETE /api/users/registrations' do
-    subject { delete '/api/users/registrations', headers: headers }
+    subject { delete '/api/users/registrations', params: {}, headers: headers }
 
     context 'ログインしていない場合' do
       it '401エラーになること' do

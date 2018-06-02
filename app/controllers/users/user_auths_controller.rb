@@ -1,5 +1,5 @@
 class Users::UserAuthsController < ApplicationController
-  layout 'users'
+  layout 'signup'
 
   before_action :authenticate_user!, except: [:show]
 

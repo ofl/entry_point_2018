@@ -2,16 +2,16 @@ doctype html
 html
   head
     meta[content="text/html; charset=UTF-8" http-equiv="Content-Type"]
-    meta[content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no" name="viewport"]
+    meta[content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"]
     meta[content="/" name="turbolinks-root"]
     meta[content="no-preview" name="turbolinks-cache-control"]
     title
       | EntryPoint2018
     = csrf_meta_tags
     = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
-    = stylesheet_link_tag 'users/confirm', media: 'all'
+    = stylesheet_link_tag 'users/edit', media: 'all'
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
-  body.text-center
+  body.bg-light
     = render 'layouts/messages'
     == yield
     = render 'layouts/footer'

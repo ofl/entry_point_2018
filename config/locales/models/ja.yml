@@ -19,13 +19,14 @@ ja:
         dummy_password: パスワード
         password_confirmation: パスワード(確認)
         avatar: アバター
+        remember_me: ログイン状態を維持する
       user_auth:
         uid: メールアドレス
         email: メールアドレス
         user_password: パスワード
       point:
         <<: *default
-        operation_type: 状態
+        operation_type: 操作
         operation_types:
           got: 獲得
           login_bonus: ログインボーナス
