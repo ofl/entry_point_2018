@@ -11,8 +11,8 @@ html
     = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
     = stylesheet_link_tag 'users/confirm', media: 'all'
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+    = javascript_pack_tag 'application'
   body.text-center
     = render 'layouts/messages'
     == yield
     = render 'layouts/footer'
-    = javascript_pack_tag 'application'
