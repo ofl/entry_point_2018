@@ -2,6 +2,8 @@
 // see https://qiita.com/midnightSuyama/items/efc5441a577f3d3abe74
 
 import Vue from 'vue'
+import TurbolinksAdapter from 'vue-turbolinks';
+Vue.use(TurbolinksAdapter)
 
 var vms = []
 var options = {}
