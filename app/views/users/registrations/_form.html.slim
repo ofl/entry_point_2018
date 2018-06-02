@@ -4,15 +4,15 @@
     | Below is an example form built entirely with Bootstrap's form controls. Each required form group has a validation state that can be triggered by attempting to submit the form without completing it.
 
 = bootstrap_form_with model: resource, as: resource_name, url: registration_path(resource_name),
-                      local: true, html: { :class => 'form-signup' } do |f|
+                      local: true, html: { :class => 'form-signup', 'data-vue': 'password-required' } do |f|
   = error_messages!(f.object)
 
   = f.text_field :username, autofocus: true, autocomplete: 'off', required: true,
                             icon: 'person', prepend: '@', placeholder: t('.username'),
                             input_html: { minlength: User::MIN_USERNAME_LENGTH, maxlength: User::MAX_USERNAME_LENGTH }
-  = f.password_field :password, autocomplete: 'off', required: true, icon: 'lock', placeholder: t('.password'),
+  = f.password_field :password, autocomplete: 'off', required: true, icon: 'lock', placeholder: t('.password'), 'v-model': 'password',
                                 input_html: { minlength: User.password_length.min, maxlength: User.password_length.max }
 
-  = f.submit t('.preview'), name: 'preview', class: 'btn btn-lg btn-success btn-block'
+  = f.submit t('.preview'), name: 'preview', class: 'btn btn-lg btn-success btn-block', disabled: true, ':disabled': 'passwordIsEmpty'
 
   = render 'users/shared/links'
