@@ -1,9 +1,21 @@
 /* eslint no-console:0 */
-// see https://qiita.com/midnightSuyama/items/efc5441a577f3d3abe74
+
+import '../src/application'
+require.context('../images', true, /\.(png|jpg|jpeg|svg)$/)
+
+import 'bootstrap/dist/js/bootstrap'
+
+import Rails from 'rails-ujs';
+Rails.start();
+
+import Turbolinks from 'turbolinks'
+Turbolinks.start()
 
 import Vue from 'vue'
-import TurbolinksAdapter from 'vue-turbolinks';
+import TurbolinksAdapter from 'vue-turbolinks'
 Vue.use(TurbolinksAdapter)
+
+// see https://qiita.com/midnightSuyama/items/efc5441a577f3d3abe74
 
 var vms = []
 var options = {}
