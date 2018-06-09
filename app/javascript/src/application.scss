@@ -1,7 +1,8 @@
-@import "bootstrap";
+@import '~bootstrap/dist/css/bootstrap';
 @import "devise";
 @import "custom";
 @import "sticky-footer-navbar";
 @import "rails_bootstrap_forms";
-
 @import "points";
+@import "users/confirm";
+@import "users/edit";
