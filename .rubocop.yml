@@ -100,6 +100,6 @@ Layout/EmptyLines:
     - Gemfile
     - bin/setup
 
-Lint/SplatKeywordArguments:
-  Exclude:
-    - config/initializers/shrine.rb
+# Lint/SplatKeywordArguments:
+#   Exclude:
+#     - config/initializers/shrine.rb
