@@ -16,7 +16,7 @@ Rails.application.config.content_security_policy do |policy|
   #   # policy.report_uri "/csp-violation-report-endpoint"
 
   if Rails.env.development?
-    policy.script_src :self, :https, :unsafe_eval, 'http://0.0.0.0:8080', 'ws://0.0.0.0:8080'
+    policy.script_src :self, :https, :unsafe_eval
   else
     policy.script_src :self, :https
   end
