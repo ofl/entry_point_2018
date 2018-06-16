@@ -2,7 +2,7 @@ h3 = t('.point_history')
 
 table
   tr
-    th = t('activerecord.attributes.point.operation_type')
+    th = t('activerecord.attributes.point_history.operation_type')
     td = t(@point_history.operation_type, scope: %i[activerecord attributes point_history operation_types])
   tr
     th = t('activerecord.attributes.point_history.amount')

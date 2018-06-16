@@ -6,7 +6,7 @@ class PointHistoriesController < ApplicationController
   end
 
   def show
-    @point_historie = current_user.point_histories.find(params[:id])
+    @point_history = current_user.point_histories.find(params[:id])
   end
 
   def create

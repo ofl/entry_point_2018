@@ -153,10 +153,18 @@ RSpec.describe User, type: :model do
     describe '#point_amount' do
       subject { user.point_amount }
 
-      let!(:got_point_1) { create :point_history, :got, user: user, amount: 100, created_at: '2018-1-1 12:10:10'.in_time_zone }
-      let!(:got_point_2) { create :point_history, :got, user: user, amount: 150, created_at: '2018-2-1 12:10:10'.in_time_zone }
-      let!(:used_point) { create :point_history, :used, user: user, amount: -200, created_at: '2018-3-1 12:10:10'.in_time_zone }
-      let!(:got_point_3) { create :point_history, :got, user: user, amount: 170, created_at: '2018-4-1 12:10:10'.in_time_zone }
+      let!(:got_point_1) do
+        create :point_history, :got, user: user, amount: 100, created_at: '2018-1-1 12:10:10'.in_time_zone
+      end
+      let!(:got_point_2) do
+        create :point_history, :got, user: user, amount: 150, created_at: '2018-2-1 12:10:10'.in_time_zone
+      end
+      let!(:used_point) do
+        create :point_history, :used, user: user, amount: -200, created_at: '2018-3-1 12:10:10'.in_time_zone
+      end
+      let!(:got_point_3) do
+        create :point_history, :got, user: user, amount: 170, created_at: '2018-4-1 12:10:10'.in_time_zone
+      end
       let!(:outdated_point) do
         create :point_history, :outdated, user: user, amount: -50, created_at: '2018-5-1 12:10:10'.in_time_zone
       end
@@ -196,10 +204,18 @@ RSpec.describe User, type: :model do
 
       subject { user.outdate_points!(at) }
 
-      let!(:got_point_1) { create :point_history, :got, user: user, amount: 100, created_at: '2018-1-1 12:10:10'.in_time_zone }
-      let!(:got_point_2) { create :point_history, :got, user: user, amount: 150, created_at: '2018-2-1 12:10:10'.in_time_zone }
-      let!(:used_point) { create :point_history, :used, user: user, amount: -200, created_at: '2018-3-1 12:10:10'.in_time_zone }
-      let!(:got_point_3) { create :point_history, :got, user: user, amount: 170, created_at: '2018-4-1 12:10:10'.in_time_zone }
+      let!(:got_point_1) do
+        create :point_history, :got, user: user, amount: 100, created_at: '2018-1-1 12:10:10'.in_time_zone
+      end
+      let!(:got_point_2) do
+        create :point_history, :got, user: user, amount: 150, created_at: '2018-2-1 12:10:10'.in_time_zone
+      end
+      let!(:used_point) do
+        create :point_history, :used, user: user, amount: -200, created_at: '2018-3-1 12:10:10'.in_time_zone
+      end
+      let!(:got_point_3) do
+        create :point_history, :got, user: user, amount: 170, created_at: '2018-4-1 12:10:10'.in_time_zone
+      end
 
       let!(:batch_schedule) { create :batch_schedule_point_expiration, user: user, run_at: at - 1.second }
 
@@ -256,10 +272,18 @@ RSpec.describe User, type: :model do
     describe '#outdate_all_points!' do
       subject { user.outdate_all_points! }
 
-      let!(:got_point_1) { create :point_history, :got, user: user, amount: 100, created_at: '2018-1-1 12:10:10'.in_time_zone }
-      let!(:got_point_2) { create :point_history, :got, user: user, amount: 150, created_at: '2018-2-1 12:10:10'.in_time_zone }
-      let!(:used_point) { create :point_history, :used, user: user, amount: -200, created_at: '2018-3-1 12:10:10'.in_time_zone }
-      let!(:got_point_3) { create :point_history, :got, user: user, amount: 170, created_at: '2018-4-1 12:10:10'.in_time_zone }
+      let!(:got_point_1) do
+        create :point_history, :got, user: user, amount: 100, created_at: '2018-1-1 12:10:10'.in_time_zone
+      end
+      let!(:got_point_2) do
+        create :point_history, :got, user: user, amount: 150, created_at: '2018-2-1 12:10:10'.in_time_zone
+      end
+      let!(:used_point) do
+        create :point_history, :used, user: user, amount: -200, created_at: '2018-3-1 12:10:10'.in_time_zone
+      end
+      let!(:got_point_3) do
+        create :point_history, :got, user: user, amount: 170, created_at: '2018-4-1 12:10:10'.in_time_zone
+      end
 
       context '保存に成功した場合' do
         it '負のポイント履歴が作成されること' do
@@ -280,8 +304,12 @@ RSpec.describe User, type: :model do
     describe '#outdated_point_amount' do
       subject { user.send :outdated_point_amount, at }
 
-      let!(:got_point_1) { create :point_history, :got, user: user, amount: 100, created_at: '2018-1-1 12:10:10'.in_time_zone }
-      let!(:got_point_2) { create :point_history, :got, user: user, amount: 150, created_at: '2018-2-1 12:10:10'.in_time_zone }
+      let!(:got_point_1) do
+        create :point_history, :got, user: user, amount: 100, created_at: '2018-1-1 12:10:10'.in_time_zone
+      end
+      let!(:got_point_2) do
+        create :point_history, :got, user: user, amount: 150, created_at: '2018-2-1 12:10:10'.in_time_zone
+      end
       let!(:used_point) do
         create :point_history, :used, user: user, amount: used_amount, created_at: '2018-3-1 12:10:10'.in_time_zone
       end
