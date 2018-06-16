@@ -1,0 +1,35 @@
+.row
+  .buttons
+    = link_to t('.get_point'), point_histories_path, method: :post, class: 'btn btn-lg btn-primary btn-block'
+
+  h5 = t('.point_histories')
+
+  table.table
+    thead
+      tr
+        th = t('activerecord.attributes.point_history.version')
+        th = t('activerecord.attributes.point_history.operation_type')
+        th = t('activerecord.attributes.point_history.amount')
+        th = t('activerecord.attributes.point_history.total')
+        th = t('activerecord.attributes.point_history.outdate_at')
+        th = t('activerecord.attributes.point_history.created_at')
+        th
+    tbody
+      - @point_histories.each do |point_history|
+        tr class=(point_history.expired? ? 'expired' : 'active')
+          td = point_history.version
+          td = t(point_history.operation_type, scope: %i[activerecord attributes point_history operation_types])
+          td = point_history.amount
+          td = point_history.total
+          td
+            - if point_history.outdate_at
+              = l(point_history.outdate_at, format: :day)
+          td = l(point_history.created_at, format: :short)
+          td.right-align
+            = link_to t('.detail'), point_history
+
+  .table-footer
+    = paginate @point_histories
+
+  .links
+    = link_to t('.back'), authenticated_root_path

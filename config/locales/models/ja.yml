@@ -3,7 +3,7 @@ ja:
     models:
       user: ユーザー
       user_auth: 本人確認
-      point: ポイント
+      point_history: ポイント
     attributes:
       default: &default
         id: ID
@@ -24,7 +24,7 @@ ja:
         uid: メールアドレス
         email: メールアドレス
         user_password: パスワード
-      point:
+      point_history:
         <<: *default
         operation_type: 操作
         operation_types:
@@ -34,6 +34,8 @@ ja:
           outdated: 失効
           withdrawaled: 退会による失効
         amount: 数量
+        total: 所持数
+        version: Ver
         outdate_at: 失効日
     errors:
       models:

@@ -24,13 +24,16 @@ ActiveRecord::Schema.define(version: 2018_05_03_001823) do
     t.index ["user_id"], name: "index_batch_schedule_point_expirations_on_user_id"
   end
 
-  create_table "points", force: :cascade do |t|
+  create_table "point_histories", force: :cascade do |t|
     t.bigint "user_id"
     t.integer "operation_type", null: false, comment: "(0:獲得,1:使用,2:失効)"
-    t.integer "amount", default: 0, null: false, comment: "ポイント数"
+    t.integer "amount", default: 0, null: false, comment: "増減したポイント数"
+    t.integer "total", default: 0, null: false, comment: "総ポイント数"
+    t.integer "version", default: 0, null: false, comment: "衝突防止のためのバージョン"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_points_on_user_id"
+    t.index ["user_id", "version"], name: "index_point_histories_on_user_id_and_version", order: { version: :desc }
+    t.index ["user_id"], name: "index_point_histories_on_user_id"
   end
 
   create_table "user_auths", force: :cascade do |t|

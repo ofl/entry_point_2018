@@ -4,10 +4,13 @@ AllCops:
   DisplayCopNames: true
   TargetRubyVersion: 2.4
   Exclude:
+    - tmp/**/*
+    - log/**/*
     - vendor/**/*
     - db/schema.rb
     - public/packs
     - public/packs-test
+    - public/uploads
     - node_modules/**/*
     - bin/update
     - bin/setup

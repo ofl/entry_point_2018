@@ -52,9 +52,6 @@ class User < ApplicationRecord
 
   has_many :user_auths, dependent: :destroy
   has_many :confirmed_user_auths, -> { merge(UserAuth.confirmed) }, class_name: :UserAuth, inverse_of: :user
-  has_many :points # rubocop:disable Rails/HasManyOrHasOneDependent
-  has_many :point_expiration_schedules, class_name: 'BatchSchedule::PointExpiration',
-                                        dependent: :destroy, inverse_of: :user
 
   before_create :ensure_dummy_authentication_token
   before_destroy :outdate_all_points! # 所持しているポイントを無効にする
