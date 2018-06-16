@@ -7,8 +7,7 @@ RUN apk --update add --virtual gem-builddeps \
     postgresql-dev
 RUN gem install bundler
 WORKDIR /tmp
-COPY Gemfile Gemfile
-COPY Gemfile.lock Gemfile.lock
+COPY Gemfile Gemfile.lock ./
 ENV BUNDLE_JOBS=4
 RUN bundle install
 RUN apk del gem-builddeps
@@ -30,8 +29,7 @@ RUN apk add --virtual build-yarn curl && \
     apk del build-yarn
 
 WORKDIR /tmp
-COPY Gemfile Gemfile
-COPY Gemfile.lock Gemfile.lock
+COPY Gemfile Gemfile.lock ./
 COPY --from=builder /usr/local/bundle /usr/local/bundle
 
 ARG PROJECT_NAME="entry_point_2018"
@@ -43,3 +41,6 @@ COPY . $APP_HOME
 # yarn install
 # COPY package.json yarn.lock .postcssrc.yml ./
 RUN yarn install
+
+# docker-composeやkubernetesのcommandがある場合は実行されない
+CMD ["rails", "server", "-b", "0.0.0.0"]
