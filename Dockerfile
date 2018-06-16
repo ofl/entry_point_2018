@@ -15,6 +15,7 @@ RUN apk del gem-builddeps
 FROM ruby:2.4.2-alpine
 ENV LANG ja_JP.UTF-8
 RUN apk --update add \
+    git \
     bash \
     nodejs \
     postgresql-dev \
@@ -29,13 +30,16 @@ RUN apk add --virtual build-yarn curl && \
     apk del build-yarn
 
 WORKDIR /tmp
-COPY Gemfile Gemfile.lock ./
 COPY --from=builder /usr/local/bundle /usr/local/bundle
 
 ARG PROJECT_NAME="entry_point_2018"
 ENV APP_HOME /usr/src/${PROJECT_NAME}
+ENV BUNDLE_GEMFILE=$APP_HOME/Gemfile \
+    BUNDLE_PATH=/usr/local/bundle
+
 RUN mkdir -p $APP_HOME
 WORKDIR $APP_HOME
+
 COPY . $APP_HOME
 
 # yarn install
