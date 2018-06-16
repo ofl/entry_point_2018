@@ -3,51 +3,38 @@
 ### ライブラリ
 
 -   [plataformatec/devise](https://github.com/plataformatec/devise)
--   [mkhairi/materialize-rails](http://materialize.labs.my)
+-   [twbs/bootstrap](https://github.com/twbs/bootstrap)
+-   [vuejs/vue](https://github.com/vuejs/vue)
+-   [shrinerb/shrine](https://github.com/shrinerb/shrinea)
+
 
 ### セットアップ
 
 ```sh
-$ export RUBY_IMAGE=ruby:2.4.2-alpine3.6
-$ export DEVELOPER_NAME=ofl
-$ export PROJECT_NAME=entry_point_2018
-$ export APP_VERSION=0.1
-
-$ docker pull $RUBY_IMAGE
-
-# Gemfileを生成
-$ docker run --rm -v "$PWD":/usr/src/"$PROJECT_NAME" -w /usr/src/"$PROJECT_NAME" $RUBY_IMAGE bundle init
-
-# Dockerfileを生成、編集後
-$ docker build -t "$DEVELOPER_NAME"/"$PROJECT_NAME" .
-
-# rails new
-$ docker run --rm -it -v "$PWD":/usr/src/"$PROJECT_NAME" "$DEVELOPER_NAME"/"$PROJECT_NAME" rails new . -BT
-
-# docker-compose.ymlを追加
-# config/database.ymlの修正
-$ docker-compose build
-
-$ docker-compose up -d
-```
-
-### 再ビルド
-
-```sh
+# 環境変数の設定
 $ export RUBY_IMAGE=ruby:2.4.2-alpine3.6 DEVELOPER_NAME=ofl PROJECT_NAME=entry_point_2018 APP_VERSION=0.1
+
+# Dockerイメージのビルド
 $ docker build -t "$DEVELOPER_NAME"/"$PROJECT_NAME":"$APP_VERSION" --build-arg PROJECT_NAME="$PROJECT_NAME" .
-# Gemfile.lockが書き変わらないため
-$ docker-compose run --rm rails bundle
+
+# Railsの起動
+$ docker-compose up -d
+
+# http://localhost:3000で表示される
+
+# コマンドラインで操作
+$ docker-compose exec rails sh
 ```
 
 ### テスト
 
 ```sh
-$ docker-compose exec spring sh
+$ docker-compose exec rails sh
 
-# spring内のシェルで
-$ bundle exec bin/rspec
+# rails内のシェルで
+$ bin/rspec
 ```
+
 ### minikubeで動かす
 
 ```sh
