@@ -64,6 +64,7 @@ end
 
 group :development do
   gem 'annotate'
+  gem 'graphiql-rails'
   gem 'letter_opener'
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'migration_comments'
@@ -86,5 +87,3 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data'
-
-gem 'graphiql-rails', group: :development
