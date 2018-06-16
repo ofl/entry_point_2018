@@ -14,7 +14,7 @@ services:
     image: ofl/entry_point_2018:0.1
     ports:
       - '3000:3000'
-      - '8080:8080'
+      - '3035:3035'
     volumes:
       - .:/usr/src/entry_point_2018
       - bundle_cache:/bundle

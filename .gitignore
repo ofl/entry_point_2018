@@ -69,3 +69,8 @@ config/environments/*.local.yml
 
 # Image data
 public/uploads
+/public/packs
+/public/packs-test
+/node_modules
+yarn-debug.log*
+.yarn-integrity
