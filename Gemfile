@@ -36,6 +36,7 @@ gem 'aws-sdk-s3', '~> 1.2'
 gem 'config'
 gem 'devise'
 gem 'foreman'
+gem 'graphql'
 gem 'kaminari'
 gem 'shrine', '~> 2.0'
 gem 'slim'
@@ -63,6 +64,7 @@ end
 
 group :development do
   gem 'annotate'
+  gem 'graphiql-rails'
   gem 'letter_opener'
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'migration_comments'

@@ -161,6 +161,10 @@ GEM
       thor (~> 0.19.1)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
+    graphiql-rails (1.4.10)
+      railties
+      sprockets-rails
+    graphql (1.8.3)
     hashdiff (0.3.7)
     hashie (3.5.7)
     htmlentities (4.3.4)
@@ -413,6 +417,8 @@ DEPENDENCIES
   factory_bot_rails
   faker
   foreman
+  graphiql-rails
+  graphql
   jbuilder (~> 2.5)
   kaminari
   koala (~> 2.2)
