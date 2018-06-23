@@ -6,8 +6,12 @@
   - else
     = render partial: 'form', locals: { title: t('.sign_up') }
 
+  #user
+
   javascript:
     window.location.hash="#noback";
     window.onhashchange=function(){
         window.location.hash="#noback";
     }
+
+/ = javascript_pack_tag 'search-user'
