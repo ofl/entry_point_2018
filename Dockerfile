@@ -16,6 +16,11 @@ FROM ruby:2.4.2-alpine
 ENV LANG ja_JP.UTF-8
 RUN apk --update add \
     git \
+    # gemがインストールできない時以下をコメントアウト \
+    # build-base \
+    # curl-dev \
+    # linux-headers \
+    # ここまで \
     bash \
     nodejs \
     postgresql-dev \

@@ -55,21 +55,25 @@ group :development, :test do
   gem 'dotenv-rails'
   gem 'factory_bot_rails'
   gem 'faker'
+  gem 'license_finder'
   gem 'rspec-rails', '~> 3.5.0'
-  # https://github.com/rails/spring/pull/546
-  # gem 'spring', github: 'mattbrictson/spring', branch: 'honor-bundle-app-config'
-  # gem 'spring-commands-rspec'
-  # gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
 group :development do
   gem 'annotate'
+  gem 'better_errors'
+  gem 'binding_of_caller'
+  gem 'brakeman'
+  gem 'bullet'
+  gem 'bundler-audit'
   gem 'graphiql-rails'
   gem 'letter_opener'
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'migration_comments'
+  gem 'rack-mini-profiler'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'rubocop', require: false
+  gem 'rufo'
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem 'web-console', '>= 3.3.0'
 end
