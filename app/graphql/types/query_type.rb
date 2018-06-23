@@ -6,7 +6,15 @@ class Types::QueryType < Types::BaseObject
     argument :username, String, required: true
   end
 
+  field :current_user, Types::UserType, null: true do
+    description 'Find current user'
+  end
+
   def user(username:)
     User.find_by(username: username)
+  end
+
+  def current_user
+    context[:current_user]
   end
 end

@@ -1,6 +1,6 @@
 <template>
-  <h2 id="user" v-if="user">
-    こんにちは{{user.username}}さん
+  <h2 id="currentUser" v-if="currentUser">
+    こんにちは{{currentUser.username}}さん
   </h2>
 </template>
 
@@ -8,21 +8,21 @@
 import gql from 'graphql-tag';
 const helloGQL = gql`
   query {
-    user(username: "testuser") {
+    currentUser {
       id
       username
     }
   }
 `;
 export default {
-  name: 'user',
+  name: 'currentUser',
   data() {
     return {
-      user: null,
+      currentUser: null,
     };
   },
   apollo: {
-    user: {
+    currentUser: {
       query: helloGQL,
     }
   },

@@ -8,7 +8,7 @@ RSpec.describe 'Mypage', type: :request do
     context 'ログインしていない場合' do
       it 'ホームが表示されること' do
         is_expected.to eq 200
-        expect(response.body).not_to include user.username
+        expect(response.body).to include I18n.t('layouts.application.sign_in')
       end
     end
 
@@ -17,7 +17,7 @@ RSpec.describe 'Mypage', type: :request do
 
       it 'マイページが表示されること' do
         is_expected.to eq 200
-        expect(response.body).to include user.username
+        expect(response.body).to include I18n.t('layouts.application.sign_out')
       end
     end
   end
