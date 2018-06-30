@@ -12,21 +12,48 @@ def create(*args)
   FactoryBot.create(*args)
 end
 
+def create_user(username = Faker::Internet.user_name.slice(0...15))
+  user = create(:user, username: username, email: Faker::Internet.email)
+  create(:user_auth, user: user, provider: :email, uid: user.email)
+  user
+end
+
+users = []
+
 unless User.exists?
-  user = create :user, username: 'testuser', email: 'test@example.com', password: 'password'
-  create :user_auth, user: user, provider: :email, uid: 'test@example.com'
+  users << create_user('testuser')
+
+  10.times do
+    users << create_user
+  end
 end
 
 unless PointHistory.exists?
-  User.all.each do |u|
+  users.each do |user|
     operation_day = 120.days.ago
-    create :point_history, :got, amount: 100, total: 100, user: u, version: 1, created_at: operation_day
+    create(:point_history, :got, amount: 100, total: 100, user: user, version: 1, created_at: operation_day)
     10.times do
       operation_day += 10.days
       point = [-15, -10, -5, 5, 10, 15].sample
       operation = point.positive? ? :got : :used
 
-      create :point_history, operation, amount: point, user: u, created_at: operation_day
+      create(:point_history, operation, amount: point, user: user, created_at: operation_day)
+    end
+  end
+end
+
+posts = []
+
+unless Post.exists?
+  users.each do |user|
+    rand(5).times do
+      posts << create(:post, user: user)
+    end
+  end
+
+  posts.each do |post|
+    rand(3).times do
+      create(:comment, user: users.sample, post: post)
     end
   end
 end
