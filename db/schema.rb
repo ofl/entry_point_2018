@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_30_025620) do
+ActiveRecord::Schema.define(version: 2018_06_30_041559) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,16 @@ ActiveRecord::Schema.define(version: 2018_06_30_025620) do
     t.datetime "updated_at", null: false
     t.index ["run_at"], name: "index_batch_schedule_point_expirations_on_run_at"
     t.index ["user_id"], name: "index_batch_schedule_point_expirations_on_user_id"
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.bigint "user_id", comment: "投稿者"
+    t.bigint "post_id", comment: "投稿"
+    t.text "body", null: false, comment: "本文"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["post_id"], name: "index_comments_on_post_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
   create_table "point_histories", force: :cascade do |t|
@@ -86,6 +96,8 @@ ActiveRecord::Schema.define(version: 2018_06_30_025620) do
   end
 
   add_foreign_key "batch_schedule_point_expirations", "users"
+  add_foreign_key "comments", "posts"
+  add_foreign_key "comments", "users"
   add_foreign_key "posts", "users"
   add_foreign_key "user_auths", "users"
 end

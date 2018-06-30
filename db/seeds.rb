@@ -12,7 +12,7 @@ def create(*args)
   FactoryBot.create(*args)
 end
 
-def create_user(username = Faker::Internet.user_name)
+def create_user(username = Faker::Internet.user_name.slice(0...15))
   user = create(:user, username: username, email: Faker::Internet.email)
   create(:user_auth, user: user, provider: :email, uid: user.email)
   user
@@ -42,10 +42,18 @@ unless PointHistory.exists?
   end
 end
 
+posts = []
+
 unless Post.exists?
   users.each do |user|
     rand(5).times do
-      post = create(:post, user: user)
+      posts << create(:post, user: user)
+    end
+  end
+
+  posts.each do |post|
+    rand(3).times do
+      create(:comment, user: users.sample, post: post)
     end
   end
 end
