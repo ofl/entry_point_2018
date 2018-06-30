@@ -15,6 +15,24 @@ import Vue from 'vue/dist/vue.esm.js';
 import TurbolinksAdapter from 'vue-turbolinks'
 Vue.use(TurbolinksAdapter)
 
+import ApolloClient from 'apollo-boost'
+import { InMemoryCache } from 'apollo-cache-inmemory'
+import VueApollo from 'vue-apollo'
+Vue.use(VueApollo)
+
+const apolloClient = new ApolloClient({
+  uri: '/graphql',
+  request: (operation) => {
+    operation.setContext({
+      headers: { "X-CSRF-Token": Rails.csrfToken() }
+    })
+  },
+  fetchOptions: { credentials: 'same-origin' },
+  cache: new InMemoryCache(),
+})
+
+const apolloProvider = new VueApollo({ defaultClient: apolloClient })
+
 // see https://qiita.com/midnightSuyama/items/efc5441a577f3d3abe74
 
 var vms = []
@@ -23,7 +41,14 @@ var options = {}
 let requireContext = require.context('./options', false, /\.js$/)
 requireContext.keys().forEach(key => {
   let name = key.split('/').pop().split('.').shift()
-  options[name] = requireContext(key).default
+  let option = requireContext(key).default
+
+  if (option === void 0){
+    return
+  }
+
+  option.provide = apolloProvider.provide()
+  options[name] = option
 })
 
 document.addEventListener('turbolinks:load', () => {
