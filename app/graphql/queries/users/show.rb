@@ -1,6 +1,6 @@
 class Queries::Users::Show < GraphQL::Schema::Resolver
   graphql_name 'User'
-  description 'Find a user by username'
+  description '指定したユーザー名のユーザーを取得する'
 
   type Types::UserType, null: true
 
