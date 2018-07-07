@@ -24,6 +24,6 @@ FactoryBot.define do
   factory :comment do
     user
     post
-    body Faker::Lorem.paragraph
+    body { Faker::Lorem.paragraph }
   end
 end
