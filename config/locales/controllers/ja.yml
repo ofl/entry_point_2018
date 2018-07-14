@@ -31,3 +31,10 @@ ja:
       index: 一覧へ
     create:
       got_point: "%{amount}ポイント獲得しました"
+  graphql:
+    errors:
+      messages:
+        bad_request: リクエストが正しくありません
+        forbidden: リクエストは許可されていません
+        not_authorized: ログインが必要です
+        not_found: "%{attribute}=`%{value}`の%{klass}は見つかりません"

@@ -11,11 +11,7 @@ class Mutations::BaseMutation < GraphQL::Schema::RelayClassicMutation
   # HACK: 以下query_typeとメソッドを共用したい
 
   def check_authorization_status
-    raise_authorization_error unless authorized?
-  end
-
-  def raise_authorization_error
-    raise GraphQL::ExecutionError, 'ログインが必要です'
+    raise GraphQL::NotAuthorized, 'ログインが必要です' unless authorized?
   end
 
   def authorized?

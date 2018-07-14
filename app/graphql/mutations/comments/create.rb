@@ -4,21 +4,18 @@ class Mutations::Comments::Create < Mutations::BaseMutation
 
   null true
 
-  field :comment, Types::CommentType, null: true
-  field :errors, [Types::UserError], null: false
-
   argument :body, String, description: 'コメントの本文', required: true
   argument :post_id, ID, description: 'コメントを追加する投稿ID', required: true
+
+  field :comment, Types::CommentType, null: true
+  field :errors, [Types::UserError], null: false
 
   def resolve(body:, post_id:)
     # HACK: 認証状態の確認。メソッドごとにcheck_authorization_statusを書くのは冗長なので
     check_authorization_status
 
-    comment = Comment.create(
-      user: context[:current_user],
-      body: body,
-      post_id: post_id
-    )
+    post = Post.find_by(id: post_id)
+    comment = context[:current_user].comments.create(post: post, body: body)
 
     {
       comment: comment,
