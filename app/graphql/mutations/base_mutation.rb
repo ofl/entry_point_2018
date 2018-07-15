@@ -1,17 +1,28 @@
 class Mutations::BaseMutation < GraphQL::Schema::RelayClassicMutation
-  def convert_errors(errors)
+  def convert_to_bad_request_errors(error_type, errors)
     errors.map do |attribute, message|
-      {
-        message: message,
-        path: ['attributes', attribute.to_s.camelize(:lower)]
-      }
+      extensions = error_type.extensions.merge(path: ['attributes', attribute.to_s.camelize(:lower)])
+
+      context.add_error(GraphQL::ExecutionError.new(message, extensions: extensions))
     end
+    nil
   end
 
   # HACK: 以下query_typeとメソッドを共用したい
 
   def check_authorization_status
-    raise GraphQL::NotAuthorized, 'ログインが必要です' unless authorized?
+    raise EntryPoint2018Schema::NotAuthorized unless authorized?
+  end
+
+  def check_permission(target, attribute = 'id')
+    return if target.user == context[:current_user]
+
+    # モデル名を翻訳する
+    t_model = I18n.t('activerecord.models.' + target.class.name.underscore)
+    t_value = target.__send__(attribute)
+    message = I18n.t('graphql.errors.messages.permission_denied', klass: t_model, attribute: attribute, value: t_value)
+
+    raise EntryPoint2018Schema::Forbidden, message
   end
 
   def authorized?

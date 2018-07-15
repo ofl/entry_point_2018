@@ -38,3 +38,5 @@ ja:
         forbidden: リクエストは許可されていません
         not_authorized: ログインが必要です
         not_found: "%{attribute}=`%{value}`の%{klass}は見つかりません"
+        permission_denied: "%{klass}:%{attribute}=`%{value}`の操作は許可されていません"
+        unknown: 原因不明のエラーが発生しました
