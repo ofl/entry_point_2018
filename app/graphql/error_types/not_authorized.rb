@@ -1,4 +1,6 @@
 class ErrorTypes::NotAuthorized < ErrorTypes
+  ERROR_CODE = 'NOT_AUTHORIZED'.freeze
+
   def initialize(error, error_code = ERROR_CODE)
     super
   end

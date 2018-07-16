@@ -3,7 +3,7 @@ class EntryPoint2018Schema < GraphQL::Schema
   Forbidden = Class.new(StandardError)
   BadRequest = Class.new(StandardError)
 
-  rescue_from(Exception) do |error|
+  rescue_from(StandardError) do |error|
     error_type = error_type(error)
     Rails.logger.error error_type.logs.join("\n")
 

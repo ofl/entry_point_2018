@@ -1,4 +1,15 @@
 class Mutations::BaseMutation < GraphQL::Schema::RelayClassicMutation
+  def check_authorization_and_excute(check_authorization: true)
+    check_authorization_status if check_authorization
+
+    yield
+  rescue ActiveRecord::RecordInvalid => e
+    error_type = ErrorTypes::BadRequest.new(e)
+    Rails.logger.error error_type.logs.join("\n")
+
+    convert_to_bad_request_errors(error_type, e.record.errors)
+  end
+
   def convert_to_bad_request_errors(error_type, errors)
     errors.map do |attribute, message|
       extensions = error_type.extensions.merge(path: ['attributes', attribute.to_s.camelize(:lower)])

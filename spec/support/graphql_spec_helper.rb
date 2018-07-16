@@ -6,11 +6,11 @@ module GraphqlSpecHelper
   included do
     subject do
       EntryPoint2018Schema.execute(
-        query, context: context, variables: variables, operation_name: operation_name
+        query, context: query_context, variables: variables, operation_name: operation_name
       ).with_indifferent_access
     end
 
-    let(:context) { {} }
+    let(:query_context) { {} }
     let(:variables) { {} }
     let(:operation_name) { '' }
 

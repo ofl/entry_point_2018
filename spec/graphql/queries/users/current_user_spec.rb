@@ -16,7 +16,7 @@ RSpec.describe 'Queries::Users::CurrentUser' do
     QUERY
   end
   let(:operation_name) { 'CurrentUser' }
-  let(:context) { { current_user: user } }
+  let(:query_context) { { current_user: user } }
 
   it 'ユーザーのデータが返ること' do
     expect(data[:currentUser][:id]).to eq user.id.to_s

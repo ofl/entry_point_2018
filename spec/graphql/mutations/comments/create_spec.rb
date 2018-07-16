@@ -8,8 +8,8 @@ RSpec.describe 'Mutations::Comments::Create' do
 
   let(:query) do
     <<~QUERY
-      mutation CreateComment($post_id:ID!, $body: String!) {
-        createComment(input: {postId: $post_id, body: $body}) {
+      mutation CreateComment($variables:createCommentInput!) {
+        createComment(input: $variables) {
           comment {
             id
             body
@@ -18,22 +18,27 @@ RSpec.describe 'Mutations::Comments::Create' do
               username
             }
           }
-          errors {
-            path
-            message
-          }
         }
       }
     QUERY
   end
   let(:operation_name) { 'CreateComment' }
-  let(:variables) { { post_id: post_id, body: body } }
+  let(:variables) do
+    {
+      'variables': {
+        'attributes': {
+          'postId': post_id,
+          'body': body
+        }
+      }
+    }
+  end
 
   let(:post_id) { post_data.id }
   let(:body) { 'foo bar baz' }
 
   context 'ログインしている時' do
-    let(:context) { { current_user: user } }
+    let(:query_context) { { current_user: user } }
 
     context '入力値が正しい場合' do
       it 'コメントのデータが返ること' do
@@ -50,10 +55,11 @@ RSpec.describe 'Mutations::Comments::Create' do
     context 'post_idに該当する投稿が存在しない時' do
       let(:post_id) { 999_999 }
 
-      it 'Types::UserErrorが返ること' do
-        expect(data[:createComment][:comment]).to be_nil
-        expect(data[:createComment][:errors][0][:path]).to eq %w[attributes post]
-        expect(data[:createComment][:errors][0][:message]).to eq 'を入力してください'
+      it 'Errorが返ること' do
+        expect(data[:createComment]).to be_nil
+        expect(errors[0][:message]).to eq 'を入力してください'
+        expect(errors[0][:extensions][:code]).to eq 'BAD_USER_INPUT'
+        expect(errors[0][:extensions][:path]).to eq %w[attributes post]
       end
 
       it 'コメントが増えないこと' do
@@ -64,10 +70,11 @@ RSpec.describe 'Mutations::Comments::Create' do
     context 'bodyが空文字列だった場合' do
       let(:body) { '' }
 
-      it 'Types::UserErrorが返ること' do
-        expect(data[:createComment][:comment]).to be_nil
-        expect(data[:createComment][:errors][0][:path]).to eq %w[attributes body]
-        expect(data[:createComment][:errors][0][:message]).to eq 'を入力してください'
+      it 'Errorが返ること' do
+        expect(data[:createComment]).to be_nil
+        expect(errors[0][:message]).to eq 'を入力してください'
+        expect(errors[0][:extensions][:code]).to eq 'BAD_USER_INPUT'
+        expect(errors[0][:extensions][:path]).to eq %w[attributes body]
       end
 
       it 'コメントが増えないこと' do
