@@ -19,6 +19,12 @@ module RequestSpecHelper
     it 'サインインページにリダイレクトされること' do is_expected.to redirect_to(new_user_session_path) end
   end
 
+  shared_examples 'ログインしていない場合は404エラーになること' do
+    it '404エラーになること' do
+      expect(subject).to eq 404
+    end
+  end
+
   private
 
   def warden_scope(resource)

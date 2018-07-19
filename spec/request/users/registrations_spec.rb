@@ -84,7 +84,7 @@ RSpec.describe 'Users::Registrations', type: :request do
         let(:params) { invalid_params }
 
         it '退会画面に戻ること' do
-          expect(subject).to eq 200
+          is_expected.to eq 200
         end
 
         it '「パスワードは不正な値です」と表示されること' do

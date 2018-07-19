@@ -17,8 +17,8 @@ RSpec.describe '本人確認について', type: :request do
     context '不正な入力値の場合' do
       let(:params) { invalid_params }
 
-      it 'RecordNotFoundのエラーになること' do
-        expect { subject }.to raise_error ActiveRecord::RecordNotFound
+      it '404エラーになること' do
+        is_expected.to eq 404
       end
     end
 
@@ -102,8 +102,8 @@ RSpec.describe '本人確認について', type: :request do
       before { sign_in user }
 
       context '本人確認が存在しない場合' do
-        it 'RecordNotFoundエラーになること' do
-          expect { subject }.to raise_error ActiveRecord::RecordNotFound
+        it '404エラーになること' do
+          is_expected.to eq 404
         end
       end
 
@@ -126,8 +126,8 @@ RSpec.describe '本人確認について', type: :request do
       before { sign_in user }
 
       context '本人確認が存在しない場合' do
-        it 'RecordNotFoundエラーになること' do
-          expect { subject }.to raise_error ActiveRecord::RecordNotFound
+        it '404エラーになること' do
+          is_expected.to eq 404
         end
       end
 
