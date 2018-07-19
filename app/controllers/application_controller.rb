@@ -1,13 +1,13 @@
 class ApplicationController < ActionController::Base
-  class Forbidden < ActionController::ActionControllerError; end
-  class NotAuthorized < ActionController::ActionControllerError; end
-  class BadRequest < ActionController::ActionControllerError; end
+  Unauthorized = Class.new(StandardError)
+  Forbidden = Class.new(StandardError)
+  BadRequest = Class.new(StandardError)
 
   protect_from_forgery with: :exception
 
-  rescue_from ApplicationController::Forbidden, with: :handle_403
-  rescue_from ApplicationController::NotAuthorized, with: :handle_401
-  rescue_from ApplicationController::BadRequest, with: :handle_400
+  rescue_from Forbidden, with: :handle_403
+  rescue_from Unauthorized, with: :handle_401
+  rescue_from BadRequest, with: :handle_400
 
   before_action :configure_permitted_parameters, if: :devise_controller?
 
@@ -33,6 +33,6 @@ class ApplicationController < ActionController::Base
 
   def handle_400(error)
     @exception = error
-    render file: Rails.root.join('public', '400.html'), layout: false, status: :forbidden
+    render file: Rails.root.join('public', '400.html'), layout: false, status: :bad_request
   end
 end

@@ -27,6 +27,10 @@ module EntryPoint2018
     config.i18n.enforce_available_locales = true
     config.i18n.default_locale = :ja
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
+    config.eager_load_paths << Rails.root.join('lib')
     config.time_zone = 'Tokyo'
+
+    require_relative '../lib/entry_point_2018/exceptions'
+    config.middleware.insert(0, EntryPoint2018::ExceptionHandler)
   end
 end
