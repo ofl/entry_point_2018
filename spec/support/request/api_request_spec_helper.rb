@@ -12,6 +12,20 @@ module ApiRequestSpecHelper
         'Content-Type': 'application/json'
       }
     end
+
+    shared_examples 'ログインが必要なAPIへのリクエスト' do
+      it '401エラーになること' do
+        is_expected.to eq 401
+        expect(json['message']).to eq I18n.t('application_errors.unauthorized')
+      end
+    end
+
+    shared_examples '権限が必要なAPIへのリクエスト' do
+      it '403エラーになること' do
+        is_expected.to eq 403
+        expect(json['message']).to eq I18n.t('application_errors.forbidden')
+      end
+    end
   end
 
   private

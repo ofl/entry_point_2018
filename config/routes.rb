@@ -29,6 +29,8 @@ Rails.application.routes.draw do
       resource :sessions, only: %i[create destroy]
       resources :user_auths, param: :provider, only: %i[create destroy]
     end
+
+    resources :point_histories, only: %i[index show]
   end
 
   root to: 'home#index'
