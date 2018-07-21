@@ -25,4 +25,6 @@ class Comment < ApplicationRecord
   belongs_to :post
 
   validates  :user, :post, :body, presence: true
+
+  delegate :username, to: :user
 end

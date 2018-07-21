@@ -31,6 +31,7 @@ Rails.application.routes.draw do
     end
 
     resources :point_histories, only: %i[index show]
+    resources :comments, only: %i[create update destroy]
   end
 
   root to: 'home#index'
