@@ -1,7 +1,5 @@
 class EntryPoint2018Schema < GraphQL::Schema
-  NotAuthorized = Class.new(StandardError)
-  Forbidden = Class.new(StandardError)
-  BadRequest = Class.new(StandardError)
+  include ApplicationErrors
 
   rescue_from(StandardError) do |error|
     error_type = error_type(error)
@@ -19,8 +17,8 @@ class EntryPoint2018Schema < GraphQL::Schema
     case error
     when Forbidden
       ErrorTypes::Forbidden.new(error)
-    when NotAuthorized
-      ErrorTypes::NotAuthorized.new(error)
+    when Unauthorized
+      ErrorTypes::Unauthorized.new(error)
     when ActiveRecord::RecordNotFound
       ErrorTypes::NotFound.new(error)
     else

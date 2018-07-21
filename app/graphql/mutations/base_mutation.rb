@@ -22,7 +22,7 @@ class Mutations::BaseMutation < GraphQL::Schema::RelayClassicMutation
   # HACK: 以下query_typeとメソッドを共用したい
 
   def check_authorization_status
-    raise EntryPoint2018Schema::NotAuthorized unless authorized?
+    raise EntryPoint2018Schema::Unauthorized unless authorized?
   end
 
   def check_permission(target, attribute = 'id')
