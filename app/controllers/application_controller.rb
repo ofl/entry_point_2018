@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  include ApplicationErrors
+  include EntryPoint2018::Exceptions
 
   protect_from_forgery with: :exception
 
