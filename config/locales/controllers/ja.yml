@@ -1,6 +1,13 @@
 ja:
   default: &default
     back: 戻る
+  application_errors:
+    bad_request: リクエストが正しくありません
+    unauthorized: リクエストには認証が必要です
+    forbidden: リクエストを実行する権限がありません
+    not_found: リクエスト先は存在しません
+    unprocessable_entity: 操作を完了できませんでした
+    internal_server_error: リクエストが何らかの原因で失敗しました
   users:
     omniauth_callbacks:
       not_match: "%{provider}アカウントは別ユーザー認証済みです"

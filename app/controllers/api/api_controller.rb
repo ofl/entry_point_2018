@@ -1,8 +1,6 @@
 class Api::ApiController < ActionController::API
   # APIの例外処理はlib/entry_point_2018/exceptions.rbにて行う
-  Unauthorized = Class.new(StandardError)
-  Forbidden = Class.new(StandardError)
-  BadRequest = Class.new(StandardError)
+  include ApplicationErrors
 
   before_action :require_valid_token
 

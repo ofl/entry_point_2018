@@ -1,7 +1,5 @@
 class ApplicationController < ActionController::Base
-  Unauthorized = Class.new(StandardError)
-  Forbidden = Class.new(StandardError)
-  BadRequest = Class.new(StandardError)
+  include ApplicationErrors
 
   protect_from_forgery with: :exception
 
