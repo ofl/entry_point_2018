@@ -9,7 +9,7 @@ RSpec.describe 'ポイント履歴について', type: :request do
     subject { get point_histories_path, params: params }
     let(:params) { {} }
 
-    it_behaves_like 'ログインしていない場合は404エラーになること'
+    it_behaves_like 'ログインが必要なリクエスト'
 
     context 'ログインしている場合' do
       before { sign_in user }
@@ -22,7 +22,7 @@ RSpec.describe 'ポイント履歴について', type: :request do
     subject { get point_history_path(params) }
     let(:params) { { id: point_history.id } }
 
-    it_behaves_like 'ログインしていない場合は404エラーになること'
+    it_behaves_like 'ログインが必要なリクエスト'
 
     context 'ログインしている場合' do
       before { sign_in user }

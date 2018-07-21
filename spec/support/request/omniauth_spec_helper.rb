@@ -1,7 +1,11 @@
 module OmniauthSpecHelper # rubocop:disable Metrics/ModuleLength
-  def self.included(base)
-    base.after(:each) { OmniAuth.config.mock_auth[:facebook] = nil }
+  extend ActiveSupport::Concern
+
+  included do
+    after(:each) { OmniAuth.config.mock_auth[:facebook] = nil }
   end
+
+  private
 
   def preset_mock(provider, uid, invalid: false)
     OmniAuth.config.mock_auth[provider] = if invalid

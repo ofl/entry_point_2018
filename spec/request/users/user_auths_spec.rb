@@ -44,7 +44,7 @@ RSpec.describe '本人確認について', type: :request do
   describe 'GET /users/user_auths/new' do
     subject { get new_users_user_auth_path }
 
-    it_behaves_like 'ログインしていないユーザーはサインインページにリダイレクトされる'
+    it_behaves_like 'ログインが必要なページへのアクセス'
 
     context 'ログインしている場合' do
       before { sign_in user }
@@ -62,7 +62,7 @@ RSpec.describe '本人確認について', type: :request do
     let(:params) { valid_params }
     let(:invalid_password_params) { { user_auth: { provider: 'email', uid: '', user_password: 'hoge' } } }
 
-    it_behaves_like 'ログインしていないユーザーはサインインページにリダイレクトされる'
+    it_behaves_like 'ログインが必要なページへのアクセス'
 
     context 'ログインしている場合' do
       before { sign_in user }
@@ -96,7 +96,7 @@ RSpec.describe '本人確認について', type: :request do
     subject { get edit_users_user_auth_path(provider: provider) }
     let(:provider) { 'facebook' }
 
-    it_behaves_like 'ログインしていないユーザーはサインインページにリダイレクトされる'
+    it_behaves_like 'ログインが必要なページへのアクセス'
 
     context 'ログインしている場合' do
       before { sign_in user }
@@ -120,7 +120,7 @@ RSpec.describe '本人確認について', type: :request do
     let(:provider) { 'facebook' }
     let(:password) { 'password' }
 
-    it_behaves_like 'ログインしていないユーザーはサインインページにリダイレクトされる'
+    it_behaves_like 'ログインが必要なページへのアクセス'
 
     context 'ログインしている場合' do
       before { sign_in user }

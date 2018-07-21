@@ -3,6 +3,20 @@ require 'rails_helper'
 RSpec.describe 'registrations', type: :request do
   include ApiRequestSpecHelper
 
+  let(:registrant_structure) do
+    {
+      'id' => a_kind_of(Integer),
+      'username' => a_kind_of(String).or(a_nil_value),
+      'email' => a_kind_of(String).or(a_nil_value),
+      'authentication_token' => a_kind_of(String),
+      'confirmed_by_email' => be_in([true, false]),
+      'confirmed_by_twitter' => be_in([true, false]),
+      'confirmed_by_facebook' => be_in([true, false]),
+      'created_at' => a_kind_of(String),
+      'updated_at' => a_kind_of(String)
+    }
+  end
+
   describe 'GET /api/users/registrations' do
     subject { get '/api/users/registrations', params: {}, headers: headers }
 
