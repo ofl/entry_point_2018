@@ -1,6 +1,6 @@
 class Api::ApiController < ActionController::API
   # APIの例外処理はlib/entry_point_2018/exceptions.rbにて行う
-  include ApplicationErrors
+  include EntryPoint2018::Exceptions
 
   before_action :require_valid_token
 
