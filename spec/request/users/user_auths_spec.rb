@@ -17,8 +17,8 @@ RSpec.describe '本人確認について', type: :request do
     context '不正な入力値の場合' do
       let(:params) { invalid_params }
 
-      it 'RecordNotFoundのエラーになること' do
-        expect { subject }.to raise_error ActiveRecord::RecordNotFound
+      it '404エラーになること' do
+        is_expected.to eq 404
       end
     end
 
@@ -44,7 +44,7 @@ RSpec.describe '本人確認について', type: :request do
   describe 'GET /users/user_auths/new' do
     subject { get new_users_user_auth_path }
 
-    it_behaves_like 'ログインしていないユーザーはサインインページにリダイレクトされる'
+    it_behaves_like 'ログインが必要なページへのアクセス'
 
     context 'ログインしている場合' do
       before { sign_in user }
@@ -62,7 +62,7 @@ RSpec.describe '本人確認について', type: :request do
     let(:params) { valid_params }
     let(:invalid_password_params) { { user_auth: { provider: 'email', uid: '', user_password: 'hoge' } } }
 
-    it_behaves_like 'ログインしていないユーザーはサインインページにリダイレクトされる'
+    it_behaves_like 'ログインが必要なページへのアクセス'
 
     context 'ログインしている場合' do
       before { sign_in user }
@@ -96,14 +96,14 @@ RSpec.describe '本人確認について', type: :request do
     subject { get edit_users_user_auth_path(provider: provider) }
     let(:provider) { 'facebook' }
 
-    it_behaves_like 'ログインしていないユーザーはサインインページにリダイレクトされる'
+    it_behaves_like 'ログインが必要なページへのアクセス'
 
     context 'ログインしている場合' do
       before { sign_in user }
 
       context '本人確認が存在しない場合' do
-        it 'RecordNotFoundエラーになること' do
-          expect { subject }.to raise_error ActiveRecord::RecordNotFound
+        it '404エラーになること' do
+          is_expected.to eq 404
         end
       end
 
@@ -120,14 +120,14 @@ RSpec.describe '本人確認について', type: :request do
     let(:provider) { 'facebook' }
     let(:password) { 'password' }
 
-    it_behaves_like 'ログインしていないユーザーはサインインページにリダイレクトされる'
+    it_behaves_like 'ログインが必要なページへのアクセス'
 
     context 'ログインしている場合' do
       before { sign_in user }
 
       context '本人確認が存在しない場合' do
-        it 'RecordNotFoundエラーになること' do
-          expect { subject }.to raise_error ActiveRecord::RecordNotFound
+        it '404エラーになること' do
+          is_expected.to eq 404
         end
       end
 

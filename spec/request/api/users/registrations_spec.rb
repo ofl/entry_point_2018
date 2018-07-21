@@ -3,6 +3,20 @@ require 'rails_helper'
 RSpec.describe 'registrations', type: :request do
   include ApiRequestSpecHelper
 
+  let(:registrant_structure) do
+    {
+      'id' => a_kind_of(Integer),
+      'username' => a_kind_of(String).or(a_nil_value),
+      'email' => a_kind_of(String).or(a_nil_value),
+      'authentication_token' => a_kind_of(String),
+      'confirmed_by_email' => be_in([true, false]),
+      'confirmed_by_twitter' => be_in([true, false]),
+      'confirmed_by_facebook' => be_in([true, false]),
+      'created_at' => a_kind_of(String),
+      'updated_at' => a_kind_of(String)
+    }
+  end
+
   describe 'GET /api/users/registrations' do
     subject { get '/api/users/registrations', params: {}, headers: headers }
 
@@ -36,9 +50,9 @@ RSpec.describe 'registrations', type: :request do
     subject { post '/api/users/registrations', params: params.to_json, headers: headers }
 
     context '入力値がない場合' do
-      it '500エラーになること' do
-        is_expected.to eq 500
-        expect(json['errors'][0]).to eq 'param is missing or the value is empty: user'
+      it '400エラーになること' do
+        is_expected.to eq 400
+        expect(json['message']).to eq 'param is missing or the value is empty: user'
       end
     end
 
@@ -64,7 +78,7 @@ RSpec.describe 'registrations', type: :request do
       it '422エラーになること' do
         subject
         is_expected.to eq 422
-        expect(json['errors'][0]).to include 'バリデーションに失敗しました'
+        expect(json['message']).to include 'バリデーションに失敗しました'
       end
     end
   end
@@ -85,9 +99,9 @@ RSpec.describe 'registrations', type: :request do
       before { login }
 
       context '入力値がない場合' do
-        it '500エラーになること' do
-          is_expected.to eq 500
-          expect(json['errors'][0]).to eq 'param is missing or the value is empty: user'
+        it '400エラーになること' do
+          is_expected.to eq 400
+          expect(json['message']).to eq 'param is missing or the value is empty: user'
         end
       end
 
@@ -107,7 +121,7 @@ RSpec.describe 'registrations', type: :request do
         it '422エラーになること' do
           subject
           is_expected.to eq 422
-          expect(json['errors'][0]).to include 'バリデーションに失敗しました'
+          expect(json['message']).to include 'バリデーションに失敗しました'
         end
       end
     end

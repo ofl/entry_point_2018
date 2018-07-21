@@ -27,9 +27,9 @@ RSpec.describe 'user_auths', type: :request do
       let(:user) { login_user }
 
       context '入力値がない場合' do
-        it '500エラーになること' do
-          is_expected.to eq 500
-          expect(json['errors'][0]).to eq 'param is missing or the value is empty: user_auth'
+        it '400エラーになること' do
+          is_expected.to eq 400
+          expect(json['message']).to eq 'param is missing or the value is empty: user_auth'
         end
       end
 

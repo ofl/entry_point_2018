@@ -1,5 +1,3 @@
-require 'active_support/concern'
-
 module AuthTokenSpecHelper
   extend ActiveSupport::Concern
 

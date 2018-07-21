@@ -33,9 +33,9 @@ RSpec.describe 'sessions', type: :request do
     subject { post '/api/users/sessions', params: params.to_json, headers: headers }
 
     context '入力値がない場合' do
-      it '500エラーになること' do
-        is_expected.to eq 500
-        expect(json['errors'][0]).to eq 'param is missing or the value is empty: user_auth'
+      it '400エラーになること' do
+        is_expected.to eq 400
+        expect(json['message']).to eq 'param is missing or the value is empty: user_auth'
       end
     end
 
@@ -56,16 +56,26 @@ RSpec.describe 'sessions', type: :request do
     context '正しいtwitterの入力値の場合' do
       let(:params) { valid_tw_params }
 
-      before do
-        user = create(:user)
-        create(:user_auth, provider: 'twitter', uid: test_tw_user[:uid], user: user)
+      context '該当のユーザーが存在するとき' do
+        before do
+          user = create(:user)
+          create(:user_auth, provider: 'twitter', uid: test_tw_user[:uid], user: user)
+        end
+
+        it 'ログインできること', autodoc: true do
+          VCR.use_cassette 'twitter_valid_credential' do
+            subject
+            is_expected.to eq 200
+            expect(json).to match(session_structure)
+          end
+        end
       end
 
-      it 'ログインできること', autodoc: true do
-        VCR.use_cassette 'twitter_valid_credential' do
-          subject
-          is_expected.to eq 200
-          expect(json).to match(session_structure)
+      context '該当のユーザーが存在しないとき' do
+        it 'ログインできること', autodoc: true do
+          VCR.use_cassette 'twitter_valid_credential' do
+            is_expected.to eq 404
+          end
         end
       end
     end

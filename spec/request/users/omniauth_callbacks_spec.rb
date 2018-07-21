@@ -128,7 +128,7 @@ RSpec.shared_examples 'ソーシャルログインの使用' do
       context '認証された本人確認が存在しない場合' do
         let(:confirmed_at) { nil }
 
-        it '403エラーになること' do is_expected.to eq 403 end
+        it '400エラーになること' do is_expected.to eq 400 end
       end
 
       context '認証された本人確認が存在する場合' do
