@@ -54,7 +54,7 @@ RSpec.describe 'Queries::Posts::Show' do
     it 'GraphQL::ExecutionErrorが返ること' do
       expect(data).to be_nil
 
-      expect(errors[0][:message]).to eq "ID=`#{id}`の投稿は見つかりません"
+      expect(errors[0][:message]).to eq "Couldn't find Post with 'id'=#{id}"
       expect(errors[0][:path]).to eq ['post']
     end
   end

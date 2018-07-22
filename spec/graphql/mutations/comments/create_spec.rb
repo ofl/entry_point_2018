@@ -58,7 +58,7 @@ RSpec.describe 'Mutations::Comments::Create' do
       it 'Errorが返ること' do
         expect(data[:createComment]).to be_nil
         expect(errors[0][:message]).to eq 'を入力してください'
-        expect(errors[0][:extensions][:code]).to eq 'BAD_USER_INPUT'
+        expect(errors[0][:extensions][:code]).to eq 'BAD_REQUEST'
         expect(errors[0][:extensions][:path]).to eq %w[attributes post]
       end
 
@@ -73,7 +73,7 @@ RSpec.describe 'Mutations::Comments::Create' do
       it 'Errorが返ること' do
         expect(data[:createComment]).to be_nil
         expect(errors[0][:message]).to eq 'を入力してください'
-        expect(errors[0][:extensions][:code]).to eq 'BAD_USER_INPUT'
+        expect(errors[0][:extensions][:code]).to eq 'BAD_REQUEST'
         expect(errors[0][:extensions][:path]).to eq %w[attributes body]
       end
 
@@ -89,7 +89,7 @@ RSpec.describe 'Mutations::Comments::Create' do
     it 'GraphQL::ExecutionErrorが返ること' do
       expect(data[:createComment]).to be_nil
 
-      expect(errors[0][:message]).to eq 'ログインが必要です'
+      expect(errors[0][:message]).to eq I18n.t('application_errors.unauthorized')
       expect(errors[0][:path]).to eq ['createComment']
     end
   end

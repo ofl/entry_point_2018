@@ -1,28 +1,17 @@
 class EntryPoint2018Schema < GraphQL::Schema
-  include ApplicationErrors
+  # GraphQLではエラーは全てレスキューしてstatusを200で返すようにする
+  include EntryPoint2018::Exceptions
 
   rescue_from(StandardError) do |error|
-    error_type = error_type(error)
-    Rails.logger.error error_type.logs.join("\n")
+    EntryPoint2018::ErrorUtility.log_and_notify(error)
 
-    raise GraphQL::ExecutionError.new(error_type.message, extensions: error_type.extensions)
+    converted_error = EntryPoint2018::Exceptions.for_api(error).new(error.message)
+
+    raise GraphQL::ExecutionError.new(converted_error.message, extensions: converted_error.to_graphql_extensions)
   end
 
   max_complexity 400
   max_depth 10
   mutation Types::MutationType
   query Types::QueryType
-
-  def self.error_type(error)
-    case error
-    when Forbidden
-      ErrorTypes::Forbidden.new(error)
-    when Unauthorized
-      ErrorTypes::Unauthorized.new(error)
-    when ActiveRecord::RecordNotFound
-      ErrorTypes::NotFound.new(error)
-    else
-      ErrorTypes::Unknown.new(error)
-    end
-  end
 end

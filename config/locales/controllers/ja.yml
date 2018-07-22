@@ -2,12 +2,12 @@ ja:
   default: &default
     back: 戻る
   application_errors:
-    bad_request: リクエストが正しくありません
-    unauthorized: リクエストには認証が必要です
-    forbidden: リクエストを実行する権限がありません
-    not_found: リクエスト先は存在しません
+    bad_request: 不正なリクエストです
+    unauthorized: ログインが必要です
+    forbidden: 許可されていない操作です
+    not_found: ページは存在しません
     unprocessable_entity: 操作を完了できませんでした
-    internal_server_error: リクエストが何らかの原因で失敗しました
+    internal_server_error: サーバーエラーが発生しました
   users:
     omniauth_callbacks:
       not_match: "%{provider}アカウントは別ユーザー認証済みです"
@@ -31,12 +31,3 @@ ja:
       index: 一覧へ
     create:
       got_point: "%{amount}ポイント獲得しました"
-  graphql:
-    errors:
-      messages:
-        bad_request: リクエストが正しくありません
-        forbidden: リクエストは許可されていません
-        unauthorized: ログインが必要です
-        not_found: "%{attribute}=`%{value}`の%{klass}は見つかりません"
-        permission_denied: "%{klass}:%{attribute}=`%{value}`の操作は許可されていません"
-        unknown: 原因不明のエラーが発生しました

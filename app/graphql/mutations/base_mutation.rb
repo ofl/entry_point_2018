@@ -3,16 +3,16 @@ class Mutations::BaseMutation < GraphQL::Schema::RelayClassicMutation
     check_authorization_status if check_authorization
 
     yield
-  rescue ActiveRecord::RecordInvalid => e
-    error_type = ErrorTypes::BadRequest.new(e)
-    Rails.logger.error error_type.logs.join("\n")
+  rescue ActiveRecord::RecordInvalid => error
+    EntryPoint2018::ErrorUtility.log_and_notify(error)
+    converted_error = EntryPoint2018::Exceptions::BadRequest.new(error.message)
 
-    convert_to_bad_request_errors(error_type, e.record.errors)
+    convert_to_bad_request_errors(converted_error, error.record.errors)
   end
 
-  def convert_to_bad_request_errors(error_type, errors)
+  def convert_to_bad_request_errors(error, errors)
     errors.map do |attribute, message|
-      extensions = error_type.extensions.merge(path: ['attributes', attribute.to_s.camelize(:lower)])
+      extensions = error.to_graphql_extensions.merge(path: ['attributes', attribute.to_s.camelize(:lower)])
 
       context.add_error(GraphQL::ExecutionError.new(message, extensions: extensions))
     end
