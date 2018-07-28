@@ -57,9 +57,11 @@ RSpec.describe 'Mutations::Comments::Create' do
 
       it 'Errorが返ること' do
         expect(data[:createComment]).to be_nil
-        expect(errors[0][:message]).to eq 'を入力してください'
+        expect(errors[0][:message]).to eq 'バリデーションに失敗しました: Postを入力してください, Postを入力してください'
+        expect(errors[0][:path]).to eq []
         expect(errors[0][:extensions][:code]).to eq 'BAD_REQUEST'
-        expect(errors[0][:extensions][:path]).to eq %w[attributes post]
+        expect(errors[0][:extensions][:detail]).to eq 'を入力してください'
+        expect(errors[0][:extensions][:source][:pointer]).to eq '/data/attributes/post'
       end
 
       it 'コメントが増えないこと' do
@@ -72,9 +74,12 @@ RSpec.describe 'Mutations::Comments::Create' do
 
       it 'Errorが返ること' do
         expect(data[:createComment]).to be_nil
-        expect(errors[0][:message]).to eq 'を入力してください'
+        expect(errors[0][:message]).to eq 'バリデーションに失敗しました: 本文を入力してください'
+        # TODO: ['createComment']が返ること https://github.com/rmosolgo/graphql-ruby/issues/1575
+        expect(errors[0][:path]).to eq []
         expect(errors[0][:extensions][:code]).to eq 'BAD_REQUEST'
-        expect(errors[0][:extensions][:path]).to eq %w[attributes body]
+        expect(errors[0][:extensions][:detail]).to eq 'を入力してください'
+        expect(errors[0][:extensions][:source][:pointer]).to eq '/data/attributes/body'
       end
 
       it 'コメントが増えないこと' do

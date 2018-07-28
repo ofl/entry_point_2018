@@ -31,7 +31,7 @@ module EntryPoint2018
       end
 
       def body
-        { errors: ErrorSerializer.new(@record, message, status, code).serialized_json }.to_json
+        { errors: ErrorSerializer.new(@record, message, status, error_message).serialized_json }.to_json
       end
     end
 

@@ -14,16 +14,22 @@ module EntryPoint2018
     end
 
     def to_graphql_extensions
-      {
-        code: type.upcase,
-        exception: graphql_exception
-      }
+      {}
+    end
+
+    def status
+      Rack::Utils::SYMBOL_TO_STATUS_CODE[code.to_sym]
+    end
+
+    def error_message
+      code.upcase
     end
 
     private
 
-    def status
-      Rack::Utils::SYMBOL_TO_STATUS_CODE[code.to_sym]
+    # MyApp::Exceptions::NotFoundに対して'not_found'が返る
+    def code
+      self.class.to_s.split('::').last.underscore
     end
 
     def headers
@@ -31,16 +37,7 @@ module EntryPoint2018
     end
 
     def body
-      { errors: [{ title: message, code: code, status: status }] }.to_json
-    end
-
-    # MyApp::Exceptions::NotFoundに対して'not_found'が返る
-    def code
-      self.class.to_s.split('::').last.underscore
-    end
-
-    def graphql_exception
-      {}
+      { errors: [{ title: message, code: error_message, status: status }] }.to_json
     end
   end
 end

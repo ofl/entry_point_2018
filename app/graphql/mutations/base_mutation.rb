@@ -7,14 +7,16 @@ class Mutations::BaseMutation < GraphQL::Schema::RelayClassicMutation
     EntryPoint2018::ErrorUtility.log_and_notify(error)
     converted_error = EntryPoint2018::Exceptions::BadRequest.new(error.message)
 
-    convert_to_bad_request_errors(converted_error, error.record.errors)
+    convert_to_bad_request_errors(converted_error, error.record)
   end
 
-  def convert_to_bad_request_errors(error, errors)
-    errors.map do |attribute, message|
-      extensions = error.to_graphql_extensions.merge(path: ['attributes', attribute.to_s.camelize(:lower)])
+  # 複数のバリデーションエラーをまとめるためcontextにGraphQL::ExecutionErrorをadd_errorで追加する
+  # EntryPoint2018Schema内でcontextを呼ぶ方法がわからないためこちらでレスキューする
+  def convert_to_bad_request_errors(error, record)
+    errors = ErrorSerializer.new(record, error.message, error.status, error.error_message).serialized_json
 
-      context.add_error(GraphQL::ExecutionError.new(message, extensions: extensions))
+    errors.each do |hash|
+      context.add_error(GraphQL::ExecutionError.new(error.message, options: { path: context.path }, extensions: hash))
     end
     nil
   end
