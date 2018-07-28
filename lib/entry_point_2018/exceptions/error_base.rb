@@ -6,13 +6,13 @@ module EntryPoint2018
     end
 
     def to_rack_response
-      [status_code, headers, [body]]
+      [status, headers, body]
     end
 
     private
 
-    def status_code
-      Rack::Utils::SYMBOL_TO_STATUS_CODE[type.to_sym]
+    def status
+      Rack::Utils::SYMBOL_TO_STATUS_CODE[code.to_sym]
     end
 
     def headers
@@ -20,16 +20,16 @@ module EntryPoint2018
     end
 
     def body
-      { message: message, type: type }.to_json
+      { errors: [{ title: message, code: code, status: status }] }.to_json
     end
 
     # MyApp::Exceptions::NotFoundに対して'Not Found'が返る
     def error_message
-      type.titleize
+      code.titleize
     end
 
     # MyApp::Exceptions::NotFoundに対して'not_found'が返る
-    def type
+    def code
       self.class.to_s.split('::').last.underscore
     end
   end

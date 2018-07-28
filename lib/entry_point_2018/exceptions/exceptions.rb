@@ -24,6 +24,15 @@ module EntryPoint2018
 
     # 422
     class UnprocessableEntity < Base
+      def initialize(error_message = nil, record = nil)
+        message = error_message || I18n.t("application_errors.#{self.class.to_s.split('::').last.underscore}")
+        @record = record
+        super(message)
+      end
+
+      def body
+        { errors: ErrorSerializer.new(@record, message, status, code).serialized_json }.to_json
+      end
     end
 
     # 500

@@ -35,6 +35,7 @@ gem 'bootstrap_form',
 gem 'aws-sdk-s3', '~> 1.2'
 gem 'config'
 gem 'devise'
+gem 'fast_jsonapi'
 gem 'foreman'
 gem 'graphql'
 gem 'graphql-batch'
