@@ -16,7 +16,6 @@ RSpec.describe 'comments', type: :request do
 
   let(:comment_structure) do
     {
-      'id' => a_kind_of(Integer),
       'username' => a_kind_of(String),
       'body' => a_kind_of(String),
       'created_at' => a_kind_of(String),
@@ -49,7 +48,8 @@ RSpec.describe 'comments', type: :request do
         it 'コメントが登録されること' do
           subject
           is_expected.to eq 201
-          expect(json).to match(comment_structure)
+          expect(data_type).to eq 'comment'
+          expect(data_attributes).to match(comment_structure)
         end
 
         it 'コメントが増加すること' do
@@ -96,8 +96,9 @@ RSpec.describe 'comments', type: :request do
         it 'コメントが修正されること' do
           subject
           is_expected.to eq 200
-          expect(json).to match(comment_structure)
-          expect(json['body']).to eq valid_params[:body]
+          expect(data_type).to eq 'comment'
+          expect(data_attributes).to match(comment_structure)
+          expect(data_attributes['body']).to eq valid_params[:body]
         end
       end
 

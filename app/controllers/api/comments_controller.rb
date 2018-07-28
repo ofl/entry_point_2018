@@ -2,12 +2,12 @@ class Api::CommentsController < Api::ApiController
   def create
     comment = current_user.comments.build(comment_params_on_create)
     comment.save!
-    render json: comment, status: :created
+    render json: CommentSerializer.new(comment).serialized_json, status: :created
   end
 
   def update
     editable_comment.update!(comment_params)
-    render json: editable_comment, status: :ok
+    render json: CommentSerializer.new(editable_comment).serialized_json, status: :ok
   end
 
   def destroy

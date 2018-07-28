@@ -34,6 +34,18 @@ module ApiRequestSpecHelper
     @json ||= JSON.parse(response.body)
   end
 
+  def data_id
+    json['data']['id']
+  end
+
+  def data_type
+    json['data']['type']
+  end
+
+  def data_attributes
+    json['data']['attributes']
+  end
+
   def login
     login_user.save
   end
