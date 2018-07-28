@@ -35,7 +35,7 @@ RSpec.describe 'sessions', type: :request do
     context '入力値がない場合' do
       it '400エラーになること' do
         is_expected.to eq 400
-        expect(json['message']).to eq 'param is missing or the value is empty: user_auth'
+        expect(json['errors'][0]['title']).to eq 'param is missing or the value is empty: user_auth'
       end
     end
 

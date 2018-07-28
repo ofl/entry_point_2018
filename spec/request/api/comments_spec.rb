@@ -38,7 +38,7 @@ RSpec.describe 'comments', type: :request do
       context '入力値がない場合' do
         it '400エラーになること' do
           is_expected.to eq 400
-          expect(json['message']).to eq 'param is missing or the value is empty: comment'
+          expect(json['errors'][0]['title']).to eq 'param is missing or the value is empty: comment'
         end
       end
 
@@ -65,7 +65,7 @@ RSpec.describe 'comments', type: :request do
         it '422エラーになること' do
           subject
           is_expected.to eq 422
-          expect(json['message']).to include 'バリデーションに失敗しました'
+          expect(json['errors'][0]['title']).to include 'バリデーションに失敗しました'
         end
       end
     end
@@ -86,7 +86,7 @@ RSpec.describe 'comments', type: :request do
       context '入力値がない場合' do
         it '400エラーになること' do
           is_expected.to eq 400
-          expect(json['message']).to eq 'param is missing or the value is empty: comment'
+          expect(json['errors'][0]['title']).to eq 'param is missing or the value is empty: comment'
         end
       end
 
@@ -108,7 +108,7 @@ RSpec.describe 'comments', type: :request do
         it '422エラーになること' do
           subject
           is_expected.to eq 422
-          expect(json['message']).to include 'バリデーションに失敗しました'
+          expect(json['errors'][0]['title']).to include 'バリデーションに失敗しました'
         end
       end
     end
