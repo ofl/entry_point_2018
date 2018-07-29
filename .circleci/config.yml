@@ -1,3 +1,6 @@
+bundle_cache_key: &bundle_cache_key
+  bundle-{{ checksum "Gemfile.lock" }}
+
 version: 2
 jobs:
   build:
@@ -41,8 +44,46 @@ jobs:
       - run:
           name: docker-compose down
           command: docker-compose down
+
+  auto_bundle_update:
+    machine:
+      image: circleci/classic:edge
+      environment:
+        RAILS_ENV: test
+    steps:
+      - checkout
+      - run:
+          name: docker-compose build
+          command: docker-compose build
+      - run:
+          name: sleep for waiting launch db
+          command: sleep 1
+
+      - restore_cache:
+          key: *bundle_cache_key
+
+      - run:
+          name: circleci-bundle-update-pr
+          command: |
+            docker-compose run --rm gem update bundler -N
+            docker-compose run --rm gem install circleci-bundle-update-pr -N
+            docker-compose run -e GITHUB_ACCESS_TOKEN=$GITHUB_ACCESS_TOKEN --rm circleci-bundle-update-pr $GITHUB_USER_NAME $GITHUB_USER_EMAIL
+      - run:
+          name: docker-compose down
+          command: docker-compose down
+
 workflows:
   version: 2
   build_and_deploy:
     jobs:
       - build
+  auto_bundle_update:
+    triggers:
+      - schedule:
+          cron: "00 1 * * 1" # 毎週月曜日
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - auto_bundle_update
