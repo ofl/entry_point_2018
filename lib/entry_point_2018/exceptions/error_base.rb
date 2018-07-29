@@ -1,7 +1,11 @@
 module EntryPoint2018
   module ErrorBase
     def initialize(error_message = nil)
-      message = error_message || I18n.t("application_errors.#{self.class.to_s.split('::').last.underscore}")
+      message = if Rails.env.production?
+                  I18n.t("application_errors.#{self.class.to_s.split('::').last.underscore}")
+                else
+                  error_message || I18n.t("application_errors.#{self.class.to_s.split('::').last.underscore}")
+                end
       super(message)
     end
 
@@ -9,10 +13,23 @@ module EntryPoint2018
       [status, headers, body]
     end
 
-    private
+    def to_graphql_extensions
+      {}
+    end
 
     def status
       Rack::Utils::SYMBOL_TO_STATUS_CODE[code.to_sym]
+    end
+
+    def error_message
+      code.upcase
+    end
+
+    private
+
+    # MyApp::Exceptions::NotFoundに対して'not_found'が返る
+    def code
+      self.class.to_s.split('::').last.underscore
     end
 
     def headers
@@ -20,17 +37,7 @@ module EntryPoint2018
     end
 
     def body
-      { errors: [{ title: message, code: code, status: status }] }.to_json
-    end
-
-    # MyApp::Exceptions::NotFoundに対して'Not Found'が返る
-    def error_message
-      code.titleize
-    end
-
-    # MyApp::Exceptions::NotFoundに対して'not_found'が返る
-    def code
-      self.class.to_s.split('::').last.underscore
+      { errors: [{ title: message, code: error_message, status: status }] }.to_json
     end
   end
 end

@@ -13,7 +13,6 @@ module EntryPoint2018
         raise EntryPoint2018::Exceptions::UnprocessableEntity.new(error.message, error.record)
       rescue StandardError => error
         EntryPoint2018::ErrorUtility.log_and_notify(error)
-
         raise Exceptions.for_api(error), error.message
       end
     rescue EntryPoint2018::Exceptions::Base => error

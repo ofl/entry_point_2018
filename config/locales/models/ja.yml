@@ -4,6 +4,8 @@ ja:
       user: ユーザー
       user_auth: 本人確認
       point_history: ポイント
+      post: 投稿
+      comment: コメント
     attributes:
       default: &default
         id: ID
@@ -37,6 +39,12 @@ ja:
         total: 所持数
         version: Ver
         outdate_at: 失効日
+      post:
+        <<: *default
+        body: 本文
+      comment:
+        <<: *default
+        body: 本文
     errors:
       models:
         user:
