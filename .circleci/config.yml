@@ -112,7 +112,7 @@ workflows:
   auto_bundle_update:
     triggers:
       - schedule:
-          cron: "00 12 * * 1" # 毎週月曜日
+          cron: "00 0 * * *" # 毎週月曜日
           filters:
             branches:
               only:
@@ -123,7 +123,7 @@ workflows:
   auto_yarn_upgrade:
     triggers:
       - schedule:
-          cron: "00 11 * * 1" # 毎週月曜日
+          cron: "00 1 * * *" # 毎週月曜日
           filters:
             branches:
               only:
