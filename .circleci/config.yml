@@ -55,13 +55,15 @@ jobs:
       - run:
           name: sleep for waiting launch db
           command: sleep 1
-
+      - run:
+          name: docker-compose up
+          command: docker-compose up -d
       - run:
           name: circleci-bundle-update-pr
           command: |
-            docker-compose run --rm rails gem update bundler -N
-            docker-compose run --rm rails gem install circleci-bundle-update-pr -N
-            docker-compose run -e GITHUB_ACCESS_TOKEN=$GITHUB_ACCESS_TOKEN --rm rails circleci-bundle-update-pr $GITHUB_USER_NAME $GITHUB_USER_EMAIL
+            docker-compose exec -e GITHUB_ACCESS_TOKEN=$GITHUB_ACCESS_TOKEN rails gem update bundler -N
+            docker-compose exec rails gem install circleci-bundle-update-pr -N
+            docker-compose exec rails circleci-bundle-update-pr $GITHUB_USER_NAME $GITHUB_USER_EMAIL
       - run:
           name: docker-compose down
           command: docker-compose down
@@ -79,17 +81,19 @@ jobs:
       - run:
           name: sleep for waiting launch db
           command: sleep 1
-
+      - run:
+          name: docker-compose up
+          command: docker-compose up -d
       - run:
           name: circleci-bundle-update-pr
           command: |
-            docker-compose run --rm rails yarn global add ci-yarn-upgrade
-            docker-compose run --rm yarn install
-            docker-compose run
-            -e GITHUB_ACCESS_TOKEN=$GITHUB_ACCESS_TOKEN
-            -e GIT_USER_NAME=$GITHUB_USER_NAME
-            -e GIT_USER_EMAIL=$GITHUB_USER_EMAIL
-            --rm rails ci-yarn-upgrade --execute --verbose
+            docker-compose exec rails yarn global add ci-yarn-upgrade
+            docker-compose exec rails yarn install
+            docker-compose exec \
+              -e GITHUB_ACCESS_TOKEN=$GITHUB_ACCESS_TOKEN \
+              -e GIT_USER_NAME=$GITHUB_USER_NAME \
+              -e GIT_USER_EMAIL=$GITHUB_USER_EMAIL \
+              rails ci-yarn-upgrade --execute --verbose
       - run:
           name: docker-compose down
           command: docker-compose down
@@ -104,7 +108,7 @@ workflows:
   auto_bundle_update:
     triggers:
       - schedule:
-          cron: "00 1 * * 1" # 毎週月曜日
+          cron: "00 5 * * 1" # 毎週月曜日
           filters:
             branches:
               only:
@@ -115,7 +119,7 @@ workflows:
   auto_yarn_upgrade:
     triggers:
       - schedule:
-          cron: "00 2 * * 1" # 毎週月曜日
+          cron: "00 6 * * 1" # 毎週月曜日
           filters:
             branches:
               only:
