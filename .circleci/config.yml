@@ -65,6 +65,8 @@ jobs:
             -e GITHUB_ACCESS_TOKEN=$GITHUB_ACCESS_TOKEN
             -e GIT_USER_NAME=$GITHUB_USER_NAME
             -e GIT_USER_EMAIL=$GITHUB_USER_EMAIL
+            -e CIRCLE_PROJECT_USERNAME=$CIRCLE_PROJECT_USERNAME
+            -e CIRCLE_PROJECT_REPONAME=$CIRCLE_PROJECT_REPONAME
             --rm rails sh -c "gem update bundler -N && gem install circleci-bundle-update-pr -N && circleci-bundle-update-pr ${GITHUB_USER_NAME} ${GITHUB_USER_EMAIL}"
       - run:
           name: docker-compose down
@@ -93,6 +95,8 @@ jobs:
             -e GITHUB_ACCESS_TOKEN=$GITHUB_ACCESS_TOKEN
             -e GIT_USER_NAME=$GITHUB_USER_NAME
             -e GIT_USER_EMAIL=$GITHUB_USER_EMAIL
+            -e CIRCLE_PROJECT_USERNAME=$CIRCLE_PROJECT_USERNAME
+            -e CIRCLE_PROJECT_REPONAME=$CIRCLE_PROJECT_REPONAME
             --rm rails sh -c "yarn global add ci-yarn-upgrade && yarn install && ci-yarn-upgrade --execute --verbose"
       - run:
           name: docker-compose down
