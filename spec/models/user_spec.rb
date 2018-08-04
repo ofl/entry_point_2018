@@ -344,7 +344,9 @@ RSpec.describe User, type: :model do
         end
 
         context 'outdated pointが存在する場合' do
-          before { create :point_history, :outdated, user: user, amount: -50 }
+          before do
+            create :point_history, :outdated, user: user, amount: -50, created_at: '2018-5-3 12:10:10'.in_time_zone
+          end
 
           it '期限切れのポイント数は0であること' do
             is_expected.to eq 0 # 100 + 150 - 200 - 50 == 0
