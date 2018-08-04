@@ -92,7 +92,7 @@ workflows:
   auto_bundle_update:
     triggers:
       - schedule:
-          cron: "00 0 * * *" # 毎週月曜日
+          cron: "20 8 * * *" # 毎週月曜日
           filters:
             branches:
               only:
