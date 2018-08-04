@@ -40,58 +40,45 @@ jobs:
           command: docker-compose down
 
   auto_bundle_update:
-    machine: true
+    docker:
+      - image: ruby:2.4.2-alpine
+        environment:
+          TZ: "/usr/share/zoneinfo/Asia/Tokyo"
+
+    working_directory: /tmp
     steps:
+      - run:
+          name: Install System Dependencies
+          command: |
+            # See also https://circleci.com/docs/2.0/custom-images/#adding-required-and-custom-tools-or-files
+            apk add --update --no-cache git openssh-client tar gzip ca-certificates tzdata alpine-sdk postgresql-dev
+            gem install -N bundler
       - checkout
+      - restore_cache:
+          name: Restore bundler cache
+          keys:
+            - gems-{{ .Environment.COMMON_CACHE_KEY }}-{{ checksum "Gemfile.lock" }}
+            - gems-{{ .Environment.COMMON_CACHE_KEY }}-
       - run:
-          name: docker-compose build
-          command: docker-compose build
-      - run:
-          name: sleep for waiting launch db
-          command: sleep 1
-      - run:
-          name: docker-compose up
-          command: docker-compose up -d
-      - run:
-          name: circleci-bundle-update-pr
-          command: >
-            docker-compose run
-            -e GITHUB_ACCESS_TOKEN=$GITHUB_ACCESS_TOKEN
-            -e GIT_USER_NAME=$GITHUB_USER_NAME
-            -e GIT_USER_EMAIL=$GITHUB_USER_EMAIL
-            -e CIRCLE_PROJECT_USERNAME=$CIRCLE_PROJECT_USERNAME
-            -e CIRCLE_PROJECT_REPONAME=$CIRCLE_PROJECT_REPONAME
-            --rm rails sh -c "apk add --no-cache openssh && gem update bundler -N && gem install circleci-bundle-update-pr -N && circleci-bundle-update-pr ${GITHUB_USER_NAME} ${GITHUB_USER_EMAIL}"
-      - run:
-          name: docker-compose down
-          command: docker-compose down
+          name: Setup requirements for continuous bundle update
+          command: gem install -N circleci-bundle-update-pr
+      - deploy:
+          name: Continuous bundle update
+          command: "circleci-bundle-update-pr ${GITHUB_USER_NAME} ${GITHUB_USER_EMAIL}"
 
   auto_yarn_upgrade:
-    machine: true
+    docker:
+      - image: ruby:2.4.2-alpine
+        environment:
+          TZ: "/usr/share/zoneinfo/Asia/Tokyo"
+
+    working_directory: /tmp
     steps:
+      - run: apk add --update --no-cache git openssh-client
       - checkout
-      - run:
-          name: docker-compose build
-          command: docker-compose build
-      - run:
-          name: sleep for waiting launch db
-          command: sleep 1
-      - run:
-          name: docker-compose up
-          command: docker-compose up -d
-      - run:
-          name: circleci-bundle-update-pr
-          command: >
-            docker-compose run
-            -e GITHUB_ACCESS_TOKEN=$GITHUB_ACCESS_TOKEN
-            -e GIT_USER_NAME=$GITHUB_USER_NAME
-            -e GIT_USER_EMAIL=$GITHUB_USER_EMAIL
-            -e CIRCLE_PROJECT_USERNAME=$CIRCLE_PROJECT_USERNAME
-            -e CIRCLE_PROJECT_REPONAME=$CIRCLE_PROJECT_REPONAME
-            --rm rails sh -c "apk add --no-cache openssh && yarn global add ci-yarn-upgrade && yarn install && ci-yarn-upgrade --execute --verbose"
-      - run:
-          name: docker-compose down
-          command: docker-compose down
+      - run: yarn global add ci-yarn-upgrade
+      - run: yarn install
+      - run: ci-yarn-upgrade --execute --verbose --latest;
 
 workflows:
   version: 2
@@ -103,7 +90,7 @@ workflows:
   auto_bundle_update:
     triggers:
       - schedule:
-          cron: "10 8 * * *" # 毎週月曜日
+          cron: "00 8 * * *" # 毎週月曜日
           filters:
             branches:
               only:
@@ -114,7 +101,7 @@ workflows:
   auto_yarn_upgrade:
     triggers:
       - schedule:
-          cron: "10 7 * * *" # 毎週月曜日
+          cron: "15 8 * * *" # 毎週月曜日
           filters:
             branches:
               only:
