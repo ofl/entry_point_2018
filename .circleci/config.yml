@@ -1,10 +1,7 @@
 version: 2
 jobs:
   build:
-    machine:
-      image: circleci/classic:edge
-      environment:
-        RAILS_ENV: test
+    machine: true
     steps:
       - checkout
       - run:
@@ -43,10 +40,7 @@ jobs:
           command: docker-compose down
 
   auto_bundle_update:
-    machine:
-      image: circleci/classic:edge
-      environment:
-        RAILS_ENV: test
+    machine: true
     steps:
       - checkout
       - run:
@@ -67,16 +61,13 @@ jobs:
             -e GIT_USER_EMAIL=$GITHUB_USER_EMAIL
             -e CIRCLE_PROJECT_USERNAME=$CIRCLE_PROJECT_USERNAME
             -e CIRCLE_PROJECT_REPONAME=$CIRCLE_PROJECT_REPONAME
-            --rm rails sh -c "gem update bundler -N && gem install circleci-bundle-update-pr -N && circleci-bundle-update-pr ${GITHUB_USER_NAME} ${GITHUB_USER_EMAIL}"
+            --rm rails sh -c "apk add --no-cache openssh && gem update bundler -N && gem install circleci-bundle-update-pr -N && circleci-bundle-update-pr ${GITHUB_USER_NAME} ${GITHUB_USER_EMAIL}"
       - run:
           name: docker-compose down
           command: docker-compose down
 
   auto_yarn_upgrade:
-    machine:
-      image: circleci/classic:edge
-      environment:
-        RAILS_ENV: test
+    machine: true
     steps:
       - checkout
       - run:
@@ -97,7 +88,7 @@ jobs:
             -e GIT_USER_EMAIL=$GITHUB_USER_EMAIL
             -e CIRCLE_PROJECT_USERNAME=$CIRCLE_PROJECT_USERNAME
             -e CIRCLE_PROJECT_REPONAME=$CIRCLE_PROJECT_REPONAME
-            --rm rails sh -c "yarn global add ci-yarn-upgrade && yarn install && ci-yarn-upgrade --execute --verbose"
+            --rm rails sh -c "apk add --no-cache openssh && yarn global add ci-yarn-upgrade && yarn install && ci-yarn-upgrade --execute --verbose"
       - run:
           name: docker-compose down
           command: docker-compose down
@@ -112,7 +103,7 @@ workflows:
   auto_bundle_update:
     triggers:
       - schedule:
-          cron: "00 0 * * *" # 毎週月曜日
+          cron: "10 8 * * *" # 毎週月曜日
           filters:
             branches:
               only:
@@ -123,7 +114,7 @@ workflows:
   auto_yarn_upgrade:
     triggers:
       - schedule:
-          cron: "00 1 * * *" # 毎週月曜日
+          cron: "10 7 * * *" # 毎週月曜日
           filters:
             branches:
               only:
