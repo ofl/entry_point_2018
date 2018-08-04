@@ -31,6 +31,7 @@ Metrics/BlockLength:
     - config/environments/development.rb
     - config/routes.rb
     - spec/**/*
+    - Guardfile
 
 Metrics/LineLength:
   Max: 120
@@ -80,6 +81,7 @@ Style/StringLiteralsInInterpolation:
 Style/StringLiterals:
   Exclude:
     - Gemfile
+    - Guardfile
     - bin/yarn
     - config/environments/production.rb
     - config/puma.rb
@@ -94,6 +96,10 @@ Style/BlockComments:
   Exclude:
     - spec/rails_helper.rb
     - spec/spec_helper.rb
+
+Style/RegexpLiteral:
+  Exclude:
+    - Guardfile
 
 Style/SymbolArray:
   Exclude:
