@@ -44,8 +44,6 @@ jobs:
       - image: ruby:2.4.2-alpine
         environment:
           TZ: "/usr/share/zoneinfo/Asia/Tokyo"
-
-    working_directory: /tmp
     steps:
       - run:
           name: Install System Dependencies
@@ -68,17 +66,21 @@ jobs:
 
   auto_yarn_upgrade:
     docker:
-      - image: ruby:2.4.2-alpine
-        environment:
-          TZ: "/usr/share/zoneinfo/Asia/Tokyo"
-
-    working_directory: /tmp
+      - image: node:6-alpine
     steps:
-      - run: apk add --update --no-cache git openssh-client
+      - run:
+          name: Install System Dependencies
+          command: apk add --update --no-cache git openssh-client
       - checkout
-      - run: yarn global add ci-yarn-upgrade
-      - run: yarn install
-      - run: ci-yarn-upgrade --execute --verbose --latest;
+      - run:
+          name: Install ci-yarn-upgrade
+          command: yarn global add ci-yarn-upgrade
+      - run:
+          name: Yarn install
+          command: yarn install
+      - run:
+          name: ci-yarn-upgrade
+          command: "ci-yarn-upgrade --execute -vL -n ${GITHUB_USER_NAME} -e ${GITHUB_USER_EMAIL}"
 
 workflows:
   version: 2
@@ -90,7 +92,7 @@ workflows:
   auto_bundle_update:
     triggers:
       - schedule:
-          cron: "00 8 * * *" # 毎週月曜日
+          cron: "00 0 * * *" # 毎週月曜日
           filters:
             branches:
               only:
@@ -101,7 +103,7 @@ workflows:
   auto_yarn_upgrade:
     triggers:
       - schedule:
-          cron: "15 8 * * *" # 毎週月曜日
+          cron: "20 9 * * *" # 毎週月曜日
           filters:
             branches:
               only:
