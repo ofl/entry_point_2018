@@ -202,7 +202,7 @@ RSpec.describe User, type: :model do
         end
       end
 
-      subject { user.outdate_points!(at) }
+      subject { user.outdate_points!(now) }
 
       let!(:got_point_1) do
         create :point_history, :got, user: user, amount: 100, created_at: '2018-1-1 12:10:10'.in_time_zone
@@ -217,10 +217,10 @@ RSpec.describe User, type: :model do
         create :point_history, :got, user: user, amount: 170, created_at: '2018-4-1 12:10:10'.in_time_zone
       end
 
-      let!(:batch_schedule) { create :batch_schedule_point_expiration, user: user, run_at: at - 1.second }
+      let!(:batch_schedule) { create :batch_schedule_point_expiration, user: user, run_at: now - 1.second }
 
       context '2018-3-2 12:10:10に実行した場合' do
-        let(:at) { '2018-3-2 12:10:10'.in_time_zone }
+        let(:now) { '2018-3-2 12:10:10'.in_time_zone }
 
         it '期限切れのポイント数は変わらないこと' do
           expect { subject }.not_to change(PointHistory.outdated, :count)
@@ -231,7 +231,7 @@ RSpec.describe User, type: :model do
       end
 
       context '2018-4-2 12:10:10に実行した場合' do
-        let(:at) { '2018-4-2 12:10:10'.in_time_zone }
+        let(:now) { '2018-4-2 12:10:10'.in_time_zone }
 
         it '期限切れのポイント履歴は増えないこと' do
           expect { subject }.not_to change(PointHistory.outdated, :count) # 獲得ポイント < 使用ポイントのため
@@ -240,7 +240,7 @@ RSpec.describe User, type: :model do
       end
 
       context '2018-5-3 12:10:10に実行した場合' do
-        let(:at) { '2018-5-3 12:10:10'.in_time_zone }
+        let(:now) { '2018-5-3 12:10:10'.in_time_zone }
 
         it '期限切れのポイント履歴が増えること' do
           expect { subject }.to change(PointHistory.outdated, :count).by(1) # 250 - 200
@@ -250,7 +250,7 @@ RSpec.describe User, type: :model do
       end
 
       context '2018-7-4 12:10:10に実行した場合' do
-        let(:at) { '2018-7-4 12:10:10'.in_time_zone }
+        let(:now) { '2018-7-4 12:10:10'.in_time_zone }
 
         it '期限切れのポイント履歴が増えること' do
           expect { subject }.to change(PointHistory.outdated, :count).by(1) # 獲得ポイント < 使用ポイントのため
@@ -260,7 +260,7 @@ RSpec.describe User, type: :model do
       end
 
       context '保存に失敗した場合' do
-        let(:at) { '2018-7-4 12:10:10'.in_time_zone }
+        let(:now) { '2018-7-4 12:10:10'.in_time_zone }
         before { allow_any_instance_of(User).to receive(:outdated_point_amount).and_return(-150) }
 
         it 'ActiveRecord::RecordInvalidエラーが発生すること' do
@@ -302,7 +302,7 @@ RSpec.describe User, type: :model do
     end
 
     describe '#outdated_point_amount' do
-      subject { user.send :outdated_point_amount, at }
+      subject { user.send :outdated_point_amount, now }
 
       let!(:got_point_1) do
         create :point_history, :got, user: user, amount: 100, created_at: '2018-1-1 12:10:10'.in_time_zone
@@ -316,13 +316,13 @@ RSpec.describe User, type: :model do
       let(:used_amount) { -50 }
 
       context '2018-3-2 12:10:10に実行した場合' do
-        let(:at) { '2018-3-2 12:10:10'.in_time_zone }
+        let(:now) { '2018-3-2 12:10:10'.in_time_zone }
 
         it '期限切れのポイント数は0であること' do is_expected.to eq 0 end
       end
 
       context '2018-4-2 12:10:10に実行した場合' do
-        let(:at) { '2018-4-2 12:10:10'.in_time_zone }
+        let(:now) { '2018-4-2 12:10:10'.in_time_zone }
 
         context '使用量が50の場合' do
           it '期限切れのポイント数は50であること' do is_expected.to eq 50 end # 100 - 50
@@ -336,15 +336,17 @@ RSpec.describe User, type: :model do
       end
 
       context '2018-5-4 12:10:10に実行した場合' do
-        let(:at) { '2018-5-4 12:10:10'.in_time_zone }
+        let(:now) { '2018-5-4 12:10:10'.in_time_zone }
         let(:used_amount) { -200 }
 
-        context 'outdated point 存在しない場合' do
+        context 'outdated pointが存在しない場合' do
           it '期限切れのポイント数は50であること' do is_expected.to eq 50 end # 100 + 150 - 200 > 0
         end
 
-        context 'outdated point is 存在する場合' do
-          before { create :point_history, :outdated, user: user, amount: -50 }
+        context 'outdated pointが存在する場合' do
+          before do
+            create :point_history, :outdated, user: user, amount: -50, created_at: '2018-5-3 12:10:10'.in_time_zone
+          end
 
           it '期限切れのポイント数は0であること' do
             is_expected.to eq 0 # 100 + 150 - 200 - 50 == 0
