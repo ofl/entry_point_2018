@@ -68,10 +68,10 @@ group :development do
   gem 'brakeman'
   gem 'bullet'
   gem 'bundler-audit'
+  gem 'graphiql-rails'
   gem 'guard'
   gem 'guard-rspec', require: false
   gem 'guard-rubocop', require: false
-  gem 'graphiql-rails'
   gem 'letter_opener'
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'migration_comments'
