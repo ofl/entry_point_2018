@@ -31,6 +31,15 @@ $ docker-compose exec rails sh
 $ docker-compose logs
 ```
 
+### テスト、Rubocopの自動実行
+
+```sh
+$ docker-compose exec rails sh
+
+# rails内のシェルで
+$ bundle exec guard
+```
+
 ### テスト
 
 ```sh
