@@ -70,6 +70,7 @@ group :development do
   gem 'bundler-audit'
   gem 'guard'
   gem 'guard-rspec', require: false
+  gem 'guard-rubocop', require: false
   gem 'graphiql-rails'
   gem 'letter_opener'
   gem 'listen', '>= 3.0.5', '< 3.2'
