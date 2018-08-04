@@ -1,5 +1,5 @@
 FROM ruby:2.4.2-alpine as builder
-RUN apk --update add --virtual gem-builddeps \
+RUN apk add --no-cache --virtual gem-builddeps \
     git \
     build-base \
     curl-dev \
@@ -14,7 +14,7 @@ RUN apk del gem-builddeps
 
 FROM ruby:2.4.2-alpine
 ENV LANG ja_JP.UTF-8
-RUN apk --update add \
+RUN apk add --no-cache \
     git \
     # gemがインストールできない時以下をコメントアウト \
     build-base \
@@ -29,7 +29,7 @@ RUN gem install bundler
 
 # Install Yarn
 ENV PATH=/root/.yarn/bin:$PATH
-RUN apk add --virtual build-yarn curl && \
+RUN apk add --no-cache --virtual build-yarn curl && \
     touch ~/.bashrc && \
     curl -o- -L https://yarnpkg.com/install.sh | sh && \
     apk del build-yarn
