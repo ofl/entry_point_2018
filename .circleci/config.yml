@@ -92,7 +92,7 @@ workflows:
   auto_bundle_update:
     triggers:
       - schedule:
-          cron: "00 00 * * *"
+          cron: "00 21 * * *" # AM 6:00
           filters:
             branches:
               only:
@@ -103,7 +103,7 @@ workflows:
   auto_yarn_upgrade:
     triggers:
       - schedule:
-          cron: "00 45 * * *"
+          cron: "30 21 * * *" # AM 6:30
           filters:
             branches:
               only:
