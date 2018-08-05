@@ -40,7 +40,7 @@ $ docker-compose exec rails sh
 $ bundle exec guard
 ```
 
-### テスト
+### 個別にテスト
 
 ```sh
 $ docker-compose exec rails sh

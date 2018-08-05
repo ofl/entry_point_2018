@@ -80,7 +80,7 @@ jobs:
           command: yarn install
       - run:
           name: ci-yarn-upgrade
-          command: "ci-yarn-upgrade --execute -vL -n ${GITHUB_USER_NAME} -e ${GITHUB_USER_EMAIL}"
+          command: "ci-yarn-upgrade --execute -vL -n ${GITHUB_USER_NAME} -e ${GITHUB_USER_EMAIL} -t ${GITHUB_ACCESS_TOKEN}"
 
 workflows:
   version: 2
@@ -92,7 +92,7 @@ workflows:
   auto_bundle_update:
     triggers:
       - schedule:
-          cron: "00 0 * * *" # 毎週月曜日
+          cron: "00 21 * * *" # AM 6:00
           filters:
             branches:
               only:
@@ -103,7 +103,7 @@ workflows:
   auto_yarn_upgrade:
     triggers:
       - schedule:
-          cron: "20 9 * * *" # 毎週月曜日
+          cron: "30 21 * * *" # AM 6:30
           filters:
             branches:
               only:
