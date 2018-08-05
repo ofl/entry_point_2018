@@ -103,7 +103,7 @@ workflows:
   auto_yarn_upgrade:
     triggers:
       - schedule:
-          cron: "23 45 * * *"
+          cron: "00 45 * * *"
           filters:
             branches:
               only:
