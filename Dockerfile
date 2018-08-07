@@ -49,7 +49,7 @@ COPY . $APP_HOME
 
 # yarn install
 # COPY package.json yarn.lock .postcssrc.yml ./
-RUN yarn install
+RUN yarn install --ignore-engines
 
 # docker-composeやkubernetesのcommandがある場合は実行されない
 CMD ["rails", "server", "-b", "0.0.0.0"]
