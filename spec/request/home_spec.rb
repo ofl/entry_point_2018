@@ -5,7 +5,9 @@ RSpec.describe 'Home', type: :request do
     subject { get root_path }
 
     it 'ホームが表示されること' do
-      is_expected.to eq 200
+      subject
+      expect(response.body).to include 'EntryPoint2018'
+      # is_expected.to eq 200
     end
   end
 end

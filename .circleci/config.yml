@@ -18,7 +18,7 @@ jobs:
           command: docker-compose run --rm rails rails db:create db:migrate
       - run:
           name: "before_test: install javascript dependencies"
-          command: docker-compose run --rm rails yarn
+          command: docker-compose run --rm rails yarn install --ignore-engines
       - run:
           name: rspec
           command: >
@@ -77,7 +77,7 @@ jobs:
           command: yarn global add ci-yarn-upgrade
       - run:
           name: Yarn install
-          command: yarn install
+          command: yarn install --ignore-engines
       - run:
           name: ci-yarn-upgrade
           command: "ci-yarn-upgrade --execute -vL -n ${GITHUB_USER_NAME} -e ${GITHUB_USER_EMAIL} -t ${GITHUB_ACCESS_TOKEN}"
