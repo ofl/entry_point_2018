@@ -42,7 +42,6 @@ gem 'graphql-batch'
 gem 'kaminari'
 gem 'shrine', '~> 2.0'
 gem 'slim'
-gem 'webpacker', '~> 3.5'
 
 gem 'omniauth'
 gem 'omniauth-facebook'
