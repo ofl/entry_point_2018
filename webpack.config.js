@@ -100,14 +100,9 @@ module.exports = {
       options: [Object]
     },
     WebpackAssetsManifest {
-      hooks: [Object],
-      options: [Object],
-      assets: {},
-      assetNames: Map {},
-      currentAsset: null,
-      compiler: null,
-      stats: null,
-      hmrRegex: null
+      fileName: 'manifest.json',
+      publicPath: '/packs/',
+      writeToFileEmit: true,
     }
   ]
 }
