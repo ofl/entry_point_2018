@@ -8,8 +8,8 @@ html
     title
       | EntryPoint2018
     = csrf_meta_tags
-    = stylesheet_pack_tag 'application'
-    = javascript_pack_tag 'application'
+    = stylesheet_bundle_tag 'application'
+    = javascript_bundle_tag 'application'
   body.bg-light
     = render 'layouts/messages'
     == yield
