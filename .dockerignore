@@ -7,7 +7,6 @@ doc
 vendor/assets
 node_modules
 
-node_modules
 yarn-error.log
 
 public/packs
