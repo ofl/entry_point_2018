@@ -1,4 +1,4 @@
-FROM ruby:2.4.2-alpine as builder
+FROM ruby:2.4.4-alpine as builder
 RUN apk add --no-cache --virtual gem-builddeps \
     git \
     build-base \
@@ -12,9 +12,11 @@ ENV BUNDLE_JOBS=4
 RUN bundle install
 RUN apk del gem-builddeps
 
-FROM ruby:2.4.2-alpine
+FROM ruby:2.4.4-alpine
 ENV LANG ja_JP.UTF-8
-RUN apk add --no-cache \
+RUN apk update && \
+    apk upgrade && \
+    apk add --no-cache \
     git \
     # gemがインストールできない時以下をコメントアウト \
     build-base \
