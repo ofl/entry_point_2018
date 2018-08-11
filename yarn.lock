@@ -30,8 +30,8 @@
   resolved "https://registry.yarnpkg.com/@types/zen-observable/-/zen-observable-0.5.4.tgz#b863a4191e525206819e008097ebf0fb2e3a1cdc"
 
 "@vue/component-compiler-utils@^2.0.0":
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/@vue/component-compiler-utils/-/component-compiler-utils-2.1.1.tgz#9b084cb67023076860687002a29930d30b36ef56"
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@vue/component-compiler-utils/-/component-compiler-utils-2.1.2.tgz#75e7cc8496baecbb0994dc8783571d9ff07737fe"
   dependencies:
     consolidate "^0.15.1"
     hash-sum "^1.0.2"
@@ -39,7 +39,7 @@
     merge-source-map "^1.1.0"
     postcss "^6.0.20"
     postcss-selector-parser "^3.1.1"
-    prettier "^1.13.7"
+    prettier "1.13.7"
     source-map "^0.5.6"
     vue-template-es2015-compiler "^1.6.0"
 
@@ -1294,6 +1294,12 @@ class-utils@^0.3.5:
     define-property "^0.2.5"
     isobject "^3.0.0"
     static-extend "^0.1.1"
+
+clean-webpack-plugin@^0.1.19:
+  version "0.1.19"
+  resolved "https://registry.yarnpkg.com/clean-webpack-plugin/-/clean-webpack-plugin-0.1.19.tgz#ceda8bb96b00fe168e9b080272960d20fdcadd6d"
+  dependencies:
+    rimraf "^2.6.1"
 
 cli-cursor@^2.1.0:
   version "2.1.0"
@@ -3941,9 +3947,9 @@ precss@^3.1.2:
     postcss-preset-env "^3.2.2"
     postcss-property-lookup "^2.0.0"
 
-prettier@^1.13.7:
-  version "1.14.2"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.14.2.tgz#0ac1c6e1a90baa22a62925f41963c841983282f9"
+prettier@1.13.7:
+  version "1.13.7"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.13.7.tgz#850f3b8af784a49a6ea2d2eaa7ed1428a34b7281"
 
 private@^0.1.6, private@^0.1.8:
   version "0.1.8"
@@ -5030,9 +5036,13 @@ vue-turbolinks@^2.0.3:
   dependencies:
     vue "^2.2.4"
 
-vue@^2.2.4, vue@^2.5.16:
+vue@^2.2.4:
   version "2.5.16"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.5.16.tgz#07edb75e8412aaeed871ebafa99f4672584a0085"
+
+vue@^2.5.17:
+  version "2.5.17"
+  resolved "https://registry.yarnpkg.com/vue/-/vue-2.5.17.tgz#0f8789ad718be68ca1872629832ed533589c6ada"
 
 watchpack@^1.5.0:
   version "1.6.0"
