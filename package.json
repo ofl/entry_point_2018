@@ -3,8 +3,9 @@
   "mode": "development",
   "private": true,
   "scripts": {
-    "dev": "webpack --progress",
-    "watch": "webpack --progress --watch"
+    "dev": "webpack --progress --mode development",
+    "build": "webpack --mode production",
+    "clean": "CLEANUP=TRUE webpack --progress --mode development"
   },
   "dependencies": {
     "apollo-boost": "^0.1.10",

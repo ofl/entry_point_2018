@@ -20,6 +20,9 @@ jobs:
           name: "before_test: install javascript dependencies"
           command: docker-compose run --rm rails yarn
       - run:
+          name: "before_test: build assets"
+          command: docker-compose run --rm rails yarn run dev
+      - run:
           name: rspec
           command: >
             docker-compose run
