@@ -1,26 +1,37 @@
-const DEBUG = process.env.NODE_ENV === 'development' || process.env.NODE_ENV === undefined
 const path = require('path')
+const glob = require('glob')
 const webpack = require("webpack")
+const bundlePath = path.join(__dirname, 'public/packs')
+const cleanupPath = process.env.CLEANUP ? [bundlePath] : []
+
 const ManifestPlugin = require('webpack-manifest-plugin')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
-const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 
+let getEntry = () => {
+  const src = path.join(__dirname, 'app', 'javascript', 'packs')
+
+  const targets = glob.sync(path.join(src, '**/*.{js,vue,jsx,ts,tsx}'))
+  const entry = targets.reduce((entry, target) => {
+    const bundle = path.relative(src, target)
+    const ext = path.extname(bundle)
+
+    return Object.assign({}, entry, {
+      [bundle.replace(ext, '')]: path.join(src, bundle),
+    })
+  }, {})
+
+  return entry
+}
+
 module.exports = {
-  mode: 'development',
-  entry: {
-    application: '/usr/src/entry_point_2018/app/javascript/packs/application.js',
-    'components/app': '/usr/src/entry_point_2018/app/javascript/packs/components/app.vue',
-    'components/hello': '/usr/src/entry_point_2018/app/javascript/packs/components/hello.vue',
-    'options/hello_vue': '/usr/src/entry_point_2018/app/javascript/packs/options/hello_vue.js',
-    'options/hello': '/usr/src/entry_point_2018/app/javascript/packs/options/hello.js',
-    'options/password-required': '/usr/src/entry_point_2018/app/javascript/packs/options/password-required.js'
-  },
+  entry: getEntry(),
   output: {
     filename: '[name]-[chunkhash].js',
     chunkFilename: '[name]-[chunkhash].chunk.js',
     hotUpdateChunkFilename: '[id]-[hash].hot-update.js',
-    path: '/usr/src/entry_point_2018/public/packs',
+    path: bundlePath,
     publicPath: '/packs/',
     pathinfo: true
   },
@@ -39,15 +50,15 @@ module.exports = {
     rules: [{
         test: /\.js$/,
         exclude: /node_modules/,
-        use: [
-          { loader: 'babel-loader' }
-        ]
+        use: [{
+          loader: 'babel-loader'
+        }]
       },
       {
         test: /\.vue$/,
-        use: [
-          { loader: 'vue-loader' }
-        ]
+        use: [{
+          loader: 'vue-loader'
+        }]
       },
       {
         test: /\.(sass|scss|css)$/,
@@ -96,7 +107,7 @@ module.exports = {
       },
       {
         test: /\.(jpg|png|gif)$/,
-        loader: DEBUG ? 'file-loader?name=[name].[ext]' : 'file-loader?name=[name]-[hash].[ext]',
+        loader: process.env.DEBUG ? 'file-loader?name=[name].[ext]' : 'file-loader?name=[name]-[hash].[ext]',
         options: {
           outputPath: 'images/'
         }
@@ -105,8 +116,9 @@ module.exports = {
   },
   plugins: [
     new webpack.EnvironmentPlugin({
-      keys: [Object],
-      defaultValues: [Object]
+      NODE_ENV: 'development',
+      DEBUG: false,
+      CLEANUP: false
     }),
     new MiniCssExtractPlugin({
       filename: '[name]-[chunkhash].css',
@@ -118,6 +130,6 @@ module.exports = {
       writeToFileEmit: true
     }),
     new VueLoaderPlugin(),
-    new CleanWebpackPlugin(['/usr/src/entry_point_2018/public/packs/'])
+    new CleanWebpackPlugin(cleanupPath)
   ]
 }
