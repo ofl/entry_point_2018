@@ -11,7 +11,7 @@ Rails.start();
 import Turbolinks from 'turbolinks'
 Turbolinks.start()
 
-import Vue from 'vue/dist/vue.esm.js';
+import Vue from 'vue';
 import TurbolinksAdapter from 'vue-turbolinks'
 Vue.use(TurbolinksAdapter)
 

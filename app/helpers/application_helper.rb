@@ -16,7 +16,7 @@ module ApplicationHelper
   end
 
   def user_avatar(user, size = :small)
-    avatar_url = user.avatar ? user.avatar_url : asset_pack_path('images/default-avatar.png')
+    avatar_url = user.avatar ? user.avatar_url : asset_bundle_path('images/default-avatar.png')
     image_size = size == :large ? '160x160' : '32x32'
 
     image_tag(avatar_url, size: image_size, alt: 'avatar')
