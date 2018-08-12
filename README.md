@@ -12,14 +12,10 @@
 
 ### セットアップ
 
+事前に ```.env.sample``` の内容を自分の環境に合わせて編集して ```.env``` というファイル名で保存しておく
+
 ```sh
-# 環境変数の設定
-$ export RUBY_IMAGE=ruby:2.4.2-alpine3.6 DEVELOPER_NAME=ofl PROJECT_NAME=entry_point_2018 APP_VERSION=0.1
-
-# Dockerイメージのビルド
-$ docker build -t "$DEVELOPER_NAME"/"$PROJECT_NAME":"$APP_VERSION" --build-arg PROJECT_NAME="$PROJECT_NAME" .
-
-# Railsの起動
+# Railsを起動する
 $ docker-compose up -d
 
 # http://localhost:3000で表示される
