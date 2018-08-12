@@ -39,7 +39,7 @@ RUN apk add --no-cache --virtual build-yarn curl && \
 WORKDIR /tmp
 COPY --from=builder /usr/local/bundle /usr/local/bundle
 
-ARG PROJECT_NAME="entry_point_2018"
+ARG PROJECT_NAME=$PROJECT_NAME
 ENV APP_HOME /usr/src/${PROJECT_NAME}
 ENV BUNDLE_GEMFILE=$APP_HOME/Gemfile \
     BUNDLE_PATH=/usr/local/bundle
