@@ -13,7 +13,7 @@ services:
       - '3035:3035'
     volumes:
       - .:/usr/src/${PROJECT_NAME}
-      - bundle_cache:/bundle
+      - bundle_cache:/usr/src/${PROJECT_NAME}/vendor/bundle:cached
       - ~/.ash_history:/root/.ash_history
     depends_on:
       - postgres
