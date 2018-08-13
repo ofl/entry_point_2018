@@ -58,6 +58,7 @@ group :development, :test do
   gem 'faker'
   gem 'license_finder'
   gem 'rspec-rails', '~> 3.5.0'
+  gem 'rubocop', require: false
 end
 
 group :development do
@@ -75,8 +76,6 @@ group :development do
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'migration_comments'
   gem 'rack-mini-profiler'
-  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'rubocop', require: false
   gem 'rufo'
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem 'web-console', '>= 3.3.0'

@@ -14,7 +14,8 @@ RUN apk update && \
     nodejs \
     postgresql-dev \
     tzdata
-RUN gem install bundler
+RUN gem install bundler &&  \
+    bundle config build.nokogiri --use-system-librarie
 
 # Install Yarn
 ENV PATH=/root/.yarn/bin:$PATH
@@ -33,8 +34,7 @@ RUN wget https://github.com/progrium/entrykit/releases/download/v${ENTRYKIT_VERS
     && rm entrykit_${ENTRYKIT_VERSION}_Linux_x86_64.tgz \
     && mv entrykit /bin/entrykit \
     && chmod +x /bin/entrykit \
-    && entrykit --symlink \
-    && bundle config build.nokogiri --use-system-librarie
+    && entrykit --symlink
 
 RUN mkdir -p $APP_HOME
 WORKDIR $APP_HOME
