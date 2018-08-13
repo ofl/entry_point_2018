@@ -83,7 +83,7 @@ group :development do
 end
 
 group :test do
-  gem 'autodoc'
+  # gem 'autodoc'
   gem 'email_spec'
   gem 'shoulda-matchers'
   gem 'shrine-memory'

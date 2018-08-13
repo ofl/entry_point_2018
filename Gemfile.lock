@@ -62,10 +62,6 @@ GEM
       rake (>= 10.4, < 13.0)
     arel (9.0.0)
     ast (2.4.0)
-    autodoc (0.6.2)
-      actionpack
-      activesupport (>= 3.0.0)
-      rspec
     aws-eventstream (1.0.1)
     aws-partitions (1.97.0)
     aws-sdk-core (3.24.0)
@@ -463,7 +459,6 @@ PLATFORMS
 DEPENDENCIES
   active_model_serializers
   annotate
-  autodoc
   aws-sdk-s3 (~> 1.2)
   bcrypt (~> 3.1.7)
   better_errors
