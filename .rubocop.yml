@@ -12,6 +12,8 @@ AllCops:
     - public/packs-test
     - public/uploads
     - node_modules/**/*
+    - bin/bundle
+    - bin/rubocop
     - bin/update
     - bin/setup
     - bin/webpack

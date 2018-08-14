@@ -5,6 +5,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: make dummy env file
+          command: touch .env
+      - run:
           name: docker-compose build
           command: docker-compose build
       - run:
@@ -26,6 +29,9 @@ jobs:
           name: rspec
           command: >
             docker-compose run
+            -e DEVELOPER_NAME=$DEVELOPER_NAME
+            -e APP_VERSION=$APP_VERSION
+            -e PROJECT_NAME=$PROJECT_NAME
             -e CONFIRMATION_EXPIRED=$CONFIRMATION_EXPIRED
             -e CONFIRMATION_MAIL_EXPIRED=$CONFIRMATION_MAIL_EXPIRED
             -e TWITTER_API_KEY=$TWITTER_API_KEY

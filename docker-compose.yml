@@ -1,23 +1,19 @@
 version: '3'
 services:
-  postgres:
-    image: postgres
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: mysecurepass
-      POSTGRES_DB: app_development
-      PGDATA: /var/lib/postgresql/data
-    volumes:
-      - postgresql-data:/var/lib/postgresql/data
   rails:
-    build: .
-    image: ofl/entry_point_2018:0.1
+    env_file: .env
+    build:
+      context: .
+      dockerfile: ./docker/rails/${DOCKER_FILE_DIR}/Dockerfile
+      args:
+        PROJECT_NAME: ${PROJECT_NAME}
+    image: ${DEVELOPER_NAME}/${PROJECT_NAME}:${APP_VERSION}
     ports:
       - '3000:3000'
       - '3035:3035'
     volumes:
-      - .:/usr/src/entry_point_2018
-      - bundle_cache:/bundle
+      - .:/usr/src/${PROJECT_NAME}
+      - bundle_cache:/usr/src/${PROJECT_NAME}/vendor/bundle:cached
       - ~/.ash_history:/root/.ash_history
     depends_on:
       - postgres
@@ -26,11 +22,24 @@ services:
       POSTGRES_PASSWORD: mysecurepass
       POSTGRES_DB: app_development
     command: bundle exec foreman start -f Procfile.dev
+
+  postgres:
+    env_file: .env
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mysecurepass
+      POSTGRES_DB: app_development
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - postgresql-data:/var/lib/postgresql/data
+
   mailcatcher:
     image: schickling/mailcatcher
     ports:
       - '1080:1080'
       - '1025:1025'
+
 volumes:
   postgresql-data:
     driver: local
