@@ -1,6 +1,6 @@
 /* eslint no-console:0 */
 
-import '../src/application'
+import '../sass/application.scss'
 require.context('../images', true, /\.(png|jpg|jpeg|svg)$/)
 
 import 'bootstrap/dist/js/bootstrap'
