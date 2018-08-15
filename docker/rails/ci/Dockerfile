@@ -10,6 +10,7 @@ RUN apk update && \
     build-base \
     curl-dev \
     linux-headers \
+    libpng-dev \
     bash \
     nodejs \
     postgresql-dev \
