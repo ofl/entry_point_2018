@@ -8,7 +8,7 @@ module WebpackBundleHelper
   end
 
   def javascript_bundle_tag(entry, **options)
-    path = asset_bundle_path("#{entry}.js")
+    path = asset_bundle_path("/js/#{entry}.js")
 
     options = {
       src: path,
@@ -23,7 +23,7 @@ module WebpackBundleHelper
   end
 
   def stylesheet_bundle_tag(entry, **options)
-    path = asset_bundle_path("#{entry}.css")
+    path = asset_bundle_path("/css/#{entry}.css")
 
     options = {
       href: path
@@ -35,12 +35,12 @@ module WebpackBundleHelper
   # image_bundle_tag の場合は、entry はちゃんと拡張子付きで書いて欲しい
   def image_bundle_tag(entry, **options)
     raise ArgumentError, "Extname is missing with #{entry}" if File.extname(entry).blank?
-    image_tag asset_bundle_path(entry), **options
+    image_tag "/images/#{entry}", **options
   end
 
   private
 
-  MANIFEST_PATH = 'public/packs/manifest.json'.freeze
+  MANIFEST_PATH = 'public/mix-manifest.json'.freeze
 
   def manifest
     @manifest ||= JSON.parse(File.read(MANIFEST_PATH))

@@ -58,6 +58,10 @@ bower.json
 /spec/fixtures/vcr
 /public/packs
 /public/packs-test
+/public/mix-manifest.json
+/public/js
+/public/css
+/public/images
 
 .kube-secrets.yml
 
