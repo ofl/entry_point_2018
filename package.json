@@ -23,6 +23,7 @@
     "popper.js": "^1.14.4",
     "rails-ujs": "^5.2.1",
     "tether": "^1.4.4",
+    "vue": "^2.5.17",
     "vue-apollo": "^3.0.0-beta.19"
   },
   "dependencies": {}
