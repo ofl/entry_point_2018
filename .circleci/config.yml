@@ -24,7 +24,7 @@ jobs:
           command: docker-compose run --rm rails yarn
       - run:
           name: "before_test: build assets"
-          command: docker-compose run --rm rails yarn run dev
+          command: docker-compose run --rm rails yarn run prod
       - run:
           name: rspec
           command: >
