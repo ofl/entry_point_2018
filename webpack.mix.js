@@ -43,4 +43,27 @@ if (mix.inProduction()) {
     open: "external",
     reloadOnRestart: true
   });
+
+  mix.webpackConfig({
+    module: {
+      rules: [
+        { // JavaScript Prettier Setting
+          test: /\.js$/,
+          loader: 'prettier-loader',
+          options: { // Prettier Options https://prettier.io/docs/en/options.html
+            singleQuote: true,
+            semi: false,
+            parser:'babylon'
+          }
+        },
+        { // Sass Prettier Setting
+          test: /\.scss$/,
+          loader: 'prettier-loader',
+          options: {
+            parser: 'postcss'
+          }
+        },
+      ]
+    }
+  })
 }
