@@ -1,5 +1,5 @@
 # https://inside.pixiv.blog/subal/4615
-module WebpackBundleHelper
+module LaravelMixHelper
   class BundleNotFound < StandardError; end
 
   def asset_bundle_path(entry, **options)
@@ -35,7 +35,7 @@ module WebpackBundleHelper
   # image_bundle_tag の場合は、entry はちゃんと拡張子付きで書いて欲しい
   def image_bundle_tag(entry, **options)
     raise ArgumentError, "Extname is missing with #{entry}" if File.extname(entry).blank?
-    image_tag "/images/#{entry}", **options
+    image_tag entry, **options
   end
 
   private
