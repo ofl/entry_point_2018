@@ -1,4 +1,4 @@
-let mix = require('laravel-mix');
+let mix = require('laravel-mix')
 
 /*
  |--------------------------------------------------------------------------
@@ -13,16 +13,16 @@ let mix = require('laravel-mix');
 
 mix.setPublicPath('public')
   .js('resources/assets/js/application.js', 'public/js')
-  .sass('resources/assets/sass/application.scss', 'public/css');
+  .sass('resources/assets/sass/application.scss', 'public/css')
 
 if (mix.inProduction()) {
-  mix.version();
+  mix.version()
 } else {
-  mix.sourceMaps();
+  mix.sourceMaps()
 
   mix.browserSync({
-    proxy: "http://localhost:3000",
-    browser: "google chrome",
+    proxy: 'http://localhost:3000',
+    browser: 'google chrome',
     port: 3007,
     ui: {
       port: 3008
@@ -40,7 +40,29 @@ if (mix.inProduction()) {
       usePolling: true,
       interval: 500
     },
-    open: "external",
+    open: 'external',
     reloadOnRestart: true
-  });
+  })
+
+  mix.webpackConfig({
+    module: {
+      rules: [{ // JavaScript Prettier Setting
+          test: /\.js$/,
+          loader: 'prettier-loader',
+          options: { // Prettier Options https://prettier.io/docs/en/options.html
+            singleQuote: true,
+            semi: false,
+            parser: 'babylon'
+          }
+        },
+        { // Sass Prettier Setting
+          test: /\.scss$/,
+          loader: 'prettier-loader',
+          options: {
+            parser: 'postcss'
+          }
+        },
+      ]
+    }
+  })
 }
