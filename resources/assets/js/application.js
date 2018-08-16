@@ -8,12 +8,7 @@ import 'bootstrap/dist/js/bootstrap'
 import Rails from 'rails-ujs';
 Rails.start();
 
-import Turbolinks from 'turbolinks'
-Turbolinks.start()
-
 import Vue from 'vue';
-import TurbolinksAdapter from 'vue-turbolinks'
-Vue.use(TurbolinksAdapter)
 
 import ApolloClient from 'apollo-boost'
 import { InMemoryCache } from 'apollo-cache-inmemory'
@@ -51,7 +46,7 @@ requireContext.keys().forEach(key => {
   options[name] = option
 })
 
-document.addEventListener('turbolinks:load', () => {
+document.addEventListener('DOMContentLoaded', () => {
   let templates = document.querySelectorAll('[data-vue]')
   for (let el of templates) {
     let vm = new Vue(
@@ -61,7 +56,7 @@ document.addEventListener('turbolinks:load', () => {
   }
 })
 
-document.addEventListener('turbolinks:visit', () => {
+document.addEventListener('beforeunload', () => {
   for (let vm of vms) {
     vm.$destroy()
   }
