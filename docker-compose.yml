@@ -10,7 +10,8 @@ services:
     image: ${DEVELOPER_NAME}/${PROJECT_NAME}:${APP_VERSION}
     ports:
       - '3000:3000'
-      - '3035:3035'
+      - '3007:3007'
+      - '3008:3008'
     volumes:
       - .:/usr/src/${PROJECT_NAME}
       - bundle_cache:/usr/src/${PROJECT_NAME}/vendor/bundle:cached
