@@ -1,9 +1,7 @@
 /* eslint no-console:0 */
 
+import 'bootstrap/dist/css/bootstrap.min.css'
 import '../sass/application.scss'
-require.context('../images', true, /\.(png|jpg|jpeg|svg)$/)
-
-import 'bootstrap/dist/js/bootstrap'
 
 import Rails from 'rails-ujs'
 Rails.start()

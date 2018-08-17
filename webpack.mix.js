@@ -1,25 +1,18 @@
-let mix = require('laravel-mix')
-
-/*
- |--------------------------------------------------------------------------
- | Mix Asset Management
- |--------------------------------------------------------------------------
- |
- | Mix provides a clean, fluent API for defining some Webpack build steps
- | for your Laravel application. By default, we are compiling the Sass
- | file for the application as well as bundling up all the JS files.
- |
- */
+const mix = require('laravel-mix')
 
 mix.setPublicPath('public')
+  .disableSuccessNotifications()
+  .sourceMaps(false)
   .js('resources/assets/js/application.js', 'public/js')
   .sass('resources/assets/sass/application.scss', 'public/css')
+  .copy('resources/assets/images', 'public/images')
+
+// TODO: mix-manifest.jsonに画像を登録して欲しいのだが、うまく行かない
+// mix.version(['public/images'])
 
 if (mix.inProduction()) {
   mix.version()
 } else {
-  mix.sourceMaps()
-
   mix.browserSync({
     proxy: 'http://localhost:3000',
     browser: 'google chrome',
@@ -59,7 +52,7 @@ if (mix.inProduction()) {
           test: /\.scss$/,
           loader: 'prettier-loader',
           options: {
-            parser: 'postcss'
+            parser: 'css'
           }
         },
       ]
