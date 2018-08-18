@@ -1,12 +1,12 @@
 .login-form {
-  margin-left: auto !important;
-  margin-right: auto !important;
   display: flex;
   justify-content: center;
+  margin-right: auto !important;
+  margin-left: auto !important;
 
   .card {
-    max-width: 500px;
     width: 100%;
+    max-width: 500px;
 
     .form-errors {
       margin-bottom: 10px;
@@ -51,7 +51,7 @@
   }
 
   abbr {
-    border-bottom: 0 !important;
     color: #f00;
+    border-bottom: 0 !important;
   }
 }

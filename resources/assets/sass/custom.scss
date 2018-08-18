@@ -1,7 +1,7 @@
 body {
   display: flex;
-  min-height: 100vh;
   flex-direction: column;
+  min-height: 100vh;
   background-color: #fcfcfc;
 }
 
@@ -19,19 +19,19 @@ main {
 }
 
 .icon-container .icon-preview span {
-  text-align: left;
   display: block;
   font-size: 12px;
+  text-align: left;
 }
 
 .icon-container i {
-  font-size: 3em;
   margin-bottom: 10px;
+  font-size: 3em;
 }
 
 :not(pre) > code[class*="language-"] {
-  border-radius: 0.3em;
   padding: 0.1em;
+  border-radius: 0.3em;
 }
 :not(pre) > code[class*="language-"], pre[class*="language-"] {
   background: #f5f2f0 none repeat scroll 0 0;
@@ -73,29 +73,29 @@ form.was-validated {
 
 /*flash*/
 .alert-error {
-    background-color: #f2dede;
-    border-color: #eed3d7;
-    color: #b94a48;
-    text-align: left;
- }
+  color: #b94a48;
+  text-align: left;
+  background-color: #f2dede;
+  border-color: #eed3d7;
+}
 
 .alert-alert {
-    background-color: #f2dede;
-    border-color: #eed3d7;
-    color: #b94a48;
-    text-align: left;
- }
+  color: #b94a48;
+  text-align: left;
+  background-color: #f2dede;
+  border-color: #eed3d7;
+}
 
 .alert-success {
-    background-color: #dff0d8;
-    border-color: #d6e9c6;
-    color: #468847;
-    text-align: left;
- }
+  color: #468847;
+  text-align: left;
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+}
 
 .alert-notice {
-    background-color: #dff0d8;
-    border-color: #d6e9c6;
-    color: #468847;
-    text-align: left;
- }
+  color: #468847;
+  text-align: left;
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+}
