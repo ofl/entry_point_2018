@@ -56,7 +56,7 @@ jobs:
 
   auto_bundle_update:
     docker:
-      - image: ruby:2.4.2-alpine
+      - image: ruby:2.4.4-alpine
         environment:
           TZ: "/usr/share/zoneinfo/Asia/Tokyo"
     steps:
@@ -107,7 +107,7 @@ workflows:
   auto_bundle_update:
     triggers:
       - schedule:
-          cron: "00 21 * * 6" # AM 6:00 sat
+          cron: "00 21 * * 5" # AM 6:00 sat
           filters:
             branches:
               only:
@@ -118,10 +118,16 @@ workflows:
   auto_yarn_upgrade:
     triggers:
       - schedule:
-          cron: "30 21 * * 6" # AM 6:30 sat
+          cron: "30 21 * * 5" # AM 6:30 sat
           filters:
             branches:
               only:
                 - master
     jobs:
       - auto_yarn_upgrade
+
+deployment:
+  staging:
+    branch: master
+    heroku:
+      appname: obscure-fjord-41491
