@@ -32,7 +32,5 @@ module EntryPoint2018
 
     require_relative '../lib/entry_point_2018/exceptions'
     config.middleware.insert(0, EntryPoint2018::ExceptionHandler)
-
-    config.assets.precompile = []
   end
 end
