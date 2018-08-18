@@ -23,6 +23,12 @@ jobs:
           name: "before_test: install javascript dependencies"
           command: docker-compose run --rm rails yarn
       - run:
+          name: "eslint"
+          command: docker-compose run --rm rails yarn run lint:js
+      - run:
+          name: "stylelint"
+          command: docker-compose run --rm rails yarn run lint:css
+      - run:
           name: "before_test: build assets"
           command: docker-compose run --rm rails yarn run prod
       - run:
