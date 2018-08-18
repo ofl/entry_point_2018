@@ -29,6 +29,8 @@
     "laravel-mix": "^2.1.11",
     "popper.js": "^1.14.4",
     "prettier-loader": "^2.1.1",
+    "prettier-stylelint": "^0.4.2",
+    "stylelint-config-rational-order": "^0.0.2",
     "tether": "^1.4.4"
   },
   "dependencies": {
