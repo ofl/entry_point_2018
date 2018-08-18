@@ -8,7 +8,8 @@
     "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
     "prod": "npm run production",
     "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-    "fix:js": "./node_modules/.bin/eslint ./resources/assets/js --fix"
+    "fix:js": "./node_modules/.bin/eslint ./resources/assets/js --fix",
+    "fix:css": "./node_modules/.bin/stylelint \"./resources/assets/**/*.scss\" --fix"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.6",
@@ -29,6 +30,8 @@
     "laravel-mix": "^2.1.11",
     "popper.js": "^1.14.4",
     "prettier-loader": "^2.1.1",
+    "prettier-stylelint": "^0.4.2",
+    "stylelint-config-rational-order": "^0.0.2",
     "tether": "^1.4.4"
   },
   "dependencies": {
