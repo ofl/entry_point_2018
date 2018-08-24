@@ -85,7 +85,7 @@ jobs:
     steps:
       - run:
           name: Install System Dependencies
-          command: apk add --update --no-cache git openssh-client
+          command: apk add --update --no-cache git openssh-client libpng-dev
       - checkout
       - run:
           name: Install ci-yarn-upgrade
