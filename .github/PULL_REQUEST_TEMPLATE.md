@@ -1,7 +1,5 @@
-[*issue-no][WIP][Task/Bug]
-
 ## 対象Issue
-* issue-no
+* close #
 
 ## 対応内容
  - [ ]
