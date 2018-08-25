@@ -18,7 +18,8 @@ Rails.application.config.content_security_policy do |policy|
   if Rails.env.development?
     policy.script_src :self, :https, :unsafe_eval, :unsafe_inline
   else
-    policy.script_src :self, :https
+    # TODO: [#229]の解消のため:unsafe_evalを追加。有効にしないですむならばその方が良い
+    policy.script_src :self, :https, :unsafe_eval
   end
 end
 
