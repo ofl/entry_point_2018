@@ -1,6 +1,7 @@
 const mix = require('laravel-mix')
 
-mix.setPublicPath('public')
+mix
+  .setPublicPath('public')
   .disableSuccessNotifications()
   .sourceMaps(false)
   .js('resources/assets/js/application.js', 'public/js')
@@ -39,22 +40,26 @@ if (mix.inProduction()) {
 
   mix.webpackConfig({
     module: {
-      rules: [{ // JavaScript Prettier Setting
+      rules: [
+        {
+          // JavaScript Prettier Setting
           test: /\.js$/,
           loader: 'prettier-loader',
-          options: { // Prettier Options https://prettier.io/docs/en/options.html
+          options: {
+            // Prettier Options https://prettier.io/docs/en/options.html
             singleQuote: true,
             semi: false,
             parser: 'babylon'
           }
         },
-        { // Sass Prettier Setting
+        {
+          // Sass Prettier Setting
           test: /\.scss$/,
           loader: 'prettier-loader',
           options: {
             parser: 'css'
           }
-        },
+        }
       ]
     }
   })

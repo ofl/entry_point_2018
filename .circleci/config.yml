@@ -85,7 +85,7 @@ jobs:
     steps:
       - run:
           name: Install System Dependencies
-          command: apk add --update --no-cache git openssh-client libpng-dev
+          command: apk add --update --no-cache git openssh-client libpng-dev bash openssl
       - checkout
       - run:
           name: Install ci-yarn-upgrade
@@ -118,7 +118,7 @@ workflows:
   auto_yarn_upgrade:
     triggers:
       - schedule:
-          cron: "30 21 * * 5" # AM 6:30 sat
+          cron: "0 2 * * 6" # AM 6:30 sat
           filters:
             branches:
               only:
