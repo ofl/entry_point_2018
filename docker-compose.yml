@@ -4,17 +4,13 @@ services:
     env_file: .env
     build:
       context: .
-      dockerfile: ./docker/rails/${DOCKER_FILE_DIR}/Dockerfile
-      args:
-        PROJECT_NAME: ${PROJECT_NAME}
-    image: ${DEVELOPER_NAME}/${PROJECT_NAME}:${APP_VERSION}
+      dockerfile: ./docker/rails/Dockerfile
+    image: ${DEVELOPER_NAME}/${PROJECT_NAME}_rails:${APP_VERSION}
     ports:
       - '3000:3000'
-      - '3007:3007'
-      - '3008:3008'
     volumes:
-      - .:/usr/src/${PROJECT_NAME}
-      - bundle_cache:/usr/src/${PROJECT_NAME}/vendor/bundle:cached
+      - .:/app
+      - bundle-volume:/usr/local/bundle
       - ~/.ash_history:/root/.ash_history
     depends_on:
       - postgres
@@ -41,7 +37,18 @@ services:
       - '1080:1080'
       - '1025:1025'
 
+  yarn:
+    build:
+      context: .
+      dockerfile: ./docker/yarn/Dockerfile
+    image: ${DEVELOPER_NAME}/${PROJECT_NAME}_yarn:${APP_VERSION}
+    # command: yarn watch
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+
 volumes:
   postgresql-data:
     driver: local
-  bundle_cache:
+  bundle-volume:
+  node_modules:
