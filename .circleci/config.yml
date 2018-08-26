@@ -81,11 +81,14 @@ jobs:
 
   auto_yarn_upgrade:
     docker:
-      - image: node:6-alpine
+      - image: node:8.11.4-alpine
     steps:
       - run:
           name: Install System Dependencies
-          command: apk add --update --no-cache git openssh-client libpng-dev bash openssl
+          command: |
+            apk add --update --no-cache git openssh-client build-base libpng-dev lcms2-dev bash
+            npm install -g npm
+            npm install -g yarn
       - checkout
       - run:
           name: Install ci-yarn-upgrade
@@ -118,7 +121,7 @@ workflows:
   auto_yarn_upgrade:
     triggers:
       - schedule:
-          cron: "0 2 * * 6" # AM 6:30 sat
+          cron: "33 9 * * 0" # AM 6:00 sat
           filters:
             branches:
               only:
