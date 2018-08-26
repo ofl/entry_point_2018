@@ -1,4 +1,5 @@
 # README
+[![CircleCI](https://circleci.com/gh/ofl/entry_point_2018/tree/master.svg?style=svg)](https://circleci.com/gh/ofl/entry_point_2018/tree/master)
 
 ### ライブラリ
 
