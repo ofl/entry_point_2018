@@ -4,6 +4,6 @@ class AuthenticationMailer < Devise::Mailer
     @resource = user
     @token = user_auth.confirmation_token
     @provider = user_auth.provider
-    mail(to: user_auth.uid, subject: 'confirmation', from: 'aaa@example.com')
+    mail(to: user_auth.uid, subject: 'confirmation', from: ENV['SYSTEM_EMAIL_ADDRESS'] || 'noreply@example.com')
   end
 end
