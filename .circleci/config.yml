@@ -121,7 +121,7 @@ workflows:
   auto_yarn_upgrade:
     triggers:
       - schedule:
-          cron: "30 21 * * 5" # AM 6:30 sat
+          cron: "00 22 * * 5" # AM 7:00 sat
           filters:
             branches:
               only:
