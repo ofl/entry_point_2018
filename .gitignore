@@ -75,3 +75,4 @@ config/environments/*.local.yml
 public/uploads
 yarn-debug.log*
 .yarn-integrity
+.ash_history
