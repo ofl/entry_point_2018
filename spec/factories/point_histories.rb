@@ -22,20 +22,20 @@ FactoryBot.define do
     user
     operation_type { PointHistory.operation_types.keys.sample }
     sequence(:version) { |n| n }
-    total 100
+    total { 100 }
 
     trait :got do
-      operation_type :got
+      operation_type { :got }
       amount { rand(1..20) }
     end
 
     trait :used do
-      operation_type :used
+      operation_type { :used }
       amount { -rand(1..10) }
     end
 
     trait :outdated do
-      operation_type :outdated
+      operation_type { :outdated }
       amount { -rand(1..10) }
       created_at { (PointHistory::EXPIRATION_INTERVAL + 1).days.ago }
     end
