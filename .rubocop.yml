@@ -66,6 +66,15 @@ Rails/LexicallyScopedActionFilter:
 RSpec/ContextWording:
   Enabled: false
 
+RSpec/ImplicitSubject:
+  Enabled: false
+
+RSpec/NamedSubject:
+  Enabled: false
+
+RSpec/NestedGroups:
+  Max: 5
+
 Style/AsciiComments:
   Enabled: false
 
