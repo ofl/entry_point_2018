@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'Queries::Users::CurrentUser' do
+RSpec.describe 'Queries::Users::CurrentUser' do # rubocop:disable RSpec/DescribeClass
   include GraphqlSpecHelper
 
   let!(:user) { create(:user) }
@@ -18,10 +18,16 @@ RSpec.describe 'Queries::Users::CurrentUser' do
   let(:operation_name) { 'CurrentUser' }
   let(:query_context) { { current_user: user } }
 
-  it 'ユーザーのデータが返ること' do
-    expect(data[:currentUser][:id]).to eq user.id.to_s
-    expect(data[:currentUser][:username]).to eq user.username
+  let(:expected_value) do
+    {
+      currentUser: {
+        id: user.id.to_s,
+        username: user.username
+      }
+    }.deep_stringify_keys
+  end
 
-    expect(errors).to be_nil
+  it 'ユーザーのデータが返ること' do
+    expect(data).to eq expected_value
   end
 end

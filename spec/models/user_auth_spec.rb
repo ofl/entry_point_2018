@@ -35,7 +35,7 @@ RSpec.describe UserAuth, type: :model do
       subject { UserAuth.confirmed }
 
       context '認証済みが存在しない場合' do
-        let!(:user_auth) { create :user_auth }
+        before { create :user_auth }
 
         it '空であること' do is_expected.to be_blank end
       end
@@ -50,19 +50,19 @@ RSpec.describe UserAuth, type: :model do
 
   describe 'methods' do
     describe '#confirme!' do
+      subject { user_auth.confirme!(now: '2017-07-07 07:07'.in_time_zone) }
+
       let(:user_auth) { build :user_auth, user: user }
       let(:user) { create :user }
 
-      subject { user_auth.confirme!(now: '2017-07-07 07:07'.in_time_zone) }
-
       context '古い本人確認が存在しない場合' do
-        it 'confirmed_atが現在時刻に設定されること' do
-          old_token = user_auth.confirmation_token
+        it 'confirmation_tokenが新しい値になること' do
+          expect { subject }.to change(user_auth, :confirmation_token).from(nil).to(String)
+        end
 
+        it 'confirmed_atが現在時刻に設定されること' do
           subject
-          expect(user_auth.persisted?).to be_truthy
           expect(user_auth.confirmed_at).to eq '2017-07-07 07:07'.in_time_zone
-          expect(user_auth.confirmation_token).not_to eq old_token
         end
       end
 
@@ -70,10 +70,7 @@ RSpec.describe UserAuth, type: :model do
         let!(:old_auth) { create :user_auth, user: user, confirmed_at: '2017-06-06 06:06'.in_time_zone }
 
         it 'confirmed_atが現在時刻に設定されること' do
-          expect(old_auth.confirmed_at).to eq '2017-06-06 06:06'.in_time_zone
-
           subject
-          expect(user_auth.persisted?).to be_truthy
           expect(user_auth.confirmed_at).to eq '2017-07-07 07:07'.in_time_zone
         end
 
@@ -85,9 +82,9 @@ RSpec.describe UserAuth, type: :model do
     end
 
     describe '#confirmed?' do
-      let(:user_auth) { build :user_auth }
-
       subject { user_auth.confirmed? }
+
+      let(:user_auth) { build :user_auth }
 
       context 'confirmed_atがnilの場合' do
         it '偽であること' do is_expected.to be_falsey end
@@ -103,10 +100,10 @@ RSpec.describe UserAuth, type: :model do
     describe '#verified_by_auth_provider?' do
       include AuthTokenSpecHelper
 
+      subject { user_auth.verified_by_auth_provider?(params) }
+
       let(:user_auth) { build :user_auth, uid: uid }
       let(:uid) { 'foobarbaz' }
-
-      subject { user_auth.verified_by_auth_provider?(params) }
 
       context 'プロバイダーが存在しない場合' do
         let(:params) { { provider: 'instagram' } }
@@ -139,19 +136,15 @@ RSpec.describe UserAuth, type: :model do
     end
 
     describe '#confirm_by_token!' do
-      let(:user_auth) { build :user_auth, confirmation_sent_at: '2017-06-06 06:06'.in_time_zone }
-
       subject { user_auth.confirm_by_token!(now: at) }
+
+      let(:user_auth) { build :user_auth, confirmation_sent_at: '2017-06-06 06:06'.in_time_zone }
 
       context '時間内に確認した場合' do
         let(:at) { '2017-06-06 06:07'.in_time_zone }
 
         it 'confirmed_atがnilでなくなること' do
-          expect(user_auth.confirmed_at).to be_nil
-
-          subject
-
-          expect(user_auth.confirmed_at).not_to be_nil
+          expect { subject }.to change(user_auth, :confirmed_at).from(nil).to(Time)
         end
       end
 
@@ -165,37 +158,29 @@ RSpec.describe UserAuth, type: :model do
     end
 
     describe '#generate_confirmation_token' do
-      let(:user_auth) { build :user_auth, confirmation_sent_at: '2017-06-06 06:06'.in_time_zone }
-
       subject { user_auth.generate_confirmation_token }
 
+      let(:user_auth) { build :user_auth, confirmation_sent_at: '2017-06-06 06:06'.in_time_zone }
+
       it 'confirmation_tokenに値が入力されること' do
-        expect(user_auth.confirmation_token).to be_nil
-
-        subject
-
-        expect(user_auth.confirmation_token).not_to be_nil
+        expect { subject }.to change(user_auth, :confirmation_token).from(nil).to(String)
       end
     end
 
     describe '#generate_temporary_uid' do
-      let(:user_auth) { build :user_auth, uid: nil, confirmation_sent_at: '2017-06-06 06:06'.in_time_zone }
-
       subject { user_auth.generate_temporary_uid }
 
+      let(:user_auth) { build :user_auth, uid: nil, confirmation_sent_at: '2017-06-06 06:06'.in_time_zone }
+
       it 'uidに値が入力されること' do
-        expect(user_auth.uid).to be_nil
-
-        subject
-
-        expect(user_auth.uid).not_to be_nil
+        expect { subject }.to change(user_auth, :uid).from(nil).to(String)
       end
     end
 
     describe '#external_auth_provider?' do
-      let(:user_auth) { build :user_auth, provider: provider }
-
       subject { user_auth.external_auth_provider? }
+
+      let(:user_auth) { build :user_auth, provider: provider }
 
       context '本人確認手段がemailの場合' do
         let(:provider) { :email }

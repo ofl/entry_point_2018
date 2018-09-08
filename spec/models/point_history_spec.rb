@@ -42,21 +42,26 @@ RSpec.describe PointHistory, type: :model do
     end
 
     describe '.is_outdated' do
-      before { Timecop.freeze(now) }
-      after { Timecop.return }
-
       subject { PointHistory.is_outdated }
+
+      before { Timecop.freeze(now) }
+
+      after { Timecop.return }
 
       context '期限が来てない場合' do
         let(:now) { '2018-4-1'.in_time_zone.end_of_day }
 
-        it '該当数は0であること' do expect(subject.count).to eq 0 end
+        it '該当数は0であること' do
+          expect(subject.count).to eq 0
+        end
       end
 
       context '期限が来た場合' do
         let(:now) { '2018-4-2'.in_time_zone.beginning_of_day }
 
-        it '該当数は0でないこと' do expect(subject.count).to eq 3 end
+        it '該当数は0でないこと' do
+          expect(subject.count).to eq 3
+        end
       end
     end
   end
@@ -90,15 +95,17 @@ RSpec.describe PointHistory, type: :model do
   end
 
   describe '#outdate_at' do
-    before { Timecop.freeze(now) }
-    after { Timecop.return }
+    subject { point.outdate_at }
 
     let(:now) { '2018-1-1 12:13:23'.in_time_zone }
 
-    subject { point.outdate_at }
+    before { Timecop.freeze(now) }
+
+    after { Timecop.return }
 
     context '負のポイントの場合' do
       before { create :point_history, :got, user: user, amount: 100 }
+
       let(:point) { create :point_history, :used, user: user }
 
       it 'nilであること' do is_expected.to be_nil end
@@ -112,13 +119,14 @@ RSpec.describe PointHistory, type: :model do
   end
 
   describe '#expired?' do
+    subject { point.expired? }
+
     before { Timecop.freeze(now) }
+
     after { Timecop.return }
 
     let(:created_at) { '2018-1-1 12:13:23'.in_time_zone }
     let(:now) { '2018-4-1'.in_time_zone.end_of_day }
-
-    subject { point.expired? }
 
     context '負のポイントの場合' do
       let(:point) { create :point_history, :used, user: user, created_at: created_at }

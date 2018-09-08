@@ -4,8 +4,9 @@ module RequestSpecHelper
   include Warden::Test::Helpers
 
   included do
-    before(:each) { Warden.test_mode! }
-    after(:each) { Warden.test_reset! }
+    before { Warden.test_mode! }
+
+    after { Warden.test_reset! }
 
     shared_examples 'ログインが必要なページへのアクセス' do
       it 'サインインページにリダイレクトされること' do is_expected.to redirect_to(new_user_session_path) end

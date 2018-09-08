@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe LaravelMixHelper, type: :helper do
+  let(:laravel_mix_helper_instance) { instance_double(LaravelMixHelper) }
+
   before do
     manifest = {
       "/css/item_group_editor.css": '/css/item_group_editor-5d7c7164b8a0a9d675fad9ab410e.css',
@@ -10,7 +12,7 @@ RSpec.describe LaravelMixHelper, type: :helper do
       "/images/union-ok@2x.png": '/images/union-ok@2x-5d7c7164b8a0a9d675fad9ab410e.png'
     }.stringify_keys
 
-    allow_any_instance_of(LaravelMixHelper).to receive(:manifest).and_return(manifest)
+    allow(JSON).to receive(:parse).with(File.read(LaravelMixHelper::MANIFEST_PATH)).and_return(manifest)
   end
 
   describe '#asset_bundle_path' do

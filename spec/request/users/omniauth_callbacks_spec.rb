@@ -26,6 +26,10 @@ RSpec.shared_examples 'ソーシャルログインの使用' do
 
         it 'ログイン画面にリダイレクトされること' do
           is_expected.to redirect_to new_user_session_path
+        end
+
+        it 'アラートが表示されること' do
+          subject
           expect(flash[:alert]).to eq(
             I18n.t('users.omniauth_callbacks.failure', provider: provider.capitalize)
           )
@@ -47,6 +51,10 @@ RSpec.shared_examples 'ソーシャルログインの使用' do
 
           it 'マイページにリダイレクトされること' do
             is_expected.to redirect_to authenticated_root_path
+          end
+
+          it 'アラートが表示されること' do
+            subject
             expect(flash[:notice]).to eq(
               I18n.t('devise.omniauth_callbacks.success', provider: provider.capitalize)
             )
@@ -122,7 +130,12 @@ RSpec.shared_examples 'ソーシャルログインの使用' do
       let(:user) { create :user }
 
       before do
+        # rubocop:disable RSpec/AnyInstance
         allow_any_instance_of(User).to receive(:raw_reset_password_token).and_return('foobarbaz')
+      end
+
+      after do
+        # rubocop:enable RSpec/AnyInstance
       end
 
       context '認証された本人確認が存在しない場合' do

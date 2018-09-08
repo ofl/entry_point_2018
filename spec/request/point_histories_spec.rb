@@ -7,6 +7,7 @@ RSpec.describe 'ポイント履歴について', type: :request do
 
   describe 'GET /point_histories' do
     subject { get point_histories_path, params: params }
+
     let(:params) { {} }
 
     it_behaves_like 'ログインが必要なリクエスト'
@@ -20,6 +21,7 @@ RSpec.describe 'ポイント履歴について', type: :request do
 
   describe 'GET /point_histories/:id' do
     subject { get point_history_path(params) }
+
     let(:params) { { id: point_history.id } }
 
     it_behaves_like 'ログインが必要なリクエスト'

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'Mutations::Comments::Create' do
+RSpec.describe 'Mutations::Comments::Create' do # rubocop:disable RSpec/DescribeClass
   include GraphqlSpecHelper
 
   let!(:user) { create(:user) }
@@ -11,10 +11,8 @@ RSpec.describe 'Mutations::Comments::Create' do
       mutation CreateComment($variables:createCommentInput!) {
         createComment(input: $variables) {
           comment {
-            id
             body
             user {
-              id
               username
             }
           }
@@ -41,10 +39,21 @@ RSpec.describe 'Mutations::Comments::Create' do
     let(:query_context) { { current_user: user } }
 
     context '入力値が正しい場合' do
+      let(:expected_value) do
+        {
+          createComment: {
+            comment: {
+              body: body,
+              user: {
+                username: user.username
+              }
+            }
+          }
+        }.deep_stringify_keys
+      end
+
       it 'コメントのデータが返ること' do
-        expect(data[:createComment][:comment][:body]).to eq body
-        expect(data[:createComment][:comment][:user][:username]).to eq user.username
-        expect(data[:createComment][:errors]).to be_blank
+        expect(data).to eq expected_value
       end
 
       it 'コメントが１件増えること' do
@@ -55,13 +64,24 @@ RSpec.describe 'Mutations::Comments::Create' do
     context 'post_idに該当する投稿が存在しない時' do
       let(:post_id) { 999_999 }
 
+      let(:expected_value) do
+        {
+          message: 'バリデーションに失敗しました: Postを入力してください, Postを入力してください',
+          path: [],
+          extensions: {
+            title: 'バリデーションに失敗しました: Postを入力してください, Postを入力してください',
+            detail: 'を入力してください',
+            source: {
+              pointer: '/data/attributes/post'
+            },
+            status: 400,
+            code: 'BAD_REQUEST'
+          }
+        }.deep_stringify_keys
+      end
+
       it 'Errorが返ること' do
-        expect(data[:createComment]).to be_nil
-        expect(errors[0][:message]).to eq 'バリデーションに失敗しました: Postを入力してください, Postを入力してください'
-        expect(errors[0][:path]).to eq []
-        expect(errors[0][:extensions][:code]).to eq 'BAD_REQUEST'
-        expect(errors[0][:extensions][:detail]).to eq 'を入力してください'
-        expect(errors[0][:extensions][:source][:pointer]).to eq '/data/attributes/post'
+        expect(errors[0]).to eq expected_value
       end
 
       it 'コメントが増えないこと' do
@@ -72,14 +92,24 @@ RSpec.describe 'Mutations::Comments::Create' do
     context 'bodyが空文字列だった場合' do
       let(:body) { '' }
 
+      let(:expected_value) do
+        {
+          message: 'バリデーションに失敗しました: 本文を入力してください',
+          path: [],
+          extensions: {
+            title: 'バリデーションに失敗しました: 本文を入力してください',
+            detail: 'を入力してください',
+            source: {
+              pointer: '/data/attributes/body'
+            },
+            status: 400,
+            code: 'BAD_REQUEST'
+          }
+        }.deep_stringify_keys
+      end
+
       it 'Errorが返ること' do
-        expect(data[:createComment]).to be_nil
-        expect(errors[0][:message]).to eq 'バリデーションに失敗しました: 本文を入力してください'
-        # TODO: ['createComment']が返ること https://github.com/rmosolgo/graphql-ruby/issues/1575
-        expect(errors[0][:path]).to eq []
-        expect(errors[0][:extensions][:code]).to eq 'BAD_REQUEST'
-        expect(errors[0][:extensions][:detail]).to eq 'を入力してください'
-        expect(errors[0][:extensions][:source][:pointer]).to eq '/data/attributes/body'
+        expect(errors[0]).to eq expected_value
       end
 
       it 'コメントが増えないこと' do
@@ -91,11 +121,17 @@ RSpec.describe 'Mutations::Comments::Create' do
   context 'ログインしていない時' do
     let(:post_id) { post_data.id }
 
-    it 'GraphQL::ExecutionErrorが返ること' do
-      expect(data[:createComment]).to be_nil
+    let(:expected_value) do
+      {
+        message: I18n.t('application_errors.unauthorized'),
+        path: ['createComment'],
+        locations: [{ line: 2, column: 3 }],
+        extensions: {}
+      }.deep_stringify_keys
+    end
 
-      expect(errors[0][:message]).to eq I18n.t('application_errors.unauthorized')
-      expect(errors[0][:path]).to eq ['createComment']
+    it 'GraphQL::ExecutionErrorが返ること' do
+      expect(errors[0]).to eq expected_value
     end
   end
 end

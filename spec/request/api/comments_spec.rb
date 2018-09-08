@@ -29,44 +29,40 @@ RSpec.describe 'comments', type: :request do
     context 'ログインしていない場合' do
       let(:params) { valid_params }
 
-      it_behaves_like 'ログインが必要なAPIへのリクエスト'
+      it_behaves_like '認証が必要なエンドポイントに認証せずにアクセスした場合'
     end
 
     context 'ログインしている場合' do
       let(:user) { login_user }
 
       context '入力値がない場合' do
-        it '400エラーになること' do
-          is_expected.to eq 400
-          expect(json['errors'][0]['title']).to eq 'param is missing or the value is empty: comment'
-        end
+        it_behaves_like 'エンドポイントに必須のパラメータを渡さなかった場合', 'comment'
       end
 
       context '正しい入力値の場合' do
         let(:params) { valid_params_on_create }
 
-        it 'コメントが登録されること' do
+        it { is_expected.to eq 201 }
+
+        it 'data_typeがコメントであること' do
           subject
-          is_expected.to eq 201
           expect(data_type).to eq 'comment'
+        end
+
+        it 'data_attributesがコメントの形式であること' do
+          subject
           expect(data_attributes).to match(comment_structure)
         end
 
         it 'コメントが増加すること' do
-          expect do
-            subject
-          end.to change(Comment, :count).by(1)
+          expect { subject }.to change(Comment, :count).by(1)
         end
       end
 
       context '不正な入力値の場合' do
         let(:params) { invalid_params }
 
-        it '422エラーになること' do
-          subject
-          is_expected.to eq 422
-          expect(json['errors'][0]['title']).to include 'バリデーションに失敗しました'
-        end
+        it_behaves_like '入力内容をチェックされるエンドポイントで不正な値を入力した場合'
       end
     end
   end
@@ -77,27 +73,33 @@ RSpec.describe 'comments', type: :request do
     context 'ログインしていない場合' do
       let(:params) { valid_params }
 
-      it_behaves_like 'ログインが必要なAPIへのリクエスト'
+      it_behaves_like '認証が必要なエンドポイントに認証せずにアクセスした場合'
     end
 
     context 'ログインしている場合' do
       let(:user) { login_user }
 
       context '入力値がない場合' do
-        it '400エラーになること' do
-          is_expected.to eq 400
-          expect(json['errors'][0]['title']).to eq 'param is missing or the value is empty: comment'
-        end
+        it_behaves_like 'エンドポイントに必須のパラメータを渡さなかった場合', 'comment'
       end
 
       context '正しい入力値の場合' do
         let(:params) { valid_params }
 
+        it { is_expected.to eq 200 }
+
+        it 'data_typeがコメントであること' do
+          subject
+          expect(data_type).to eq 'comment'
+        end
+
+        it 'data_attributesがコメントの形式であること' do
+          subject
+          expect(data_attributes).to match(comment_structure)
+        end
+
         it 'コメントが修正されること' do
           subject
-          is_expected.to eq 200
-          expect(data_type).to eq 'comment'
-          expect(data_attributes).to match(comment_structure)
           expect(data_attributes['body']).to eq valid_params[:body]
         end
       end
@@ -105,11 +107,7 @@ RSpec.describe 'comments', type: :request do
       context '不正な入力値の場合' do
         let(:params) { invalid_params }
 
-        it '422エラーになること' do
-          subject
-          is_expected.to eq 422
-          expect(json['errors'][0]['title']).to include 'バリデーションに失敗しました'
-        end
+        it_behaves_like '入力内容をチェックされるエンドポイントで不正な値を入力した場合'
       end
     end
   end
@@ -118,17 +116,14 @@ RSpec.describe 'comments', type: :request do
     subject { delete api_comment_path(id: id), params: {}, headers: headers }
 
     context 'ログインしていない場合' do
-      it_behaves_like 'ログインが必要なAPIへのリクエスト'
+      it_behaves_like '認証が必要なエンドポイントに認証せずにアクセスした場合'
     end
 
     context 'ログインしている場合' do
       let(:user) { login_user }
 
       context '自分のコメントのとき' do
-        it 'コメントが削除されること' do
-          subject
-          is_expected.to eq 200
-        end
+        it { is_expected.to eq 200 }
 
         it 'コメントが減少すること' do
           expect { subject }.to change(Comment, :count).by(-1)
@@ -138,7 +133,7 @@ RSpec.describe 'comments', type: :request do
       context '削除する権限がないとき' do
         let(:id) { another_comment.id }
 
-        it_behaves_like '権限が必要なAPIへのリクエスト'
+        it_behaves_like '権限が必要なエンドポイントに権限を持たないユーザーがアクセスした場合'
       end
     end
   end

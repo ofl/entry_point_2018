@@ -9,10 +9,11 @@ RSpec.describe '本人確認について', type: :request do
     let(:valid_params) { { confirmation_token: 'foobaabaz' } }
     let(:invalid_params) { { confirmation_token: 'abc' } }
     let(:params) { valid_params }
-    let!(:unconfirmed_user_auth) do
+    let(:sent_at) { 1.minute.ago }
+
+    before do
       create :user_auth, user: user, provider: :facebook, confirmation_token: 'foobaabaz', confirmation_sent_at: sent_at
     end
-    let(:sent_at) { 1.minute.ago }
 
     context '不正な入力値の場合' do
       let(:params) { invalid_params }
@@ -26,15 +27,19 @@ RSpec.describe '本人確認について', type: :request do
       context '認証期限が切れている場合' do
         let(:sent_at) { 1.day.ago }
 
+        it { is_expected.to eq 302 }
+
         it '「期限切れです。もう一度手続きをしてください」が表示されること' do
-          is_expected.to eq 302
+          subject
           expect(flash[:alert]).to eq I18n.t('users.user_auths.confirmation_period_expired')
         end
       end
 
       context '認証期限内の場合' do
+        it { is_expected.to eq 302 }
+
         it '「メールアドレスの確認が完了しました」が表示されること' do
-          is_expected.to eq 302
+          subject
           expect(flash[:notice]).to eq I18n.t('users.user_auths.confirmed')
         end
       end
@@ -55,6 +60,7 @@ RSpec.describe '本人確認について', type: :request do
 
   describe 'POST /users/user_auths' do
     subject { post users_user_auths_path, params: params }
+
     let(:valid_params) do
       { user_auth: { provider: 'email', uid: 'foobarbaz@example.com', user_password: 'password' } }
     end
@@ -83,7 +89,7 @@ RSpec.describe '本人確認について', type: :request do
         it 'マイページにリダイレクトされること' do is_expected.to eq 302 end
         it '本人確認が増加すること' do
           expect { subject }
-            .to change { UserAuth.count }
+            .to change(UserAuth, :count)
             .by(1)
             .and change { ActionMailer::Base.deliveries.count }
             .by(1)
@@ -94,6 +100,7 @@ RSpec.describe '本人確認について', type: :request do
 
   describe 'GET /users/user_auths/:provider/edit' do
     subject { get edit_users_user_auth_path(provider: provider) }
+
     let(:provider) { 'facebook' }
 
     it_behaves_like 'ログインが必要なページへのアクセス'
@@ -117,6 +124,7 @@ RSpec.describe '本人確認について', type: :request do
 
   describe 'DELETE /users/user_auths/:provider' do
     subject { delete users_user_auth_path(provider: provider), params: { user_auth: { user_password: password } } }
+
     let(:provider) { 'facebook' }
     let(:password) { 'password' }
 
@@ -144,12 +152,15 @@ RSpec.describe '本人確認について', type: :request do
         end
 
         context '正しい入力値の場合' do
+          it { is_expected.to redirect_to(authenticated_root_path) }
+
           it 'マイページにリダイレクトされること' do
-            is_expected.to redirect_to(authenticated_root_path)
+            subject
             expect(flash[:notice]).to eq(
               I18n.t('users.user_auths.delete_user_auth', provider: provider.capitalize)
             )
           end
+
           it '本人確認が減少すること' do
             expect { subject }.to change(UserAuth, :count).by(-1)
           end

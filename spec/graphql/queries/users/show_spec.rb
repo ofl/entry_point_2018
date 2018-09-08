@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'Queries::Users::Show' do
+RSpec.describe 'Queries::Users::Show' do # rubocop:disable RSpec/DescribeClass
   include GraphqlSpecHelper
 
   let!(:user) { create(:user) }
@@ -20,22 +20,29 @@ RSpec.describe 'Queries::Users::Show' do
 
   context 'usernameに該当するユーザーが存在する時' do
     let(:username) { user.username }
+    let(:expected_value) do
+      {
+        user: {
+          id: user.id.to_s,
+          username: user.username
+        }
+      }.deep_stringify_keys
+    end
 
     it 'ユーザーのデータが返ること' do
-      expect(data[:user][:id]).to eq user.id.to_s
-      expect(data[:user][:username]).to eq user.username
-
-      expect(errors).to be_nil
+      expect(data).to eq expected_value
     end
   end
 
   context 'usernameに該当するユーザーが存在しない時' do
     let(:username) { 'foo_bar_baz' }
 
-    it 'nilが返ること' do
-      expect(data[:user]).to be_nil
+    let(:expected_value) do
+      { user: nil }.deep_stringify_keys
+    end
 
-      expect(errors).to be_nil
+    it 'ユーザーのデータが返ること' do
+      expect(data).to eq expected_value
     end
   end
 end
