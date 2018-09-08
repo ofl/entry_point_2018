@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'Queries::Posts::Index' do
+RSpec.describe 'Queries::Posts::Index' do # rubocop:disable RSpec/DescribeClass
   include GraphqlSpecHelper
 
   let!(:user) { create(:user) }
@@ -21,11 +21,21 @@ RSpec.describe 'Queries::Posts::Index' do
   end
   let(:operation_name) { 'Posts' }
 
-  it '投稿のデータが返ること' do
-    expect(data[:posts][0][:id]).to eq post.id.to_s
-    expect(data[:posts][0][:title]).to eq post.title
-    expect(data[:posts][0][:user][:username]).to eq user.username
+  let(:expected_value) do
+    {
+      posts: [
+        {
+          id: post.id.to_s,
+          title: post.title,
+          user: {
+            username: user.username
+          }
+        }
+      ]
+    }.deep_stringify_keys
+  end
 
-    expect(errors).to be_nil
+  it '投稿のデータが返ること' do
+    expect(data).to eq expected_value
   end
 end

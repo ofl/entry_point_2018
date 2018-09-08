@@ -54,7 +54,6 @@ RSpec.describe User, type: :model do
       end
 
       it 'ユーザーのポイント数は0になること' do
-        expect(PointHistory.where(user_id: user.id).sum(:amount)).to eq 100
         subject
         expect(PointHistory.where(user_id: user.id).sum(:amount)).to eq 0
       end
@@ -75,11 +74,13 @@ RSpec.describe User, type: :model do
       context '本人確認が存在する場合' do
         context '本人確認済みでない場合' do
           before { create :user_auth, user: user }
+
           it '偽であること' do is_expected.to be_falsey end
         end
 
         context '本人確認済みの場合' do
           before { create :user_auth, user: user, confirmed_at: 1.minute.ago }
+
           it '真であること' do is_expected.to be_truthy end
         end
       end
@@ -87,6 +88,7 @@ RSpec.describe User, type: :model do
 
     describe '#confirmed_by?' do
       subject { user.confirmed_by?(provider) }
+
       let(:provider) { :facebook }
 
       context '本人確認が存在しない場合' do
@@ -96,11 +98,13 @@ RSpec.describe User, type: :model do
       context '本人確認が存在する場合' do
         context '本人確認済みでない場合' do
           before { create :user_auth, user: user, provider: :facebook }
+
           it '偽であること' do is_expected.to be_falsey end
         end
 
         context '本人確認済みの場合' do
           before { create :user_auth, user: user, provider: :facebook, confirmed_at: 1.minute.ago }
+
           it '真であること' do is_expected.to be_truthy end
         end
       end
@@ -111,11 +115,7 @@ RSpec.describe User, type: :model do
 
       context '登録済みの場合' do
         it 'reset_password_tokenが入力されること' do
-          expect(user.reset_password_token).to be_nil
-
-          subject
-
-          expect(user.reset_password_token).not_to be_nil
+          expect { subject }.to change(user, :reset_password_token).from(nil).to(String)
         end
       end
     end
@@ -124,14 +124,7 @@ RSpec.describe User, type: :model do
       subject { user.update_authentication_token! }
 
       it 'authentication_tokenが入力されること' do
-        before_token = user.authentication_token
-
-        subject
-
-        user.reload
-
-        expect(user.authentication_token).not_to eq before_token
-        expect(user.authentication_token).to start_with user.id.to_s
+        expect { subject }.to change(user, :authentication_token)
       end
     end
 
@@ -139,33 +132,18 @@ RSpec.describe User, type: :model do
       subject { user.reset_authentication_token! }
 
       it 'authentication_tokenにダミーの値が入力されること' do
-        before_token = user.authentication_token
-
-        subject
-
-        user.reload
-
-        expect(user.authentication_token).not_to eq before_token
-        expect(user.authentication_token).not_to start_with user.id.to_s
+        expect { subject }.to change(user, :authentication_token)
       end
     end
 
     describe '#point_amount' do
       subject { user.point_amount }
 
-      let!(:got_point_1) do
+      before do
         create :point_history, :got, user: user, amount: 100, created_at: '2018-1-1 12:10:10'.in_time_zone
-      end
-      let!(:got_point_2) do
         create :point_history, :got, user: user, amount: 150, created_at: '2018-2-1 12:10:10'.in_time_zone
-      end
-      let!(:used_point) do
         create :point_history, :used, user: user, amount: -200, created_at: '2018-3-1 12:10:10'.in_time_zone
-      end
-      let!(:got_point_3) do
         create :point_history, :got, user: user, amount: 170, created_at: '2018-4-1 12:10:10'.in_time_zone
-      end
-      let!(:outdated_point) do
         create :point_history, :outdated, user: user, amount: -50, created_at: '2018-5-1 12:10:10'.in_time_zone
       end
 
@@ -173,14 +151,19 @@ RSpec.describe User, type: :model do
     end
 
     describe '#get_point!' do
-      let(:amount) { 150 }
       subject { user.get_point!(amount) }
 
+      let(:amount) { 150 }
+
       context '保存が成功した場合' do
-        it 'ユーザーが所有するポイントが増えること' do
+        it 'ポイント履歴が増えること' do
           expect { subject }.to change(PointHistory.got, :count).by(1)
+        end
+        it 'ユーザーが所有するポイントが増えること' do
+          subject
           expect(PointHistory.last.amount).to eq(150)
         end
+
         it 'BatchSchedule::PointExpirationが増加すること' do
           expect { subject }.to change(BatchSchedule::PointExpiration, :count).by(1)
         end
@@ -204,20 +187,14 @@ RSpec.describe User, type: :model do
 
       subject { user.outdate_points!(now) }
 
-      let!(:got_point_1) do
+      before do
         create :point_history, :got, user: user, amount: 100, created_at: '2018-1-1 12:10:10'.in_time_zone
-      end
-      let!(:got_point_2) do
         create :point_history, :got, user: user, amount: 150, created_at: '2018-2-1 12:10:10'.in_time_zone
-      end
-      let!(:used_point) do
         create :point_history, :used, user: user, amount: -200, created_at: '2018-3-1 12:10:10'.in_time_zone
-      end
-      let!(:got_point_3) do
         create :point_history, :got, user: user, amount: 170, created_at: '2018-4-1 12:10:10'.in_time_zone
-      end
 
-      let!(:batch_schedule) { create :batch_schedule_point_expiration, user: user, run_at: now - 1.second }
+        create :batch_schedule_point_expiration, user: user, run_at: now - 1.second
+      end
 
       context '2018-3-2 12:10:10に実行した場合' do
         let(:now) { '2018-3-2 12:10:10'.in_time_zone }
@@ -244,7 +221,11 @@ RSpec.describe User, type: :model do
 
         it '期限切れのポイント履歴が増えること' do
           expect { subject }.to change(PointHistory.outdated, :count).by(1) # 250 - 200
-          expect(PointHistory.last.amount).to eq(-50)
+        end
+
+        it '負のポイントが作成されること' do
+          subject
+          expect(PointHistory.last.amount).to eq(-50) # 250 - 200
         end
         it_behaves_like 'バッチスケジュールが削除される'
       end
@@ -254,14 +235,20 @@ RSpec.describe User, type: :model do
 
         it '期限切れのポイント履歴が増えること' do
           expect { subject }.to change(PointHistory.outdated, :count).by(1) # 獲得ポイント < 使用ポイントのため
+        end
+
+        it '負のポイントが作成されること' do
+          subject
           expect(PointHistory.last.amount).to eq(-220) # 420 - 200
         end
+
         it_behaves_like 'バッチスケジュールが削除される'
       end
 
       context '保存に失敗した場合' do
+        before { allow(user).to receive(:outdated_point_amount).and_return(-150) }
+
         let(:now) { '2018-7-4 12:10:10'.in_time_zone }
-        before { allow_any_instance_of(User).to receive(:outdated_point_amount).and_return(-150) }
 
         it 'ActiveRecord::RecordInvalidエラーが発生すること' do
           expect { subject }.to raise_error(ActiveRecord::RecordInvalid)
@@ -272,28 +259,26 @@ RSpec.describe User, type: :model do
     describe '#outdate_all_points!' do
       subject { user.outdate_all_points! }
 
-      let!(:got_point_1) do
+      before do
         create :point_history, :got, user: user, amount: 100, created_at: '2018-1-1 12:10:10'.in_time_zone
-      end
-      let!(:got_point_2) do
         create :point_history, :got, user: user, amount: 150, created_at: '2018-2-1 12:10:10'.in_time_zone
-      end
-      let!(:used_point) do
         create :point_history, :used, user: user, amount: -200, created_at: '2018-3-1 12:10:10'.in_time_zone
-      end
-      let!(:got_point_3) do
         create :point_history, :got, user: user, amount: 170, created_at: '2018-4-1 12:10:10'.in_time_zone
       end
 
       context '保存に成功した場合' do
-        it '負のポイント履歴が作成されること' do
+        it 'ポイント履歴が作成されること' do
           expect { subject }.to change(PointHistory.withdrawaled, :count).by(1)
+        end
+
+        it '負のポイントが作成されること' do
+          subject
           expect(PointHistory.last.amount).to eq(-220) # 420 - 200
         end
       end
 
       context '保存に失敗した場合' do
-        before { allow_any_instance_of(User).to receive(:point_amount).and_return(-150) }
+        before { allow(user).to receive(:point_amount).and_return(-150) }
 
         it 'ActiveRecord::RecordInvalidエラーが発生すること' do
           expect { subject }.to raise_error(ActiveRecord::RecordInvalid)
@@ -304,16 +289,13 @@ RSpec.describe User, type: :model do
     describe '#outdated_point_amount' do
       subject { user.send :outdated_point_amount, now }
 
-      let!(:got_point_1) do
+      let(:used_amount) { -50 }
+
+      before do
         create :point_history, :got, user: user, amount: 100, created_at: '2018-1-1 12:10:10'.in_time_zone
-      end
-      let!(:got_point_2) do
         create :point_history, :got, user: user, amount: 150, created_at: '2018-2-1 12:10:10'.in_time_zone
-      end
-      let!(:used_point) do
         create :point_history, :used, user: user, amount: used_amount, created_at: '2018-3-1 12:10:10'.in_time_zone
       end
-      let(:used_amount) { -50 }
 
       context '2018-3-2 12:10:10に実行した場合' do
         let(:now) { '2018-3-2 12:10:10'.in_time_zone }

@@ -29,15 +29,18 @@ RSpec.describe 'registrations', type: :request do
     context 'ログインしている場合' do
       before { login }
 
+      it { is_expected.to eq 200 }
+
       it 'ユーザー情報を取得できること', autodoc: true do
         subject
-        is_expected.to eq 200
         expect(json).to match(registrant_structure)
       end
     end
   end
 
   describe 'POST /api/users/registrations' do
+    subject { post '/api/users/registrations', params: params.to_json, headers: headers }
+
     let(:valid_params) { { user: { username: 'foo', email: 'foo@example.com', password: 'foobarbaz' } } }
     let(:invalid_params) { { user: { username: 'あああ', email: 'foo@example.com', password: 'ぱすわーど' } } }
     let(:headers) do
@@ -47,21 +50,17 @@ RSpec.describe 'registrations', type: :request do
       }
     end
 
-    subject { post '/api/users/registrations', params: params.to_json, headers: headers }
-
     context '入力値がない場合' do
-      it '400エラーになること' do
-        is_expected.to eq 400
-        expect(json['errors'][0]['title']).to eq 'param is missing or the value is empty: user'
-      end
+      it_behaves_like 'エンドポイントに必須のパラメータを渡さなかった場合', 'user'
     end
 
     context '正しい入力値の場合' do
       let(:params) { valid_params }
 
+      it { is_expected.to eq 200 }
+
       it 'ユーザーが登録されること', autodoc: true do
         subject
-        is_expected.to eq 200
         expect(json).to match(registrant_structure)
       end
 
@@ -75,42 +74,34 @@ RSpec.describe 'registrations', type: :request do
     context '不正な入力値の場合' do
       let(:params) { invalid_params }
 
-      it '422エラーになること' do
-        subject
-        is_expected.to eq 422
-        expect(json['errors'][0]['title']).to include 'バリデーションに失敗しました'
-      end
+      it_behaves_like '入力内容をチェックされるエンドポイントで不正な値を入力した場合'
     end
   end
 
   describe 'PUT /api/users/registrations' do
+    subject { put '/api/users/registrations', params: params.to_json, headers: headers }
+
     let(:valid_params) { { user: { username: 'foo', email: 'foo@example.com', password: 'foobarbaz' } } }
     let(:invalid_params) { { user: { username: 'あああ', email: 'foo@example.com', password: 'ぱすわーど' } } }
 
-    subject { put '/api/users/registrations', params: params.to_json, headers: headers }
-
     context 'ログインしていない場合' do
-      it '401エラーになること' do
-        is_expected.to eq 401
-      end
+      it { is_expected.to eq 401 }
     end
 
     context 'ログインしている場合' do
       before { login }
 
       context '入力値がない場合' do
-        it '400エラーになること' do
-          is_expected.to eq 400
-          expect(json['errors'][0]['title']).to eq 'param is missing or the value is empty: user'
-        end
+        it_behaves_like 'エンドポイントに必須のパラメータを渡さなかった場合', 'user'
       end
 
       context '正しい入力値の場合' do
         let(:params) { valid_params }
 
+        it { is_expected.to eq 200 }
+
         it 'ユーザー情報が修正されること', autodoc: true do
           subject
-          is_expected.to eq 200
           expect(json).to match(registrant_structure)
         end
       end
@@ -118,11 +109,7 @@ RSpec.describe 'registrations', type: :request do
       context '不正な入力値の場合' do
         let(:params) { invalid_params }
 
-        it '422エラーになること' do
-          subject
-          is_expected.to eq 422
-          expect(json['errors'][0]['title']).to include 'バリデーションに失敗しました'
-        end
+        it_behaves_like '入力内容をチェックされるエンドポイントで不正な値を入力した場合'
       end
     end
   end
@@ -131,9 +118,7 @@ RSpec.describe 'registrations', type: :request do
     subject { delete '/api/users/registrations', params: {}, headers: headers }
 
     context 'ログインしていない場合' do
-      it '401エラーになること' do
-        is_expected.to eq 401
-      end
+      it { is_expected.to eq 401 }
     end
 
     context 'ログインしている場合' do

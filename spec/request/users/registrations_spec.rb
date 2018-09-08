@@ -19,12 +19,14 @@ RSpec.describe 'Users::Registrations', type: :request do
 
   describe 'POST /users/registration' do
     subject { post user_registration_path, params: params }
+
     let(:valid_params) { { user: { username: 'foo', email: 'foo@sample.com', password: 'password' } } }
     let(:invalid_params) { { user: { username: 'foo', email: user.email, password: 'a' } } }
 
     context 'ログインしている場合' do
-      let(:params) { valid_params }
       before { sign_in user }
+
+      let(:params) { valid_params }
 
       it 'マイページにリダイレクトされること' do is_expected.to redirect_to authenticated_root_path end
       it 'ユーザーが増加しないこと' do expect { subject }.not_to change(User, :count) end
@@ -57,6 +59,7 @@ RSpec.describe 'Users::Registrations', type: :request do
 
   describe 'DELETE /users/registration' do
     subject { delete user_registration_path, params: params }
+
     let(:valid_params) { { user: { password: 'password' } } }
     let(:invalid_params) { { user: { password: 'a' } } }
 

@@ -19,12 +19,14 @@ RSpec.describe 'Users::Passwords', type: :request do
 
   describe 'POST /users/password' do
     subject { post user_password_path, params: params }
+
     let(:valid_params) { { user: { email: user.email } } }
     let(:invalid_params) { { user: { email: 'foo@example.com' } } }
 
     context 'ログインしている場合' do
-      let(:params) { valid_params }
       before { sign_in user }
+
+      let(:params) { valid_params }
 
       it 'マイページにリダイレクトされること' do is_expected.to redirect_to authenticated_root_path end
     end
@@ -49,6 +51,7 @@ RSpec.describe 'Users::Passwords', type: :request do
 
   describe 'GET /users/password/edit' do
     subject { get edit_user_password_path, params: params }
+
     let(:valid_params) { { reset_password_token: 'abc' } }
     let(:invalid_params) { {} }
 
@@ -68,6 +71,7 @@ RSpec.describe 'Users::Passwords', type: :request do
 
     context 'ログインしている場合' do
       before { sign_in user }
+
       let(:params) { valid_params }
 
       it 'マイページにリダイレクトされること' do is_expected.to redirect_to authenticated_root_path end
@@ -76,18 +80,17 @@ RSpec.describe 'Users::Passwords', type: :request do
 
   describe 'PUT /users/password' do
     subject { put user_password_path, params: params }
-    before do
-      @token = user.send_reset_password_instructions
-    end
+
+    let!(:token) { user.send_reset_password_instructions }
 
     let(:valid_params) do
-      { user: { reset_password_token: @token, password: 'foobarbaz', password_confirmation: 'foobarbaz' } }
+      { user: { reset_password_token: token, password: 'foobarbaz', password_confirmation: 'foobarbaz' } }
     end
     let(:invalid_token_params) do
       { user: { reset_password_token: 'abc', password: 'foobarbaz', password_confirmation: 'foobarbaz' } }
     end
     let(:invalid_value_params) do
-      { user: { reset_password_token: @token, password: 'foobarbaz', password_confirmation: 'xxxxxxxxx' } }
+      { user: { reset_password_token: token, password: 'foobarbaz', password_confirmation: 'xxxxxxxxx' } }
     end
 
     context 'ログインしていない場合' do
@@ -112,6 +115,7 @@ RSpec.describe 'Users::Passwords', type: :request do
 
     context 'ログインしている場合' do
       before { sign_in user }
+
       let(:params) { valid_params }
 
       it 'マイページにリダイレクトされること' do is_expected.to redirect_to authenticated_root_path end

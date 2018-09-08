@@ -60,6 +60,7 @@ group :development, :test do
   gem 'license_finder'
   gem 'rspec-rails', '~> 3.5.0'
   gem 'rubocop', require: false
+  gem 'rubocop-rspec', require: false
 end
 
 group :development do

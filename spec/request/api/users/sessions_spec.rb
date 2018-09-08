@@ -33,10 +33,7 @@ RSpec.describe 'sessions', type: :request do
     subject { post '/api/users/sessions', params: params.to_json, headers: headers }
 
     context '入力値がない場合' do
-      it '400エラーになること' do
-        is_expected.to eq 400
-        expect(json['errors'][0]['title']).to eq 'param is missing or the value is empty: user_auth'
-      end
+      it_behaves_like 'エンドポイントに必須のパラメータを渡さなかった場合', 'user_auth'
     end
 
     context '正しい入力値の場合' do
@@ -46,9 +43,10 @@ RSpec.describe 'sessions', type: :request do
         create(:user, username: 'foo', password: 'password')
       end
 
+      it { is_expected.to eq 200 }
+
       it 'ログインできること', autodoc: true do
         subject
-        is_expected.to eq 200
         expect(json).to match(session_structure)
       end
     end
@@ -62,10 +60,11 @@ RSpec.describe 'sessions', type: :request do
           create(:user_auth, provider: 'twitter', uid: test_tw_user[:uid], user: user)
         end
 
+        it { is_expected.to eq 200 }
+
         it 'ログインできること', autodoc: true do
           VCR.use_cassette 'twitter_valid_credential' do
             subject
-            is_expected.to eq 200
             expect(json).to match(session_structure)
           end
         end
@@ -100,9 +99,7 @@ RSpec.describe 'sessions', type: :request do
     context 'ユーザーが存在しない場合' do
       let(:params) { valid_params }
 
-      it '404エラーになること' do
-        is_expected.to eq 404
-      end
+      it { is_expected.to eq 404 }
     end
   end
 
@@ -110,20 +107,19 @@ RSpec.describe 'sessions', type: :request do
     subject { delete '/api/users/sessions', params: params.to_json, headers: headers }
 
     context 'ログインしていない場合' do
-      it '401エラーになること' do
-        is_expected.to eq 401
-      end
+      it { is_expected.to eq 401 }
     end
 
     context 'ログインしている場合' do
       before { login }
+
+      it { is_expected.to eq 200 }
 
       it 'ログアウトすること', autodoc: true do
         before_authentication_token = login_user.authentication_token
 
         subject
 
-        is_expected.to eq 200
         expect(login_user.reload.authentication_token).not_to eq before_authentication_token
       end
     end
