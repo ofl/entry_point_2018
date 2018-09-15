@@ -94,6 +94,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def need_authenticate?
     return false if callback_params.blank?
+
     callback_params['confirmation_token'].present?
   end
 
@@ -117,6 +118,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     user_auth = UserAuth.confirmed.find_by(provider: provider, uid: auth.uid) ||
                 UserAuth.find_by(provider: provider, confirmation_token: confirmation_token)
     raise BadRequest if user_auth.nil?
+
     user_auth
   end
 end

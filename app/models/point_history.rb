@@ -52,6 +52,7 @@ class PointHistory < ApplicationRecord
   # 失効日時。作成日時から失効日数経過した日の1日の終わりの日時
   def outdate_at
     return nil unless positive?
+
     (created_at + EXPIRATION_INTERVAL.days).end_of_day
   end
 

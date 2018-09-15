@@ -26,12 +26,14 @@ class Api::Users::SessionsController < Api::ApiController
   def verify_via_username_and_password
     user = User.find_by!(username: user_params[:username])
     raise BadRequest unless user.valid_password?(user_params[:password])
+
     user
   end
 
   def verify_via_auth_provider
     user_auth = UserAuth.find_by!(provider: user_auth_params[:provider], uid: user_auth_params[:uid])
     raise BadRequest unless user_auth.verified_by_auth_provider?(user_auth_params)
+
     user_auth.user
   end
 

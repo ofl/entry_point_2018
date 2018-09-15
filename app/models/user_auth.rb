@@ -67,11 +67,13 @@ class UserAuth < ApplicationRecord
 
   def confirm_user_password
     return if user.valid_password?(user_password)
+
     errors.add(:user_password)
   end
 
   def confirm_by_token!(now: Time.current)
     raise ConfirmationExpired if confirmation_time_out?(now: now)
+
     confirme!
   end
 
@@ -110,6 +112,7 @@ class UserAuth < ApplicationRecord
 
   def confirmation_time_out?(now: Time.current)
     return true if confirmation_sent_at.nil?
+
     confirmation_sent_at + Settings.confirmation.mail_expired.minutes < now
   end
 
