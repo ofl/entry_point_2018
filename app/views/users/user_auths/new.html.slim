@@ -2,7 +2,7 @@
   .py-5.text-center
     h2= t('.new_user_auth')
 
-  = bootstrap_form_with model: @user_auth, url: users_user_auths_path, local: true,
+  = bootstrap_form_with model: @user_auth, url: users_user_auths_path, local: true, method: :post,
                         html: { 'data-vue': 'password-required' } do |f|
     = error_messages!(f.object)
 
