@@ -104,6 +104,7 @@ class User < ApplicationRecord
 
   def valid_except_email?
     return false if errors[:username].any? || errors[:password].any?
+
     errors[:email].any?
   end
 

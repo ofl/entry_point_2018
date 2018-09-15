@@ -9,6 +9,7 @@ class Api::ApiController < ActionController::API
     user = User.find_by(username: request.headers[:username])
 
     raise Unauthorized if !user || !Devise.secure_compare(user.authentication_token, token)
+
     # env['devise.skip_trackable'] = true
     sign_in user, store: false
   end

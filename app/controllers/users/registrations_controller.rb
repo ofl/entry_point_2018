@@ -72,6 +72,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def validate_resource
     return if resource.valid?
+
     clean_up_passwords resource
   end
 

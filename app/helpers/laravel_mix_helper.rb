@@ -4,6 +4,7 @@ module LaravelMixHelper
 
   def asset_bundle_path(entry, **options)
     raise BundleNotFound, "Could not find bundle with name #{entry}" unless manifest.key? entry
+
     asset_path(manifest.fetch(entry), **options)
   end
 
@@ -35,6 +36,7 @@ module LaravelMixHelper
   # image_bundle_tag の場合は、entry はちゃんと拡張子付きで書いて欲しい
   def image_bundle_tag(entry, **options)
     raise ArgumentError, "Extname is missing with #{entry}" if File.extname(entry).blank?
+
     image_tag entry, **options
   end
 
