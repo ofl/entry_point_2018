@@ -65,6 +65,6 @@ Rails.application.configure do
   # devise
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = { address: 'entrypoint2018_mailcatcher_1', port: 1025 }
+  config.action_mailer.smtp_settings = { address: 'entry_point_2018_mailcatcher_1', port: 1025 }
   config.action_mailer.raise_delivery_errors = true
 end

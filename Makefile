@@ -9,7 +9,10 @@ build: ## build develoment environment
 serve: up attach ## Run Serve
 
 up: ## Run rails container
-	docker-compose up -d rails
+	docker-compose up -d
+
+shell: ## Run Shell
+	docker-compose exec rails sh
 
 console: ## Run Rails Console
 	docker-compose run --rm rails bundle exec rails c
