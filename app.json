@@ -1,6 +1,7 @@
 {
   "name": "entry_point_2018",
   "scripts": {
+    "postdeploy": "bundle exec rake db:migrate"
   },
   "env": {
     "DEVELOPER_NAME": {
@@ -50,6 +51,11 @@
     "sendgrid"
   ],
   "buildpacks": [
-
+    {
+      "url": "heroku/nodejs"
+    },
+    {
+      "url": "heroku/ruby"
+    }
   ]
 }
