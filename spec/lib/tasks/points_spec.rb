@@ -1,10 +1,10 @@
 require 'rails_helper'
 require 'rake'
 
-describe 'rake task points' do # rubocop:disable Rspec/DescribeClass
-  # rubocop:disable Rspec/InstanceVariable
+RSpec.describe 'rake task points' do # rubocop:disable RSpec/DescribeClass
+  # rubocop:disable RSpec/InstanceVariable
 
-  before(:all) do # rubocop:disable Rspec/BeforeAfterAll
+  before(:all) do # rubocop:disable RSpec/BeforeAfterAll
     @rake = Rake::Application.new
     Rake.application = @rake
     Rake.application.rake_require 'tasks/points'
@@ -53,5 +53,5 @@ describe 'rake task points' do # rubocop:disable Rspec/DescribeClass
     end
   end
 
-  # rubocop:enable Rspec/InstanceVariable
+  # rubocop:enable RSpec/InstanceVariable
 end

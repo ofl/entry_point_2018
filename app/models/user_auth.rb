@@ -34,7 +34,7 @@ class UserAuth < ApplicationRecord
     twitter: 2
   }
 
-  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i.freeze
 
   scope :confirmed, -> { where.not(confirmed_at: nil) }
 
