@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/bootstrap-ruby/bootstrap_form.git
-  revision: b734f5dd92ef2d2183259326b9c64cfe927ff940
+  revision: 5ff35c73aab39606fd30300538927e531dd28a7b
   branch: master
   specs:
     bootstrap_form (4.0.0)
@@ -63,7 +63,7 @@ GEM
     arel (9.0.0)
     ast (2.4.0)
     aws-eventstream (1.0.1)
-    aws-partitions (1.126.0)
+    aws-partitions (1.127.0)
     aws-sdk-core (3.44.1)
       aws-eventstream (~> 1.0)
       aws-partitions (~> 1.0)
@@ -105,6 +105,7 @@ GEM
       activesupport (>= 3.0)
       deep_merge (~> 1.2.1)
       dry-validation (>= 0.10.4)
+    content_disposition (1.0.0)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     crass (1.0.4)
@@ -391,7 +392,8 @@ GEM
     shellany (0.0.1)
     shoulda-matchers (3.1.2)
       activesupport (>= 4.0.0)
-    shrine (2.13.0)
+    shrine (2.14.0)
+      content_disposition (~> 1.0)
       down (~> 4.1)
     shrine-memory (0.3.0)
       shrine (~> 2.2)
@@ -446,7 +448,7 @@ GEM
       activemodel (>= 5.0)
       bindex (>= 0.4.0)
       railties (>= 5.0)
-    webmock (3.4.2)
+    webmock (3.5.1)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
       hashdiff
@@ -520,4 +522,4 @@ RUBY VERSION
    ruby 2.4.4p296
 
 BUNDLED WITH
-   1.17.2
+   1.17.3
